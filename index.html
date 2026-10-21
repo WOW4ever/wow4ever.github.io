@@ -28,239 +28,26 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"WOW4ever","alternateName":"Guilde WOW4ever","url":"https://wow4ever.github.io/","logo":"https://wow4ever.github.io/og.png","description":"Guilde Alliance francophone sur WoW Forever : leveling en groupe, donjons, raids et JcJ.","sameAs":["https://discord.gg/2EJUvwRDWz"]}
 </script>
+<link rel="preload" as="image" href="/img/forteresse-neige-1024.webp" imagesrcset="/img/forteresse-neige-640.webp 640w, /img/forteresse-neige-1024.webp 1024w, /img/forteresse-neige-1600.webp 1600w" imagesizes="(min-width: 1925px) calc(100vw + 180px), 2104px" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;family=Cinzel+Decorative:wght@700&amp;family=Grenze:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Pirata+One&amp;display=swap" rel="stylesheet">
-<style>
-body{margin:0;background:#0a0c11}
-a{color:#8fb0ff}a:hover{color:#b9ceff}
-button{font-family:inherit}
-button:focus-visible,a:focus-visible{outline:2px solid #e3c07a;outline-offset:3px}
-.b-root{min-height:4400px;background:#0a0c11;color:#ebe5d8;font-family:'Grenze',Georgia,serif;font-size:19px;line-height:1.45;overflow-x:hidden}
-.b-cz{font-family:'Cinzel',Georgia,serif}
-.b-goth{font-family:'Cinzel',Georgia,serif;font-weight:700}
-.b-gt{font-family:'Pirata One','Cinzel',Georgia,serif;letter-spacing:.01em}
-h3.b-cz,.b-tile .b-cz{font-family:'Pirata One','Cinzel',Georgia,serif;font-weight:400 !important;letter-spacing:.015em}
-.b-sur{font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:12px;letter-spacing:.3em;color:#c9a45c}
-.b-h2{margin:6px 0 0;text-wrap:balance;font-family:'Pirata One','Cinzel',Georgia,serif;font-weight:400;font-size:44px;letter-spacing:.01em;line-height:1.08}
-.b-hd{display:flex;align-items:center;gap:18px}
-.b-hd>span{flex:1;height:1px;background:linear-gradient(90deg,transparent,#c9a45c)}
-.b-hd>span:last-child{background:linear-gradient(90deg,#c9a45c,transparent)}
-.b-hd>div{text-align:center}
-.b-lead{margin:10px auto 0;max-width:62ch;text-align:center;color:#c3bcae}
-.b-chip{display:inline-block;padding:3px 11px;border-radius:999px;border:1px solid currentColor;font-family:'Cinzel',Georgia,serif;font-size:12px;font-weight:700;letter-spacing:.12em}
-.b-btn{display:inline-block;padding:13px 22px;border-radius:4px;font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:14px;letter-spacing:.14em;text-decoration:none;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease}
-.b-btn:hover{transform:translateY(-2px)}
-.b-blue{border:1px solid #8fb0ff;background:linear-gradient(180deg,#3a6ad0,#2350b0);color:#ebe5d8;box-shadow:0 0 22px rgba(47,95,196,.5)}
-.b-gold{border:1px solid #f1d79a;background:linear-gradient(180deg,#e3c07a,#b48a3e);color:#0a0c11;box-shadow:0 0 22px rgba(201,164,92,.35)}
-.b-ghost{border:1px solid #c9a45c;background:rgba(10,12,17,.55);color:#e3c07a}
-.b-grain{background-image:url(img/grain.svg)}
-.b-fog,.b-fog2,.b-sparks,.b-embers{overflow:hidden;pointer-events:none}
-.b-fog{mix-blend-mode:screen;opacity:.42}
-.b-fog::before{content:"";position:absolute;top:0;bottom:0;left:0;width:calc(100% + 1400px);background-image:url(img/fumee.svg);background-size:1400px 700px;will-change:transform;animation:b-driftT 70s linear infinite}
-.b-fog2{mix-blend-mode:screen;opacity:.28}
-.b-fog2::before{content:"";position:absolute;top:0;bottom:0;left:-900px;width:calc(100% + 900px);background-image:url(img/fumee.svg);background-size:900px 450px;will-change:transform;animation:b-drift2T 40s linear infinite}
-.b-sparks::before{content:"";position:absolute;top:0;left:-60px;width:calc(100% + 120px);height:calc(100% + 820px);background-image:radial-gradient(2px 2px at 14% 30%,rgba(159,216,230,.9),transparent 60%),radial-gradient(1.5px 1.5px at 26% 72%,rgba(143,176,255,.8),transparent 60%),radial-gradient(2.5px 2.5px at 39% 18%,rgba(159,216,230,.6),transparent 60%),radial-gradient(1.5px 1.5px at 58% 84%,rgba(143,176,255,.9),transparent 60%),radial-gradient(2px 2px at 73% 26%,rgba(159,216,230,.7),transparent 60%),radial-gradient(1px 1px at 86% 62%,rgba(255,255,255,.9),transparent 60%),radial-gradient(2px 2px at 94% 12%,rgba(143,176,255,.7),transparent 60%),radial-gradient(1.5px 1.5px at 6% 88%,rgba(159,216,230,.8),transparent 60%);background-size:1100px 820px;will-change:transform;animation:b-riseT 26s linear infinite}
-.b-embers{mix-blend-mode:screen}
-.b-embers::before{content:"";position:absolute;top:0;left:0;width:calc(100% + 40px);height:calc(100% + 500px);background-image:radial-gradient(2px 3px at 12% 80%,#ffb15c,transparent 70%),radial-gradient(2px 2px at 33% 60%,#ff8a3d,transparent 70%),radial-gradient(1.5px 2px at 52% 90%,#ffd08a,transparent 70%),radial-gradient(2px 2px at 71% 70%,#ff8a3d,transparent 70%),radial-gradient(1.5px 1.5px at 88% 85%,#ffb15c,transparent 70%);background-size:700px 500px;will-change:transform;animation:b-rise2T 14s linear infinite}
-@keyframes b-driftT{to{transform:translateX(-1400px)}}
-@keyframes b-drift2T{to{transform:translateX(900px)}}
-@keyframes b-riseT{to{transform:translate(60px,-820px)}}
-@keyframes b-rise2T{to{transform:translate(-40px,-500px)}}
-.b-img{filter:saturate(1) brightness(.78) contrast(1.08)}
-.b-kb{animation:b-kb 24s ease-in-out infinite alternate}
-.b-vpan{animation:b-vpan 26s ease-in-out infinite alternate}
-@keyframes b-vpan{from{object-position:50% 8%}to{object-position:50% 72%}}
-.b-flash{animation:b-flash 8s infinite}
-.b-spin{animation:b-spin 80s linear infinite;transform-origin:50% 50%}
-.b-spin40{animation:b-spin 40s linear infinite;transform-origin:50% 50%}
-.b-spinr{animation:b-spin 60s linear infinite reverse;transform-origin:50% 50%}
-.b-bob{animation:b-bob 2.4s ease-in-out infinite}
-.b-float{animation:b-float 6s ease-in-out infinite}
-.b-rays{background:conic-gradient(from 156deg at 50% 0%,transparent 0deg,rgba(170,200,255,.16) 6deg,transparent 12deg,rgba(170,200,255,.10) 19deg,transparent 25deg,rgba(170,200,255,.15) 31deg,transparent 37deg,rgba(170,200,255,.08) 42deg,transparent 48deg);filter:blur(5px);mix-blend-mode:screen;transform-origin:50% 0;animation:b-sway 14s ease-in-out infinite alternate}
-.b-tassel{animation:b-tas 3.2s ease-in-out infinite alternate}
-.b-tassel2{animation-duration:2.7s}
-.b-h1{margin:0;max-width:16ch;text-wrap:balance;font-family:'Pirata One','Cinzel',Georgia,serif;font-weight:400;font-size:104px;line-height:.98;letter-spacing:.01em;filter:drop-shadow(0 4px 20px rgba(0,0,0,.95)) drop-shadow(0 0 16px rgba(143,176,255,.3));animation:b-hglow 5s ease-in-out infinite alternate}
-.b-word{display:inline-block;white-space:nowrap;margin:0 .13em}
-.b-ch{display:inline-block;background-image:linear-gradient(105deg,#efe7d6 0%,#efe7d6 42%,#fff6d8 46.5%,#f1c96e 50%,#fff6d8 53.5%,#efe7d6 58%,#efe7d6 100%);background-size:600% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;animation:b-chin 1.1s cubic-bezier(.2,.75,.2,1) both,b-shim 7s linear infinite}
-@keyframes b-chin{from{opacity:0;transform:translateY(.42em) scale(.86);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
-@keyframes b-shim{0%{background-position:100% 0}55%,100%{background-position:0 0}}
-@keyframes b-hglow{from{filter:drop-shadow(0 4px 20px rgba(0,0,0,.95)) drop-shadow(0 0 12px rgba(143,176,255,.22))}to{filter:drop-shadow(0 4px 20px rgba(0,0,0,.95)) drop-shadow(0 0 30px rgba(143,176,255,.55))}}
-@keyframes b-kb{from{transform:scale(1)}to{transform:scale(1.08) translate(-1%,-1%)}}
-@keyframes b-flash{0%,88%,100%{opacity:0}89%{opacity:.55}90%{opacity:.06}91.5%{opacity:.38}93%{opacity:0}}
-@keyframes b-spin{to{transform:rotate(360deg)}}
-@keyframes b-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-@keyframes b-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes b-drift{from{background-position:0 0}to{background-position:-1400px 0}}
-@keyframes b-drift2{from{background-position:0 0}to{background-position:900px 0}}
-@keyframes b-rise{from{background-position:0 0}to{background-position:60px -820px}}
-@keyframes b-rise2{from{background-position:0 0}to{background-position:-40px -500px}}
-@keyframes b-sway{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
-@keyframes b-tas{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-.b-chain{position:relative;height:16px;background:repeating-linear-gradient(115deg,#d9b56a 0 5px,#7d5c22 5px 8px,#0a0c11 8px 13px),#0a0c11;border-top:1px solid #6f5020;border-bottom:1px solid #6f5020;box-shadow:0 0 22px rgba(201,164,92,.28);overflow:hidden}
-.b-chain::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,240,200,.75),transparent) no-repeat;background-size:240px 100%;animation:b-shine 6s linear infinite}
-@keyframes b-shine{from{background-position:-240px 0}to{background-position:calc(100% + 240px) 0}}
-.b-card{position:relative;padding:30px 26px 26px;border:1px solid #2c3445;border-radius:2px;background-color:#11151d;background-image:url(img/grain.svg);box-shadow:0 18px 40px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .35s ease,box-shadow .35s ease;overflow:hidden}
-.b-card:hover{transform:translateY(-4px);box-shadow:0 0 0 1px #2f5fc4,0 0 30px rgba(47,95,196,.45),0 22px 44px rgba(0,0,0,.6)}
-.b-card::before,.b-card::after{content:"";position:absolute;width:14px;height:14px;border:solid #c9a45c;opacity:.85;z-index:1}
-.b-card::before{top:6px;left:6px;border-width:1px 0 0 1px}
-.b-card::after{bottom:6px;right:6px;border-width:0 1px 1px 0}
-.b-sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,240,200,.09) 45%,rgba(255,240,200,.16) 50%,rgba(255,240,200,.09) 55%,transparent 70%) no-repeat;background-size:250% 100%;background-position:150% 0;animation:b-sheen 9s ease-in-out infinite}
-@keyframes b-sheen{0%,70%{background-position:150% 0}100%{background-position:-60% 0}}
-.b-tile{position:relative;overflow:hidden;display:block;text-decoration:none;color:#ebe5d8}
-.b-tile img{transition:transform 1.4s ease,filter .6s ease}
-.b-tile:hover img{transform:scale(1.08);filter:saturate(1.1) brightness(.85)}
-.b-pxw{position:absolute;left:0;right:0;top:-12%;bottom:-12%;overflow:hidden}
-.b-pxw>span{position:absolute;inset:0}
-.b-pan{left:-10% !important;right:-10% !important;animation:b-pan 18s ease-in-out infinite alternate}
-@keyframes b-pan{from{transform:translateX(-7%)}to{transform:translateX(7%)}}
-@supports (animation-timeline: view()){.b-pxw{animation:b-px linear both;animation-timeline:view();animation-range:cover}@keyframes b-px{from{transform:translateY(-9%)}to{transform:translateY(9%)}}}
-.b-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,240,200,.18) 50%,transparent 65%) no-repeat;background-size:260% 100%;background-position:160% 0;transition:background-position 1.1s ease}
-.b-tile:hover::after{background-position:-60% 0}
-.b-navbtn{transition:color .25s ease}
-.b-navbtn:hover{color:#ebe5d8}
-.b-ward{transform-box:fill-box;transform-origin:center;animation:b-ward 2.6s ease-out infinite}
-.b-ward2{animation-delay:1.3s}
-@keyframes b-ward{from{transform:scale(.7);opacity:.85}to{transform:scale(1.55);opacity:0}}
-.b-pulse{transform-box:fill-box;transform-origin:center;animation:b-pulse 2.2s ease-in-out infinite}
-@keyframes b-pulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.08);opacity:1}}
-.b-slash{animation:b-slash 2.8s cubic-bezier(.7,0,.3,1) infinite}
-@keyframes b-slash{0%,55%{transform:translate(-90px,90px);opacity:0}62%{opacity:1}78%,100%{transform:translate(90px,-90px);opacity:0}}
-.b-shake{transform-box:fill-box;transform-origin:center;animation:b-shake 2.8s ease-in-out infinite}
-@keyframes b-shake{0%,62%,76%,100%{transform:none}66%{transform:translate(2px,-1px) rotate(1.5deg)}70%{transform:translate(-2px,1px) rotate(-1.5deg)}}
-.b-bar{transform-box:fill-box;transform-origin:50% 100%;animation:b-bar 3.2s ease-in-out infinite}
-@keyframes b-bar{0%,100%{transform:scaleY(.45)}50%{transform:scaleY(1)}}
-.b-wave{transform-box:fill-box;transform-origin:0 50%;animation:b-wave 1.8s ease-out infinite}
-@keyframes b-wave{from{opacity:.9;transform:scale(.8)}to{opacity:0;transform:scale(1.35)}}
-.b-scan{transform-box:view-box;transform-origin:32px 30px;animation:b-scan 4s ease-in-out infinite}
-@keyframes b-scan{0%,100%{transform:translate(-6px,-4px)}25%{transform:translate(6px,-6px)}50%{transform:translate(7px,5px)}75%{transform:translate(-7px,6px)}}
-.b-glass{animation:b-glass 7s linear infinite;transform-origin:50% 50%}
-@keyframes b-glass{0%,86%{transform:rotate(0)}100%{transform:rotate(180deg)}}
-.b-sandtop{transform-box:fill-box;transform-origin:50% 100%;animation:b-sandtop 7s linear infinite}
-@keyframes b-sandtop{0%{transform:scaleY(1)}84%,100%{transform:scaleY(0)}}
-.b-sandbot{transform-box:fill-box;transform-origin:50% 100%;animation:b-sandbot 7s linear infinite}
-@keyframes b-sandbot{0%{transform:scaleY(0)}84%,100%{transform:scaleY(1)}}
-.b-stream{animation:b-stream 7s linear infinite}
-@keyframes b-stream{0%,84%{opacity:1}86%,100%{opacity:0}}
-.b-flow{animation:b-flow 1.2s linear infinite}
-@keyframes b-flow{to{stroke-dashoffset:-28}}
-.b-draw{animation:b-draw 2.4s cubic-bezier(.3,.7,.2,1) both}
-@keyframes b-draw{from{stroke-dashoffset:var(--len)}}
-.b-fill{transform-origin:0 50%;animation:b-fill 1.8s cubic-bezier(.3,.7,.2,1) both}
-@keyframes b-fill{from{transform:scaleX(0)}}
-.b-shim{position:relative;overflow:hidden}
-.b-shim::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent) no-repeat;background-size:40% 100%;background-position:-60% 0;animation:b-shimbar 3.4s ease-in-out infinite}
-@keyframes b-shimbar{0%,40%{background-position:-60% 0}100%{background-position:160% 0}}
-.b-glowday{animation:b-glowday 2.4s ease-in-out infinite}
-@keyframes b-glowday{0%,100%{box-shadow:0 0 0 rgba(47,95,196,0)}50%{box-shadow:0 0 18px rgba(143,176,255,.75),inset 0 0 8px rgba(255,255,255,.3)}}
-.b-glowgold{animation:b-glowgold 2.4s ease-in-out infinite}
-@keyframes b-glowgold{0%,100%{box-shadow:0 0 0 rgba(201,164,92,0)}50%{box-shadow:0 0 18px rgba(227,192,122,.8)}}
-.b-heat{animation:b-heat 4s ease-in-out infinite}
-.b-empty{animation:b-empty 1.8s ease-in-out infinite}
-@keyframes b-empty{0%,100%{box-shadow:inset 0 0 0 rgba(108,197,138,0);opacity:.75}50%{box-shadow:inset 0 0 18px rgba(108,197,138,.35);opacity:1}}
-@keyframes b-heat{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
-.b-twinkle{transform-box:fill-box;transform-origin:center;animation:b-twinkle 2.2s ease-in-out infinite}
-@keyframes b-twinkle{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.1)}}
-.b-raysg{background:repeating-conic-gradient(from 0deg,rgba(227,192,122,.22) 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 20%,transparent 68%);mask-image:radial-gradient(circle,#000 20%,transparent 68%);animation:b-spin 30s linear infinite}
-.b-steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
-.b-step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:0 14px}
-.b-medal{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center}
-.b-medal>span{width:104px;height:104px;border-radius:999px;border:2px solid #c9a45c;background:radial-gradient(circle at 50% 36%,#1c3878,#0a0c11 74%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(10,12,17,.8),0 0 30px rgba(47,95,196,.45)}
-.b-num{position:absolute;top:-6px;left:50%;transform:translateX(-50%);padding:0 10px;background:#0a0c11;font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:20px;line-height:1.2;color:#e3c07a;text-shadow:0 0 12px rgba(227,192,122,.5)}
-.b-path{position:absolute;left:0;right:0;top:0;height:132px;pointer-events:none}
-.b-roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.b-role{display:flex;flex-direction:column;gap:12px}
-.b-roleic{height:130px;display:flex;align-items:center;justify-content:center}
-.b-invest{display:grid;grid-template-columns:180px minmax(0,1fr);align-items:center;gap:32px}
-.b-band{position:relative;height:560px;margin:0 calc(50% - 50vw);overflow:hidden;border-top:1px solid #6f5020;border-bottom:1px solid #6f5020}
-.b-bandin{position:relative;height:100%;max-width:1240px;margin:0 auto;padding:0 48px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:16px}
-.b-big{margin:0;max-width:22ch;text-wrap:balance;font-family:'Pirata One','Cinzel',Georgia,serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:.01em;background-image:linear-gradient(105deg,#f2ecdf 0%,#f2ecdf 40%,#fff6d8 47%,#f1c96e 50%,#fff6d8 53%,#f2ecdf 60%,#f2ecdf 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 18px rgba(0,0,0,.9));animation:b-shim 6s linear infinite}
-.b-grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-.b-split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:stretch}
-.b-heatgrid{display:grid;grid-template-columns:78px repeat(7,minmax(0,1fr));gap:6px;align-items:center;font-size:14px;color:#9aa3b5}
-.b-heatgrid>b{height:30px;border-radius:2px}
-@supports (animation-timeline: view()){
-.b-reveal{animation:b-in linear both;animation-timeline:view();animation-range:entry 5% entry 85%}
-@keyframes b-in{from{opacity:0;transform:translateY(50px) scale(.98)}to{opacity:1;transform:none}}
-}
-@media (max-width: 980px){
-.b-side{display:none}
-.b-hero{height:auto !important;min-height:900px}
-.b-hc{height:auto !important;padding:330px 20px 150px !important}
-.b-h1{font-size:62px}
-.b-big{font-size:42px}
-.b-bandin{padding:0 20px}
-.b-steps,.b-roles,.b-split{grid-template-columns:minmax(0,1fr);gap:36px}
-.b-path{display:none}
-.b-invest{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}
-.b-h2{font-size:34px}
-}
-@media (prefers-reduced-motion: reduce){
-.b-fog::before,.b-fog2::before,.b-sparks::before,.b-embers::before,.b-kb,.b-vpan,.b-flash,.b-spin,.b-spin40,.b-spinr,.b-bob,.b-float,.b-rays,.b-tassel,.b-h1,.b-ch,.b-chain::after,.b-sheen,.b-ward,.b-pulse,.b-slash,.b-shake,.b-bar,.b-wave,.b-scan,.b-glass,.b-sandtop,.b-sandbot,.b-stream,.b-flow,.b-draw,.b-fill,.b-shim::after,.b-glowday,.b-glowgold,.b-heat,.b-empty,.b-twinkle,.b-raysg,.b-big,.b-reveal,.b-pan,.b-pxw{animation:none}
-.b-ch{color:#efe7d6;background:none}
-}
-
-.v-pill{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
-.v-qui{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:stretch}
-.v-photo{min-height:520px;border:1px solid #2c3445;box-shadow:0 18px 40px rgba(0,0,0,.55)}
-.v-minis{display:flex;flex-direction:column;gap:16px}
-.v-mini{display:grid;grid-template-columns:104px minmax(0,1fr);column-gap:20px;row-gap:6px;align-items:center;padding:22px 24px !important;flex:1}
-.v-mini .v-ic{grid-row:1 / 3;height:auto}
-.v-mini .v-ic svg{width:100%;height:auto;max-height:92px}
-.v-mini h3{align-self:end;font-size:28px !important}
-.v-mini p{align-self:start;font-size:17px}
-.v-ic{height:120px;display:flex;align-items:center;justify-content:center}
-.v-dot{transform-box:fill-box;transform-origin:center;animation:v-dot 1.2s ease-in-out infinite}
-@keyframes v-dot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
-.v-seq{transform-box:fill-box;transform-origin:center;animation:v-seq 3s ease-in-out infinite}
-@keyframes v-seq{0%,100%{transform:scale(1);filter:none}12%{transform:scale(1.22);filter:drop-shadow(0 0 8px #e3c07a)}24%{transform:scale(1);filter:none}}
-.v-orbit{transform-box:view-box;transform-origin:60px 60px;animation:b-spin 9s linear infinite}
-.v-prog{position:relative;height:14px;border:1px solid #6f5020;border-radius:999px;background:#0a0c11;overflow:hidden;box-shadow:inset 0 0 10px rgba(0,0,0,.8)}
-.v-prog>span{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#7d5c22,#e3c07a 70%,#fff3c9);box-shadow:0 0 16px rgba(227,192,122,.7);transition:width .9s cubic-bezier(.3,.7,.2,1)}
-.v-prog>span::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent) no-repeat;background-size:30% 100%;animation:b-shimbar 2.4s ease-in-out infinite}
-.v-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
-.v-step{display:flex;flex-direction:column;gap:12px;transition:border-color .5s ease,box-shadow .5s ease,transform .35s ease}
-.v-step.v-ok{border-color:#e3c07a;box-shadow:0 0 0 1px #c9a45c,0 0 36px rgba(227,192,122,.35),0 18px 40px rgba(0,0,0,.55)}
-.v-med{position:relative;width:96px;height:96px;align-self:center;display:flex;align-items:center;justify-content:center}
-.v-med>span{width:76px;height:76px;border-radius:999px;border:2px solid #c9a45c;background:radial-gradient(circle at 50% 36%,#1c3878,#0a0c11 74%);display:flex;align-items:center;justify-content:center;transition:background .6s ease,box-shadow .6s ease}
-.v-ok .v-med>span{background:radial-gradient(circle at 50% 36%,#f1d79a,#b48a3e 70%);box-shadow:0 0 28px rgba(227,192,122,.7)}
-.v-check{stroke-dasharray:60;stroke-dashoffset:60;animation:v-check .7s .15s cubic-bezier(.3,.7,.2,1) forwards}
-@keyframes v-check{to{stroke-dashoffset:0}}
-.v-burst{animation:v-burst 1.1s cubic-bezier(.2,.7,.2,1) both}
-@keyframes v-burst{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
-@media (max-width: 980px){.v-steps,.v-qui{grid-template-columns:minmax(0,1fr)}.v-photo{min-height:340px}}
-@media (prefers-reduced-motion: reduce){.v-dot,.v-seq,.v-orbit,.v-prog>span::after,.v-check,.v-burst{animation:none}.v-check{stroke-dashoffset:0}}
-
-[hidden]{display:none !important}
-.v-done,.v-todo{display:flex;align-items:center;justify-content:center}
-a.b-btn{text-align:center}
-.b-hero.is-off *,.b-hero.is-off *::before,.b-hero.is-off *::after{animation-play-state:paused !important}
-@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
-.v-faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
-.v-qa{padding:22px 26px !important}
-.v-qa:hover{transform:none}
-.v-qa summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'Pirata One','Cinzel',Georgia,serif;font-size:25px;line-height:1.2;color:#ebe5d8}
-.v-qa summary::-webkit-details-marker{display:none}
-.v-qa summary::after{content:"+";flex:none;font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:24px;color:#e3c07a;transition:transform .3s ease}
-.v-qa[open] summary::after{transform:rotate(45deg)}
-.v-qa p{margin:12px 0 0;color:#c3bcae;font-size:18px}
-@media (max-width: 980px){.v-faq{grid-template-columns:minmax(0,1fr)}}
-</style>
+<link rel="stylesheet" href="/assets/guilde.css">
 </head>
 <body>
 <div class="b-root">
 
 <section class="b-hero" data-hero style="position: relative; height: 900px; overflow: hidden; background: #0a0c11">
 <div style="position: absolute; inset: -90px; transform: translate3d(0px, 0px, 0) scale(1.1); will-change: transform" data-px="bgT">
-<img fetchpriority="high" class="b-img b-kb" src="img/forteresse-neige.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 36% 42%">
+<img width="1024" height="526" fetchpriority="high" class="b-img b-kb" src="/img/forteresse-neige-1024.webp" srcset="/img/forteresse-neige-640.webp 640w, /img/forteresse-neige-1024.webp 1024w, /img/forteresse-neige-1600.webp 1600w" sizes="(min-width: 1925px) calc(100vw + 180px), 2104px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 36% 42%">
 </div>
 <div class="b-fog2" style="position: absolute; inset: -60px; transform: translate3d(0px, 0px, 0)" data-px="fog2T"></div>
 <div style="position: absolute; inset: 0; background: radial-gradient(60% 66% at 50% 46%, rgba(10,12,17,.08), rgba(10,12,17,.82) 80%), linear-gradient(180deg, rgba(7,9,13,.62) 0%, rgba(20,41,92,.25) 24%, rgba(10,12,17,.1) 56%, #0a0c11 100%)"></div>
-<div class="b-rays" style="position: absolute; left: 50%; top: -10%; width: 1600px; height: 1300px; margin-left: -800px"></div>
-<div style="position: absolute; inset: 0; background: radial-gradient(440px 440px at 50% 50%, rgba(143,176,255,.17), transparent 70%); pointer-events: none" data-px="spot"></div>
+<template data-wide><div class="b-rays" style="position: absolute; left: 50%; top: -10%; width: 1600px; height: 1300px; margin-left: -800px"></div>
+<div style="position: absolute; inset: 0; background: radial-gradient(440px 440px at 50% 50%, rgba(143,176,255,.17), transparent 70%); pointer-events: none" data-px="spot"></div></template>
 <div class="b-fog" style="position: absolute; inset: -60px; transform: translate3d(0px, 0px, 0); will-change: transform" data-px="fogT"></div>
 <div class="b-sparks" style="position: absolute; inset: -40px; transform: translate3d(0px, 0px, 0); will-change: transform" data-px="fxT"></div>
-<svg class="b-side b-flag" aria-hidden="true" viewBox="0 0 240 600" style="position: absolute; top: 80px; left: 2.6%; width: 204px; height: 510px; z-index: 1; transform: translate3d(0px, 0px, 0); filter: drop-shadow(0 22px 30px rgba(0,0,0,.65))" data-px="banLT">
+<template data-wide><svg class="b-side b-flag" aria-hidden="true" viewBox="0 0 240 600" style="position: absolute; top: 80px; left: 2.6%; width: 204px; height: 510px; z-index: 1; transform: translate3d(0px, 0px, 0); filter: drop-shadow(0 22px 30px rgba(0,0,0,.65))" data-px="banLT">
 <defs>
 <linearGradient id="vLc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a54b0"/><stop offset=".45" stop-color="#17337a"/><stop offset="1" stop-color="#0b1a44"/></linearGradient>
 <linearGradient id="vLe" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".18" stop-color="#000" stop-opacity="0"/><stop offset=".82" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient>
@@ -297,8 +84,8 @@ a.b-btn{text-align:center}
 <path d="M40 13 L120 0 L200 13" fill="none" stroke="#7d5c22" stroke-width="2"/><circle cx="120" cy="2" r="3" fill="#d4ae62"/>
 <g class="b-tassel" style="transform-origin: 8px 20px"><path d="M8 20 C6 40 10 52 8 64" fill="none" stroke="#c9a45c" stroke-width="2"/><path d="M8 62 l-6 4 l-2 28 h16 l-2 -28z" fill="url(#vLg)"/><path d="M2 70 h12" stroke="#7d5c22" stroke-width="2"/></g>
 <g class="b-tassel b-tassel2" style="transform-origin: 232px 20px"><path d="M232 20 C234 40 230 52 232 64" fill="none" stroke="#c9a45c" stroke-width="2"/><path d="M232 62 l-6 4 l-2 28 h16 l-2 -28z" fill="url(#vLg)"/><path d="M226 70 h12" stroke="#7d5c22" stroke-width="2"/></g>
-</svg>
-<svg class="b-side b-flag" aria-hidden="true" viewBox="0 0 240 600" style="position: absolute; top: 80px; right: 2.6%; width: 204px; height: 510px; z-index: 1; transform: translate3d(0px, 0px, 0); filter: drop-shadow(0 22px 30px rgba(0,0,0,.65))" data-px="banRT">
+</svg></template>
+<template data-wide><svg class="b-side b-flag" aria-hidden="true" viewBox="0 0 240 600" style="position: absolute; top: 80px; right: 2.6%; width: 204px; height: 510px; z-index: 1; transform: translate3d(0px, 0px, 0); filter: drop-shadow(0 22px 30px rgba(0,0,0,.65))" data-px="banRT">
 <defs>
 <linearGradient id="vRc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a54b0"/><stop offset=".45" stop-color="#17337a"/><stop offset="1" stop-color="#0b1a44"/></linearGradient>
 <linearGradient id="vRe" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".18" stop-color="#000" stop-opacity="0"/><stop offset=".82" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient>
@@ -335,12 +122,12 @@ a.b-btn{text-align:center}
 <path d="M40 13 L120 0 L200 13" fill="none" stroke="#7d5c22" stroke-width="2"/><circle cx="120" cy="2" r="3" fill="#d4ae62"/>
 <g class="b-tassel" style="transform-origin: 8px 20px"><path d="M8 20 C6 40 10 52 8 64" fill="none" stroke="#c9a45c" stroke-width="2"/><path d="M8 62 l-6 4 l-2 28 h16 l-2 -28z" fill="url(#vRg)"/><path d="M2 70 h12" stroke="#7d5c22" stroke-width="2"/></g>
 <g class="b-tassel b-tassel2" style="transform-origin: 232px 20px"><path d="M232 20 C234 40 230 52 232 64" fill="none" stroke="#c9a45c" stroke-width="2"/><path d="M232 62 l-6 4 l-2 28 h16 l-2 -28z" fill="url(#vRg)"/><path d="M226 70 h12" stroke="#7d5c22" stroke-width="2"/></g>
-</svg>
+</svg></template>
 <svg aria-hidden="true" viewBox="0 0 1440 220" preserveAspectRatio="xMidYMax slice" style="position: absolute; left: -40px; right: -40px; bottom: -2px; width: calc(100% + 80px); height: 220px; z-index: 1; transform: translate3d(0px, 0px, 0)" data-px="fgT">
 <path fill="#07090d" d="M0 220V120h40V96h28v24h36V96h28v24h40V60h22v-18h18v18h22v60h40V96h28v24h36V96h28v24h60c0-46 34-78 70-78s70 32 70 78h60V96h28v24h36V96h28v24h40V40h26V18h20v22h26v80h40V96h28v24h36V96h28v24h60c0-40 30-66 62-66s62 26 62 66h56V96h28v24h36V96h28v24h40V70h24V52h18v18h24v50h40V96h28v24h36V96h28v24h12v100z"/>
 <path fill="#0a0c11" d="M0 220v-34h1440v34z"/>
 </svg>
-<svg class="b-side b-braz" aria-hidden="true" viewBox="0 -60 160 360" style="position: absolute; bottom: 36px; left: 5.2%; width: 150px; height: 338px; z-index: 2; transform: translate3d(0px, 0px, 0)" data-px="brazT">
+<template data-wide><svg class="b-side b-braz" aria-hidden="true" viewBox="0 -60 160 360" style="position: absolute; bottom: 36px; left: 5.2%; width: 150px; height: 338px; z-index: 2; transform: translate3d(0px, 0px, 0)" data-px="brazT">
 <defs>
 <radialGradient id="wLsh" gradientUnits="userSpaceOnUse" cx="80" cy="190" r="68" gradientTransform="translate(80 190) scale(1 2.5) translate(-80 -190)">
 <stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#d0d0d0"/><stop offset=".62" stop-color="#666"/><stop offset="1" stop-color="#000"/>
@@ -415,8 +202,8 @@ a.b-btn{text-align:center}
 <path d="M22 196 H138" stroke="url(#wLg)" stroke-width="3" opacity=".75"/>
 <path d="M40 226 22 298 M120 226 138 298 M80 232 V298" stroke="#1b1e24" stroke-width="7" stroke-linecap="round"/>
 <path d="M40 226 22 298 M120 226 138 298" stroke="#4a505c" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-</svg>
-<svg class="b-side b-braz" aria-hidden="true" viewBox="0 -60 160 360" style="position: absolute; bottom: 36px; right: 5.2%; width: 150px; height: 338px; z-index: 2; transform: translate3d(0px, 0px, 0)" data-px="brazT">
+</svg></template>
+<template data-wide><svg class="b-side b-braz" aria-hidden="true" viewBox="0 -60 160 360" style="position: absolute; bottom: 36px; right: 5.2%; width: 150px; height: 338px; z-index: 2; transform: translate3d(0px, 0px, 0)" data-px="brazT">
 <defs>
 <radialGradient id="wRsh" gradientUnits="userSpaceOnUse" cx="80" cy="190" r="68" gradientTransform="translate(80 190) scale(1 2.5) translate(-80 -190)">
 <stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#d0d0d0"/><stop offset=".62" stop-color="#666"/><stop offset="1" stop-color="#000"/>
@@ -491,23 +278,24 @@ a.b-btn{text-align:center}
 <path d="M22 196 H138" stroke="url(#wRg)" stroke-width="3" opacity=".75"/>
 <path d="M40 226 22 298 M120 226 138 298 M80 232 V298" stroke="#1b1e24" stroke-width="7" stroke-linecap="round"/>
 <path d="M40 226 22 298 M120 226 138 298" stroke="#4a505c" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-</svg>
+</svg></template>
 
-<header style="position: absolute; top: 0; left: 0; right: 0; z-index: 3; background: linear-gradient(180deg, rgba(7,9,13,.92), rgba(7,9,13,0))">
-<div style="max-width: 1320px; margin: 0 auto; padding: 18px 28px 26px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
-<div style="display: flex; align-items: center; gap: 12px">
-<span style="width: 48px; height: 48px; border-radius: 999px; border: 1px solid #c9a45c; background: rgba(10,12,17,.75); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 16px rgba(201,164,92,.35)"><img src="img/blason-wow4ever.svg" alt="Blason de la guilde" style="width: 33px; height: 35px"></span>
-<span style="font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif; font-weight: 700; font-size: 22px; letter-spacing: .04em; color: #e3c07a; text-shadow: 0 2px 12px rgba(0,0,0,.8)">WOW4ever</span>
-</div>
-<nav aria-label="Sections" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2px">
-<a class="b-navbtn" href="#guilde" style="padding: 10px 14px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .18em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">LA GUILDE</a>
-<a class="b-navbtn" href="#etapes" style="padding: 10px 14px; color: #e3c07a; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .18em; text-shadow: 0 2px 10px rgba(0,0,0,.9); box-shadow: inset 0 -2px 0 #c9a45c">LES 4 ÉTAPES</a>
-<a class="b-navbtn" href="#roles" style="padding: 10px 14px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .18em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">LES RÔLES</a>
-<a class="b-navbtn" href="#jeu" style="padding: 10px 14px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .18em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">CE QU'ON JOUE</a>
+<header class="v-hdr" style="position: absolute; top: 0; left: 0; right: 0; z-index: 3; background: linear-gradient(180deg, rgba(7,9,13,.92), rgba(7,9,13,0))">
+<div class="v-hdr-in" style="max-width: 1320px; margin: 0 auto; padding: 18px 28px 26px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a class="v-brand" href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+<span style="width: 48px; height: 48px; border-radius: 999px; border: 1px solid #c9a45c; background: rgba(10,12,17,.75); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 16px rgba(201,164,92,.35)"><img width="33" height="35" src="/img/blason-wow4ever.svg" alt="Blason de la guilde" style="width: 33px; height: 35px"></span>
+<span class="v-brand-txt" style="font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif; font-weight: 700; font-size: 22px; letter-spacing: .04em; color: #e3c07a; text-shadow: 0 2px 12px rgba(0,0,0,.8)">WOW4ever</span></a>
+<nav class="v-nav" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2px">
+<a class="b-navbtn v-nav-a" href="/#guilde" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">LA GUILDE</a>
+<a class="b-navbtn v-nav-a" href="/#etapes" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">LES 4 ÉTAPES</a>
+<a class="b-navbtn v-nav-a" href="/#roles" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">LES RÔLES</a>
+<a class="b-navbtn v-nav-a" href="/#jeu" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">CE QU&#x27;ON JOUE</a>
+<a class="b-navbtn v-nav-a" href="/recrutement/" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">RECRUTEMENT</a>
+<a class="b-navbtn v-nav-a" href="/wow-forever/" style="padding: 10px 11px; color: #c3bcae; text-decoration: none; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-shadow: 0 2px 10px rgba(0,0,0,.9)">WOW FOREVER</a>
 </nav>
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
-<a href="outil/" style="display: inline-block; text-decoration: none; padding: 9px 4px; border: 0; background: transparent; color: #ebe5d8; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .16em; cursor: pointer; text-shadow: 0 2px 10px rgba(0,0,0,.9)">SE CONNECTER</a>
-<a href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener" data-discord style="padding: 10px 18px; border-radius: 4px; background: #2f5fc4; border: 1px solid #8fb0ff; color: #ebe5d8; text-decoration: none; font-weight: 600; box-shadow: 0 0 18px rgba(47,95,196,.5)">Rejoindre le Discord</a>
+<div class="v-hdr-act" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<a class="v-login" href="/outil/" style="display: inline-block; text-decoration: none; padding: 9px 4px; border: 0; background: transparent; color: #ebe5d8; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: .16em; cursor: pointer; text-shadow: 0 2px 10px rgba(0,0,0,.9)">SE CONNECTER</a>
+<a href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener" data-discord class="v-dsc" style="padding: 10px 18px; border-radius: 4px; background: #2f5fc4; border: 1px solid #8fb0ff; color: #ebe5d8; text-decoration: none; font-weight: 600; box-shadow: 0 0 18px rgba(47,95,196,.5)"><span class="v-dsc-x">Rejoindre le </span>Discord</a>
 </div>
 </div>
 </header>
@@ -515,32 +303,19 @@ a.b-btn{text-align:center}
 <div class="b-hc" style="position: relative; z-index: 2; height: 100%; max-width: 1180px; margin: 0 auto; padding: 110px 24px 120px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; transform: translate3d(0px, 0px, 0); opacity: 1" data-px="txtT">
 <div style="position: relative; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center">
 <svg class="b-spin" aria-hidden="true" viewBox="0 0 150 150" style="position: absolute; inset: 0; width: 150px; height: 150px"><circle cx="75" cy="75" r="71" fill="none" stroke="#c9a45c" stroke-width="1" stroke-dasharray="2 6"/><circle cx="75" cy="75" r="64" fill="none" stroke="#c9a45c" stroke-opacity=".5" stroke-width="1"/><path d="M75 1l4 6-4 6-4-6zM75 137l4 6-4 6-4-6zM1 75l6-4 6 4-6 4zM137 75l6-4 6 4-6 4z" fill="#e3c07a"/></svg>
-<span style="width: 118px; height: 118px; border-radius: 999px; background: radial-gradient(circle at 50% 38%, #1c3878, #0a0c11 72%); border: 2px solid #c9a45c; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px rgba(10,12,17,.6), 0 0 44px rgba(143,176,255,.5)"><img src="img/blason-wow4ever.svg" alt="" style="width: 82px; height: 88px"></span>
+<span style="width: 118px; height: 118px; border-radius: 999px; background: radial-gradient(circle at 50% 38%, #1c3878, #0a0c11 72%); border: 2px solid #c9a45c; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px rgba(10,12,17,.6), 0 0 44px rgba(143,176,255,.5)"><img width="82" height="88" src="/img/blason-wow4ever.svg" alt="" style="width: 82px; height: 88px"></span>
 </div>
 <span class="b-sur" style="font-size: 13px; letter-spacing: .32em; color: #e3c07a; text-shadow: 0 2px 10px rgba(0,0,0,.9)">GUILDE ALLIANCE FRANCOPHONE · WOW FOREVER</span>
 <h1 class="b-h1" aria-label="Rejoins la bannière"><span class="b-word" aria-hidden="true"><span class="b-ch" style="animation-delay: 0.15s, 1.40s">R</span><span class="b-ch" style="animation-delay: 0.20s, 1.47s">e</span><span class="b-ch" style="animation-delay: 0.24s, 1.54s">j</span><span class="b-ch" style="animation-delay: 0.29s, 1.61s">o</span><span class="b-ch" style="animation-delay: 0.33s, 1.68s">i</span><span class="b-ch" style="animation-delay: 0.38s, 1.75s">n</span><span class="b-ch" style="animation-delay: 0.42s, 1.82s">s</span></span><span class="b-word" aria-hidden="true"><span class="b-ch" style="animation-delay: 0.46s, 1.89s">l</span><span class="b-ch" style="animation-delay: 0.51s, 1.96s">a</span></span><span class="b-word" aria-hidden="true"><span class="b-ch" style="animation-delay: 0.55s, 2.03s">b</span><span class="b-ch" style="animation-delay: 0.60s, 2.10s">a</span><span class="b-ch" style="animation-delay: 0.65s, 2.17s">n</span><span class="b-ch" style="animation-delay: 0.69s, 2.24s">n</span><span class="b-ch" style="animation-delay: 0.73s, 2.31s">i</span><span class="b-ch" style="animation-delay: 0.78s, 2.38s">è</span><span class="b-ch" style="animation-delay: 0.82s, 2.45s">r</span><span class="b-ch" style="animation-delay: 0.87s, 2.52s">e</span></span></h1>
 <p style="margin: 0; max-width: 46ch; font-size: 23px; line-height: 1.45; color: #d2ccbf; text-shadow: 0 2px 12px rgba(0,0,0,.9)">Ouvert à tout joueur francophone qui veut jouer en groupe. Quatre étapes, et tu fais partie de la guilde.</p>
-<dl style="margin: 14px 0 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 24px">
-
-<div style="display: flex; align-items: center; gap: 24px">
+<dl class="v-stats" style="margin: 14px 0 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 55px">
 <div style="display: flex; flex-direction: column-reverse"><dt style="font-family: 'Cinzel', Georgia, serif; font-size: 11px; font-weight: 700; letter-spacing: .24em; color: #9aa3b5">AVANT LA SORTIE</dt><dd style="margin: 0; font-family: 'Cinzel', Georgia, serif; font-size: 28px; color: #ebe5d8; text-shadow: 0 2px 12px rgba(0,0,0,.9)"><span data-countdown></span></dd></div>
-<span aria-hidden="true" style="width: 7px; height: 7px; transform: rotate(45deg); background: #c9a45c; opacity: 1"></span>
-</div>
-
-<div style="display: flex; align-items: center; gap: 24px">
 <div style="display: flex; flex-direction: column-reverse"><dt style="font-family: 'Cinzel', Georgia, serif; font-size: 11px; font-weight: 700; letter-spacing: .24em; color: #9aa3b5">FACTION</dt><dd style="margin: 0; font-family: 'Cinzel', Georgia, serif; font-size: 28px; color: #8fb0ff; text-shadow: 0 2px 12px rgba(0,0,0,.9)">Alliance</dd></div>
-<span aria-hidden="true" style="width: 7px; height: 7px; transform: rotate(45deg); background: #c9a45c; opacity: 1"></span>
-</div>
-
-<div style="display: flex; align-items: center; gap: 24px">
 <div style="display: flex; flex-direction: column-reverse"><dt style="font-family: 'Cinzel', Georgia, serif; font-size: 11px; font-weight: 700; letter-spacing: .24em; color: #9aa3b5">RECRUTEMENT</dt><dd style="margin: 0; font-family: 'Cinzel', Georgia, serif; font-size: 28px; color: #e3c07a; text-shadow: 0 2px 12px rgba(0,0,0,.9)">Ouvert à tous</dd></div>
-<span aria-hidden="true" style="width: 7px; height: 7px; transform: rotate(45deg); background: #c9a45c; opacity: 0"></span>
-</div>
-
 </dl>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px">
 <a class="b-btn b-gold" href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener" data-discord style="padding: 16px 30px">REJOINDRE LE DISCORD</a>
-<a class="b-btn b-blue" href="outil/" style="display: inline-block; text-decoration: none; padding: 16px 30px">CRÉER MON COMPTE</a>
+<a class="b-btn b-blue" href="/outil/" style="display: inline-block; text-decoration: none; padding: 16px 30px">CRÉER MON COMPTE</a>
 </div>
 </div>
 <div class="b-bob" aria-hidden="true" style="position: absolute; left: 50%; bottom: 30px; margin-left: -40px; width: 80px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #c9a45c; font-family: 'Cinzel', Georgia, serif; font-size: 10px; letter-spacing: .3em">DESCENDS<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
@@ -556,7 +331,7 @@ a.b-btn{text-align:center}
 <section id="guilde" class="b-reveal" style="display: flex; flex-direction: column; gap: 28px">
 <div class="b-hd"><span></span><div><div class="b-sur">LA GUILDE EN TROIS MOTS</div><h2 class="b-h2">Qui on est</h2></div><span></span></div>
 <div class="v-qui">
-<div class="b-tile v-photo"><span class="b-pxw"><span class="b-pan"><img loading="lazy" decoding="async" class="b-img" src="img/taverne-toast.webp" alt="Des chevaliers de l'Alliance trinquent autour d'une table de taverne" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%"></span></span><span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,0) 45%, rgba(10,12,17,.92))"></span><span style="position: absolute; left: 26px; right: 26px; bottom: 24px; display: flex; flex-direction: column; gap: 6px"><span class="b-sur" style="color: #e3c07a">LA VIE DE GUILDE</span><span class="b-cz" style="font-size: 32px">La taverne est ouverte</span><span style="color: #d2ccbf; max-width: 46ch">Entre deux donjons, on se retrouve sur le Discord pour papoter, s'entraider et préparer la suite.</span></span></div>
+<div class="b-tile v-photo"><span class="b-pxw"><span class="b-pan"><img width="1024" height="572" loading="lazy" decoding="async" class="b-img" src="/img/taverne-toast-1024.webp" srcset="/img/taverne-toast-640.webp 640w, /img/taverne-toast-1024.webp 1024w" sizes="(max-width: 980px) 760px, 1160px" alt="Des chevaliers de l'Alliance trinquent autour d'une table de taverne" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%"></span></span><span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,0) 45%, rgba(10,12,17,.92))"></span><span style="position: absolute; left: 26px; right: 26px; bottom: 24px; display: flex; flex-direction: column; gap: 6px"><span class="b-sur" style="color: #e3c07a">LA VIE DE GUILDE</span><span class="b-cz" style="font-size: 32px">La taverne est ouverte</span><span style="color: #d2ccbf; max-width: 46ch">Entre deux donjons, on se retrouve sur le Discord pour papoter, s'entraider et préparer la suite.</span></span></div>
 <div class="v-minis">
 <article class="b-card v-mini">
 <div class="v-ic"><svg aria-hidden="true" width="120" height="110" viewBox="0 0 120 110"><path d="M10 18 h68 a10 10 0 0 1 10 10 v30 a10 10 0 0 1 -10 10 H40 l-16 14 v-14 H10 a10 10 0 0 1 -10 -10 V28 a10 10 0 0 1 10 -10z" transform="translate(4 0)" fill="#14295c" stroke="#8fb0ff" stroke-width="2"/><circle class="v-dot" cx="32" cy="43" r="5" fill="#ebe5d8"/><circle class="v-dot" style="animation-delay: .2s" cx="48" cy="43" r="5" fill="#ebe5d8"/><circle class="v-dot" style="animation-delay: .4s" cx="64" cy="43" r="5" fill="#ebe5d8"/><path d="M60 52 h42 a10 10 0 0 1 10 10 v22 a10 10 0 0 1 -10 10 h-6 v12 l-14 -12 H60 a10 10 0 0 1 -10 -10 V62 a10 10 0 0 1 10 -10z" fill="#3a2a10" stroke="#e3c07a" stroke-width="2"/><text x="81" y="81" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="16" fill="#e3c07a">FR</text></svg></div>
@@ -583,7 +358,7 @@ a.b-btn{text-align:center}
 <div><span class="b-sur">TON PARCOURS</span><h2 class="b-h2" style="margin: 6px 0 0">Valide les quatre étapes</h2></div>
 <div style="flex: 1 1 320px; max-width: 460px; display: flex; flex-direction: column; gap: 8px">
 <div style="display: flex; justify-content: space-between; color: #c3bcae; font-size: 16px"><span data-prog-txt>0 étape validée sur 4</span><span class="b-cz" style="color: #e3c07a; font-weight: 700"><span data-prog-pct>0</span> %</span></div>
-<div class="v-prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-prog-bar><span style="width: 0%"></span></div>
+<div class="v-prog" role="progressbar" aria-label="Progression des 4 étapes" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-prog-bar><span style="width: 0%"></span></div>
 </div>
 </div>
 <div class="v-steps">
@@ -603,7 +378,7 @@ a.b-btn{text-align:center}
 </span><b class="b-num">II</b></div>
 <h3 class="b-cz" style="margin: 0; font-size: 27px; text-align: center">Crée ton compte</h3>
 <p style="margin: 0; color: #c3bcae; font-size: 17px">Connecte-toi à l'outil avec ton compte Discord. Ta fiche de joueur est créée en un clic, sans mot de passe à retenir.</p>
-<a class="b-btn b-blue" data-stepbtn="1" href="outil/" style="margin-top: auto">SE CONNECTER AVEC DISCORD</a>
+<a class="b-btn b-blue" data-stepbtn="1" href="/outil/" style="margin-top: auto">SE CONNECTER AVEC DISCORD</a>
 </article>
 <article class="b-card v-step" data-step="2">
 <div class="v-med"><svg class="b-spinr" aria-hidden="true" viewBox="0 0 96 96" style="position: absolute; inset: 0; animation-duration: 90s"><circle cx="48" cy="48" r="45" fill="none" stroke="#c9a45c" stroke-opacity=".6" stroke-dasharray="1 6"/></svg><span>
@@ -612,7 +387,7 @@ a.b-btn{text-align:center}
 </span><b class="b-num">III</b></div>
 <h3 class="b-cz" style="margin: 0; font-size: 27px; text-align: center">Fais l'analyse</h3>
 <p style="margin: 0; color: #c3bcae; font-size: 17px">Le questionnaire croise tes goûts et ta façon de jouer pour faire ressortir la classe et la spé qui te ressemblent.</p>
-<a class="b-btn b-blue" data-stepbtn="2" href="outil/" style="margin-top: auto">COMMENCER L’ANALYSE</a>
+<a class="b-btn b-blue" data-stepbtn="2" href="/outil/" style="margin-top: auto">COMMENCER L’ANALYSE</a>
 </article>
 <article class="b-card v-step" data-step="3">
 <div class="v-med"><svg class="b-spinr" aria-hidden="true" viewBox="0 0 96 96" style="position: absolute; inset: 0; animation-duration: 105s"><circle cx="48" cy="48" r="45" fill="none" stroke="#c9a45c" stroke-opacity=".6" stroke-dasharray="1 6"/></svg><span>
@@ -621,12 +396,12 @@ a.b-btn{text-align:center}
 </span><b class="b-num">IV</b></div>
 <h3 class="b-cz" style="margin: 0; font-size: 27px; text-align: center">Place tes classes</h3>
 <p style="margin: 0; color: #c3bcae; font-size: 17px">Ajoute dans les graphiques les classes que tu veux jouer, en pensant aux synergies avec la guilde : c'est comme ça qu'on s'entraide vraiment.</p>
-<a class="b-btn b-blue" data-stepbtn="3" href="outil/#comparatif" style="margin-top: auto">OUVRIR LES GRAPHIQUES</a>
+<a class="b-btn b-blue" data-stepbtn="3" href="/outil/#comparatif" style="margin-top: auto">OUVRIR LES GRAPHIQUES</a>
 </article>
 </div>
 <div data-fini hidden>
 <div class="v-burst" style="position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 24px; padding: 24px; border: 1px solid #e3c07a; border-radius: 2px; background: radial-gradient(60% 120% at 50% 0%, rgba(227,192,122,.18), rgba(10,12,17,.6))">
-<div style="position: relative; width: 90px; height: 96px"><div class="b-raysg" style="position: absolute; inset: -30px; border-radius: 999px"></div><img loading="lazy" decoding="async" src="img/blason-wow4ever.svg" alt="" style="position: relative; width: 90px; height: 96px"></div>
+<div style="position: relative; width: 90px; height: 96px"><div class="b-raysg" style="position: absolute; inset: -30px; border-radius: 999px"></div><img width="90" height="96" loading="lazy" decoding="async" src="/img/blason-wow4ever.svg" alt="" style="position: relative; width: 90px; height: 96px"></div>
 <div><h3 class="b-cz" style="margin: 0; font-size: 34px; color: #f1d79a">Bienvenue dans la guilde</h3><p style="margin: 4px 0 0; color: #d2ccbf">Ta place est prête. On se retrouve sur le Discord pour la première sortie.</p></div>
 </div>
 </div>
@@ -635,7 +410,7 @@ a.b-btn{text-align:center}
 
 <section class="b-band">
 <div style="position: absolute; left: 0; right: 0; top: -120px; bottom: -120px; transform: translate3d(0, 0px, 0); will-change: transform" data-px="bandT">
-<img loading="lazy" decoding="async" class="b-img" src="img/bataille-alliance.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; filter: saturate(1.05) brightness(1.02) contrast(1.06)">
+<img width="1024" height="683" loading="lazy" decoding="async" class="b-img" src="/img/bataille-alliance-1024.webp" srcset="/img/bataille-alliance-640.webp 640w, /img/bataille-alliance-1024.webp 1024w, /img/bataille-alliance-1536.webp 1536w" sizes="(min-width: 1200px) 100vw, 1200px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; filter: saturate(1.05) brightness(1.02) contrast(1.06)">
 </div>
 <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,12,17,.92) 0%, rgba(10,12,17,.6) 42%, rgba(10,12,17,.08) 78%, rgba(20,41,92,.12) 100%)"></div>
 <div class="b-embers" style="position: absolute; inset: 0; opacity: .8"></div>
@@ -692,7 +467,7 @@ a.b-btn{text-align:center}
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
 
 <div class="b-tile" style="height: 360px; border: 1px solid #2c3445">
-<span class="b-pxw"><span class="b-pan"><img loading="lazy" decoding="async" class="b-img" src="img/port-cite.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 64% 42%"></span></span>
+<span class="b-pxw"><span class="b-pan"><img width="1024" height="574" loading="lazy" decoding="async" class="b-img" src="/img/port-cite-1024.webp" srcset="/img/port-cite-640.webp 640w, /img/port-cite-1024.webp 1024w, /img/port-cite-1600.webp 1600w" sizes="796px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 64% 42%"></span></span>
 <span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,.1), rgba(10,12,17,.35) 45%, rgba(10,12,17,.95))"></span>
 <span style="position: absolute; left: 22px; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 6px">
 <span class="b-sur" style="font-size: 11px; letter-spacing: .26em; color: #e3c07a">DU NIVEAU 1 AU 60</span>
@@ -702,7 +477,7 @@ a.b-btn{text-align:center}
 </div>
 
 <div class="b-tile" style="height: 360px; border: 1px solid #2c3445">
-<span class="b-pxw"><span class="b-pan"><img loading="lazy" decoding="async" class="b-img" src="img/cite-brulee.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 26% 40%"></span></span>
+<span class="b-pxw"><span class="b-pan"><img width="1024" height="574" loading="lazy" decoding="async" class="b-img" src="/img/cite-brulee-1024.webp" srcset="/img/cite-brulee-640.webp 640w, /img/cite-brulee-1024.webp 1024w, /img/cite-brulee-1600.webp 1600w" sizes="797px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 26% 40%"></span></span>
 <span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,.1), rgba(10,12,17,.35) 45%, rgba(10,12,17,.95))"></span>
 <span style="position: absolute; left: 22px; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 6px">
 <span class="b-sur" style="font-size: 11px; letter-spacing: .26em; color: #e3c07a">CLASSIQUES ET NOUVEAUX</span>
@@ -712,7 +487,7 @@ a.b-btn{text-align:center}
 </div>
 
 <div class="b-tile" style="height: 360px; border: 1px solid #2c3445">
-<span class="b-pxw"><span class="b-pan"><img loading="lazy" decoding="async" class="b-img" src="img/nain-geant.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 48% 36%"></span></span>
+<span class="b-pxw"><span class="b-pan"><img width="1024" height="585" loading="lazy" decoding="async" class="b-img" src="/img/nain-geant-1024.webp" srcset="/img/nain-geant-640.webp 640w, /img/nain-geant-1024.webp 1024w, /img/nain-geant-1600.webp 1600w" sizes="781px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 48% 36%"></span></span>
 <span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,.1), rgba(10,12,17,.35) 45%, rgba(10,12,17,.95))"></span>
 <span style="position: absolute; left: 22px; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 6px">
 <span class="b-sur" style="font-size: 11px; letter-spacing: .26em; color: #e3c07a">10, 20 ET 40</span>
@@ -722,7 +497,7 @@ a.b-btn{text-align:center}
 </div>
 
 <div class="b-tile" style="height: 360px; border: 1px solid #2c3445">
-<span class="b-pxw"><span class="b-pan"><img loading="lazy" decoding="async" class="b-img" src="img/jcj-bataille.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 42% 40%"></span></span>
+<span class="b-pxw"><span class="b-pan"><img width="1024" height="683" loading="lazy" decoding="async" class="b-img" src="/img/jcj-bataille-1024.webp" srcset="/img/jcj-bataille-640.webp 640w, /img/jcj-bataille-1024.webp 1024w, /img/jcj-bataille-1536.webp 1536w" sizes="670px" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 42% 40%"></span></span>
 <span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,17,.1), rgba(10,12,17,.35) 45%, rgba(10,12,17,.95))"></span>
 <span style="position: absolute; left: 22px; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 6px">
 <span class="b-sur" style="font-size: 11px; letter-spacing: .26em; color: #e3c07a">CHAMPS DE BATAILLE</span>
@@ -747,12 +522,12 @@ a.b-btn{text-align:center}
 <section class="b-reveal b-card" style="padding: 40px; border-color: #c9a45c; background-color: #14295c; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px">
 <div class="b-sheen"></div>
 <div style="display: flex; align-items: center; gap: 28px">
-<div class="b-float" style="position: relative; width: 110px; height: 117px; flex: none"><div class="b-raysg" style="position: absolute; inset: -40px; border-radius: 999px"></div><img loading="lazy" decoding="async" src="img/blason-wow4ever.svg" alt="" style="position: relative; width: 110px; height: 117px; filter: drop-shadow(0 12px 22px rgba(0,0,0,.6))"></div>
+<div class="b-float" style="position: relative; width: 110px; height: 117px; flex: none"><div class="b-raysg" style="position: absolute; inset: -40px; border-radius: 999px"></div><img width="110" height="117" loading="lazy" decoding="async" src="/img/blason-wow4ever.svg" alt="" style="position: relative; width: 110px; height: 117px; filter: drop-shadow(0 12px 22px rgba(0,0,0,.6))"></div>
 <div><span class="b-sur" style="color: #e3c07a">SORTIE DE WOW FOREVER DANS <span data-launch></span></span><h2 class="b-h2" style="margin: 6px 0 0">Prêt à lever la bannière ?</h2></div>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
 <a class="b-btn b-gold" href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener" data-discord>REJOINDRE LE DISCORD</a>
-<a class="b-btn b-blue" href="outil/" style="display: inline-block; text-decoration: none; ">CRÉER MON COMPTE</a>
+<a class="b-btn b-blue" href="/outil/" style="display: inline-block; text-decoration: none; ">CRÉER MON COMPTE</a>
 </div>
 </section>
 </main>
@@ -760,7 +535,7 @@ a.b-btn{text-align:center}
 <footer class="b-grain" style="background-color: #07090d; border-top: 1px solid #2c3445">
 <div style="max-width: 1240px; margin: 0 auto; padding: 48px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px">
 <div style="display: flex; align-items: center; gap: 18px">
-<img loading="lazy" decoding="async" src="img/blason-wow4ever.svg" alt="" style="width: 64px; height: 68px">
+<img width="64" height="68" loading="lazy" decoding="async" src="/img/blason-wow4ever.svg" alt="" style="width: 64px; height: 68px">
 <div><div style="font-family: 'Cinzel Decorative', 'Cinzel', Georgia, serif; font-weight: 700; font-size: 26px; color: #e3c07a">WOW4ever</div><div style="color: #9aa3b5; font-size: 16px">Guilde Alliance francophone sur WoW Forever</div></div>
 </div>
 <a class="b-btn b-blue" href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener" data-discord>REJOINDRE LE DISCORD</a>
@@ -914,11 +689,15 @@ a.b-btn{text-align:center}
   tick();
   setInterval(tick, 30000);
 
-  /* haut de page : pause des animations hors écran */
+  /* haut de page : décors du grand écran (template data-wide), pause des animations hors écran */
   var hero = D.querySelector("[data-hero]");
   if (!hero) return;
-  var heroSvgs = $$("svg", hero).filter(function (s) { return typeof s.pauseAnimations === "function" && !s.ownerSVGElement; });
-  var heroOn = true;
+  var heroSvgs = [], px = {}, heroOn = true;
+  function collect() {
+    heroSvgs = $$("svg", hero).filter(function (s) { return typeof s.pauseAnimations === "function" && !s.ownerSVGElement; });
+    px = {};
+    $$("[data-px]").forEach(function (e) { var k = e.getAttribute("data-px"); (px[k] = px[k] || []).push(e); });
+  }
   function syncPause() {
     var wide = wideMq.matches;
     heroSvgs.forEach(function (s) {
@@ -927,6 +706,16 @@ a.b-btn{text-align:center}
     });
     hero.classList.toggle("is-off", !heroOn);
   }
+  function decor() {
+    var tpls = wideMq.matches ? $$("template[data-wide]", hero) : [];
+    tpls.forEach(function (tp) { tp.parentNode.replaceChild(D.importNode(tp.content, true), tp); });
+    if (tpls.length) collect();
+    syncPause();
+    if (!still) schedule();
+  }
+  collect();
+  if (wideMq.addEventListener) wideMq.addEventListener("change", decor);
+  decor();
   if (still) { $$("svg").forEach(function (s) { if (s.pauseAnimations && !s.ownerSVGElement) s.pauseAnimations(); }); return; }
   if (W.IntersectionObserver) {
     new IntersectionObserver(function (es) {
@@ -935,12 +724,8 @@ a.b-btn{text-align:center}
       if (heroOn) schedule();
     }).observe(hero);
   }
-  if (wideMq.addEventListener) wideMq.addEventListener("change", function () { syncPause(); schedule(); });
-  syncPause();
 
   /* parallaxe : formules de renderVals, seulement transform et opacity */
-  var px = {};
-  $$("[data-px]").forEach(function (e) { var k = e.getAttribute("data-px"); (px[k] = px[k] || []).push(e); });
   var mx = 0, my = 0, raf = 0;
   function f(n) { return n.toFixed(1); }
   function set(k, v) { (px[k] || []).forEach(function (e) { e.style.transform = v; }); }
