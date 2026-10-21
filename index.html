@@ -191,6 +191,8 @@ footer a{color:var(--muted)}
 </footer>
 <script>
 (function(){
+  /* retour de connexion Discord arrivé sur l'accueil : on le passe à l'outil, qui finit la connexion */
+  try{ if (/[?&](code|error)=/.test(location.search)) { location.replace("outil/" + location.search + location.hash); return; } }catch(e){}
   try{
     var d = new Date("2026-11-04T00:00:00+01:00"), n = Math.ceil((d - Date.now())/864e5), el = document.getElementById("count");
     if (n > 1) el.innerHTML = "Sortie de WoW Forever le <b>4 novembre 2026</b>, dans " + n + " jours.";
