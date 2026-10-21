@@ -1,10 +1,12 @@
-# Guilde WoW Forever
+# WOW4ever
+
+Site de la guilde : https://wow4ever.github.io/
 
 L'outil de la guilde (Alliance, sortie le 4 novembre 2026) : fiches des joueurs, questionnaire, spés conseillées, compos, sorties, raids, équipes de leveling et relais Discord.
 
 ## Comment ça tourne
 
-- **La page** : `index.html`, un seul fichier servi par GitHub Pages.
+- **Le site** : `index.html` est la page d'accueil et de recrutement (référencée par Google) ; `outil/index.html` est l'outil, en un seul fichier, exclu de l'indexation. Les deux sont servis par GitHub Pages.
 - **Les données** : Supabase (projet `izflnnbkxolndzmuhnui`, Francfort), une table `docs` décrite dans `supabase/schema.sql`. Tout le monde lit, les joueurs connectés écrivent, une fiche reliée n'est modifiable que par son propriétaire ou un admin.
 - **La connexion** : « Se connecter avec Discord », sans mot de passe.
 - **Discord** : la page dépose les annonces dans la file `discord_out`, la fonction `supabase/functions/discord-post` les poste par le webhook du salon (secret `DISCORD_WEBHOOK` dans Supabase).
@@ -20,4 +22,4 @@ select id from auth.users where raw_user_meta_data->>'full_name' ilike 'pseudo-d
 
 ## Mettre à jour
 
-La page est générée par Claude depuis les sources de l'outil puis poussée ici ; ne modifie pas `index.html` à la main, tes changements seraient écrasés au prochain envoi.
+La page est générée par Claude depuis les sources de l'outil puis poussée ici ; ne modifie pas `outil/index.html` à la main, tes changements seraient écrasés au prochain envoi.

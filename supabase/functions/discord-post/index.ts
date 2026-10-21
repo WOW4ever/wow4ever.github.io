@@ -9,6 +9,24 @@ const cors = {
 };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
 
+// message simple, ou sondage Discord natif quand le document porte un champ poll {question, answers[], hours, multi}
+function payload(d: Record<string, unknown>) {
+  const body: Record<string, unknown> = { allowed_mentions: { parse: [] } };
+  const content = String(d.content || "").slice(0, 1990);
+  if (content) body.content = content;
+  const p = d.poll as { question?: string; answers?: string[]; hours?: number; multi?: boolean } | undefined;
+  if (p && p.question && Array.isArray(p.answers) && p.answers.length >= 2) {
+    body.poll = {
+      question: { text: String(p.question).slice(0, 300) },
+      answers: p.answers.slice(0, 10).map((t) => ({ poll_media: { text: String(t).slice(0, 55) } })),
+      duration: Math.max(1, Math.min(768, Number(p.hours) || 168)),
+      allow_multiselect: !!p.multi,
+      layout_type: 1,
+    };
+  }
+  return body;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
@@ -39,11 +57,11 @@ Deno.serve(async (req) => {
     const res = await fetch(hook + (hook.includes("?") ? "&" : "?") + "wait=true", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: String(d.content || "").slice(0, 1990), allowed_mentions: { parse: [] } }),
+      body: JSON.stringify(payload(d)),
     });
     if (res.ok) { await save(r.id, { ...d, status: "envoye", sentAt: Date.now() }); sent++; }
     else if (res.status === 429) { await save(r.id, { ...d, status: "attente" }); break; }
-    else { await save(r.id, { ...d, status: "erreur", err: res.status }); errs++; }
+    else { const why = (await res.text().catch(() => "")).slice(0, 300); await save(r.id, { ...d, status: "erreur", err: res.status, why }); errs++; }
   }
   return json({ ok: true, sent, errs, expired });
 });
