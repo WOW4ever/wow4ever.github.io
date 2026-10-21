@@ -235,4 +235,8 @@ a.b-btn{text-align:center}
 .v-nav-a{flex:none;display:inline-flex !important;align-items:center;min-height:44px;padding:0 10px !important;box-sizing:border-box}
 .v-dsc{display:inline-flex !important;align-items:center;min-height:44px;box-sizing:border-box;padding:0 14px !important}
 .v-sub{height:420px}
+.b-hero .b-hc{padding-top:112px !important}
 }
+@media (min-width: 981px){.v-hdr-in{flex-wrap:nowrap !important}.v-nav{flex-wrap:nowrap !important}.v-nav-a{padding:10px 8px !important;letter-spacing:.1em !important;font-size:12.5px !important}}
+@media (min-width: 981px) and (max-width: 1360px){.v-login{display:none !important}}
+@media (min-width: 981px) and (max-width: 1180px){.v-brand-txt{display:none !important}}
