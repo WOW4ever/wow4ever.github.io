@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 320" width="300" height="320">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a93a6"/><stop offset=".3" stop-color="#323a4a"/><stop offset=".55" stop-color="#b9c0cc"/><stop offset=".75" stop-color="#3a4252"/><stop offset="1" stop-color="#1a1f29"/>
+    </linearGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c3878"/><stop offset=".6" stop-color="#0f1f4a"/><stop offset="1" stop-color="#070d22"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".55" r=".5">
+      <stop offset="0" stop-color="#6f97ff" stop-opacity=".35"/><stop offset="1" stop-color="#6f97ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vign" cx=".5" cy=".45" r=".65">
+      <stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1d79a"/><stop offset=".5" stop-color="#c9a45c"/><stop offset="1" stop-color="#6f5020"/>
+    </linearGradient>
+    <linearGradient id="goldv" x1="0" y1="40" x2="0" y2="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f1d79a"/><stop offset=".6" stop-color="#c9a45c"/><stop offset="1" stop-color="#7d5c22"/>
+    </linearGradient>
+    <linearGradient id="blood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c0262f"/><stop offset="1" stop-color="#4f0b10"/>
+    </linearGradient>
+  </defs>
+  <!-- deux lances croisées derrière l'écu, bannières déchirées -->
+  <path d="M40 300 L238 8" stroke="#20262f" stroke-width="6" stroke-linecap="round"/>
+  <path d="M260 300 L62 8" stroke="#20262f" stroke-width="6" stroke-linecap="round"/>
+  <path d="M236 10 l10 -10 l2 16z M64 10 l-10 -10 l-2 16z" fill="#9aa3b5"/>
+  <path d="M226 26 C250 30 268 22 292 30 L280 44 L296 58 L272 60 L284 76 C262 70 246 76 214 70 Z" fill="url(#blood)"/>
+  <path d="M74 26 C50 30 32 22 8 30 L20 44 L4 58 L28 60 L16 76 C38 70 54 76 86 70 Z" fill="url(#blood)"/>
+  <!-- écu d'acier -->
+  <path d="M150 22 56 52v84c0 78 46 132 94 160 48-28 94-82 94-160V52Z" fill="url(#rim)"/>
+  <path d="M150 36 70 62v74c0 68 40 116 80 142 40-26 80-74 80-142V62Z" fill="url(#field)"/>
+  <path d="M150 36 70 62v74c0 68 40 116 80 142 40-26 80-74 80-142V62Z" fill="url(#glow)"/>
+  <path d="M150 36 70 62v74c0 68 40 116 80 142 40-26 80-74 80-142V62Z" fill="url(#vign)"/>
+  <path d="M150 44 78 67v69c0 63 37 108 72 133 35-25 72-70 72-133V67Z" fill="none" stroke="#c9a45c" stroke-opacity=".45" stroke-width="1.5"/>
+  <path d="M60 58 L150 28 L240 58" fill="none" stroke="#e6e9ef" stroke-opacity=".45" stroke-width="1.5"/>
+  <!-- épée pointe en bas -->
+  <circle cx="150" cy="70" r="10" fill="url(#gold)"/>
+  <rect x="145" y="78" width="10" height="26" rx="2" fill="#5e451a"/>
+  <path d="M110 106 Q150 97 190 106 L190 114 Q150 108 110 114 Z" fill="url(#gold)"/>
+  <path d="M143 114 H157 L155 230 L150 250 L145 230 Z" fill="url(#goldv)"/>
+  <path d="M150 116 V234" stroke="#6f5020" stroke-width="1.5" stroke-opacity=".7"/>
+  <!-- l'infini enlacé autour de la lame -->
+  <path d="M104 186c0-17 26-17 46 0s46 17 46 0-26-17-46 0-46 17-46 0Z" fill="none" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M143 180 h14 v12 h-14 z" fill="url(#goldv)"/>
+</svg>
