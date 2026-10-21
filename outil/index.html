@@ -7272,7 +7272,7 @@ function bannerArt(v){
   img.src = `/img/${name}-${ws[ws.length - 1]}.webp`;
   const show = () => { if (box.dataset.art !== name) { img.remove(); return; }
     box.querySelectorAll(".ba-img").forEach(o => { if (o !== img){ o.classList.remove("on"); setTimeout(() => o.remove(), 700); } });
-    requestAnimationFrame(() => img.classList.add("on")); };
+    const on = () => img.classList.add("on"); requestAnimationFrame(on); setTimeout(on, 80); };
   img.addEventListener("load", show, {once:true}); img.addEventListener("error", show, {once:true});
   box.appendChild(img);
 }
