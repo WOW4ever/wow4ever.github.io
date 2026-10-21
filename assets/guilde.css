@@ -243,3 +243,13 @@ a.b-btn{text-align:center}
 @media (min-width: 981px){.v-hdr-in{flex-wrap:nowrap !important}.v-nav{flex-wrap:nowrap !important}.v-nav-a{padding:10px 8px !important;letter-spacing:.1em !important;font-size:12.5px !important}}
 @media (min-width: 981px) and (max-width: 1360px){.v-login{display:none !important}}
 @media (min-width: 981px) and (max-width: 1180px){.v-brand-txt{display:none !important}}
+.v-txt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.v-txt-card{display:flex;flex-direction:column;gap:12px}
+.v-txt-card:hover{transform:none}
+.v-txt a,.v-sub-main p a,.v-sub-main li a{color:#e3c07a;text-decoration:underline;text-underline-offset:3px}
+.v-sub-main ul{margin:0;padding-left:1.2em;color:#c3bcae}
+.v-sub-main li{margin:4px 0}
+.v-fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 8px;margin-bottom:10px}
+.v-fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;color:#ebe5d8;font-family:'Cinzel',Georgia,serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-decoration:none}
+.v-fnav a:hover{color:#e3c07a}
+.v-fsum{margin:0 auto 10px;max-width:62ch;color:#c3bcae}
