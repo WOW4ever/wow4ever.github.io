@@ -1476,6 +1476,45 @@ select,input,textarea{background:#0d1017;color:#ebe5d8;border-color:#2c3445;font
   .vi .vi-t{font-size:.98rem;line-height:1.35}
   .vi-veil{background:linear-gradient(90deg,rgba(8,10,15,.92),rgba(8,10,15,.7) 60%,rgba(8,10,15,.45)),linear-gradient(0deg,rgba(8,10,15,.5),transparent 60%)}
 }
+
+/* Routes de leveling : choix de spé, barre des phases, frise par tranches */
+.lvr-pick{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 14px}
+.lvr-pick label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:700;font-size:.9rem;min-width:0}
+.lvr-pick select{max-width:100%;min-width:0}
+.lvr-sum p{margin:0 0 6px}
+.lvr-sum ul{margin:0 0 14px;padding-left:18px}
+.lvr-bar{display:flex;gap:3px;margin:0 0 16px;min-width:0}
+.lvr-seg{min-width:0;overflow:hidden;padding:6px 8px;border:1px solid rgba(201,164,92,.55);border-radius:6px;background:rgba(201,164,92,.14);line-height:1.2}
+.lvr-seg.s1{background:rgba(201,164,92,.26)}.lvr-seg.s2{background:rgba(201,164,92,.38)}
+.lvr-seg b,.lvr-seg span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.8rem}
+.lvr-seg span{color:var(--muted);font-size:.72rem}
+.lvr-tl{display:grid;gap:8px}
+.lvr-band{border:1px solid var(--frame);border-radius:12px;background:var(--surface)}
+.lvr-band>summary{cursor:pointer;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding:10px 14px}
+.lvr-bn{font-family:var(--f-display);font-size:1.25rem;color:var(--gold)}
+.lvr-list{list-style:none;margin:0;padding:0 14px 10px}
+.lvr-row{display:grid;grid-template-columns:3.6rem 1.6rem minmax(0,1fr);gap:4px 10px;align-items:start;padding:9px 0;border-top:1px solid var(--line)}
+.lvr-lv{font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lvr-ic{color:var(--muted)}
+.lvr-row.k-donjon .lvr-ic{color:var(--gold)}
+.lvr-row.k-classe,.lvr-row.k-spe{background:linear-gradient(90deg,rgba(201,164,92,.09),transparent 70%)}
+.lvr-b{min-width:0;overflow-wrap:anywhere}
+.lvr-t{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.lvr-t .lv-src{margin-left:0}
+.lvr-tag{font-size:.7rem;font-weight:800;letter-spacing:.04em;padding:1px 7px;border-radius:999px;white-space:nowrap}
+.lvr-tag.inc{background:var(--gold);color:#14110a}
+.lvr-tag.adv{border:1px solid var(--gold);color:var(--gold)}
+.lvr-tag.opt{border:1px solid var(--line);color:var(--muted)}
+.lvr-gears{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px}
+.lvr-gear{display:inline-flex;align-items:center;gap:4px;font-size:.84rem;color:var(--gold)}
+.lvr-h4{margin:16px 0 6px;font-size:1rem}
+.lvr-grid{margin:16px 0}
+.lvr-mt td,.lvr-mt th{white-space:normal}
+@media (max-width:900px){
+  .lvr-row{grid-template-columns:3rem minmax(0,1fr)}
+  .lvr-ic{display:none}
+  .lvr-pick label,.lvr-pick select{width:100%}
+}
 </style><style>.linkbtn{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}.wlogin{width:100%;justify-content:center}</style>
 <script>window.W4E_SANS_GUILDE = true;</script>
 <script>
@@ -7139,6 +7178,246 @@ document.addEventListener("click", e=>{
 const LVL_DATA = {"route":[{"lv":[1,10],"zones":["Forêt d'Elwynn (humain)","Dun Morogh (nain, gnome)","Teldrassil (elfe de la nuit)","Zephras Isle 1-12 (Skyborne)"],"dungeons":[],"notes":"Talents dès 10, quêtes de classe au 10. Skyborne : aéronef Valanaar > Dalaran > portail Hurlevent > tram Forgefer.","src":"beta"},{"lv":[10,20],"zones":["Marche de l'Ouest","Loch Modan","Sombrivage","Les Carmines"],"dungeons":["Hall of Thanes 13-18","Mortemines 16","Cavernes des lamentations 17","Donjon d'Ombrecroc 18"],"notes":"Hall of Thanes nouveau à Forgefer. Ruins of Lordaeron 15-22 accès Alliance non précisé.","src":"beta"},{"lv":[20,30],"zones":["Bois de la Pénombre","Les Paluns","Serres-Rocheuses","Orneval"],"dungeons":["Brassenoire 22","Prison 23","Kraal de Tranchebauge 24","Gnomeregan 25","Excavation Site: Wetlands 24-29 ou 26-31","City of Dalaran 28-33","Monastère écarlate 30"],"notes":"Kalimdor optionnel. Quêtes Excavation Site à Menethil (28 puis 31).","src":"beta"},{"lv":[30,40],"zones":["Hautes-terres d'Arathi","Désolace","Vallée de Strangleronce","Mille pointes","Montagnes d'Alterac","Riverglades 35+","Marécage d'Âprefange","Terres ingrates","Marais des Chagrins"],"dungeons":["Monastère écarlate 30-46","Kraal de Tranchebauge 29-38","Gnomeregan 29-38","The Drowned City 35-40","Souilles de Tranchebauge 37-46","Uldaman 36-45 ou 44-50"],"notes":"Zones annoncées pour Forever. Riverglades via nouveau chemin des Carmines, base Farhold Keep. Gelkis et Magram à 35. Rangée 5 au 30, rangée 6 au 35, double spé et monture au 40.","src":"forever"},{"lv":[30,40],"zones":["Hautes-terres d'Arathi","Mille pointes","Vallée de Strangleronce nord","Désolace","Marécage d'Âprefange","Terres ingrates","Vallée de Strangleronce"],"dungeons":["Monastère écarlate","Kraal de Tranchebauge","Uldaman"],"notes":"Ordre Classic, Forever peut différer.","src":"classic"},{"lv":[40,50],"zones":["Tanaris","Féralas","Les Hinterlands","Terres ingrates","Marécage d'Âprefange","Shen'dralas 40+","Gorge des Vents brûlants","Terres foudroyées","Azshara"],"dungeons":["Krol'dok Stronghold 40-45","Zul'Farrak 40-47 ou 45-51","Maraudon 45-51 ou 48-54","Alcaz Prison 48-53"],"notes":"Shen'dralas non localisée. Talent à 31 points au 40, puis approfondissement.","src":"forever"},{"lv":[40,50],"zones":["Vallée de Strangleronce sud","Tanaris","Féralas","Les Hinterlands","Gorge des Vents brûlants","Terres foudroyées"],"dungeons":["Zul'Farrak","Maraudon"],"notes":"Ordre Classic, Forever peut différer.","src":"classic"},{"lv":[50,60],"zones":["Azshara","Gangrebois","Cratère d'Un'Goro","Berceau-de-l'Hiver","Steppes ardentes","Maleterres de l'Ouest","Maleterres de l'Est","Silithus","Mont Hyjal 60"],"dungeons":["Temple d'Atal'Hakkar","Profondeurs de Blackrock 52-60","Hache-Tripes Est 55-60","Blackmaw Hold 55-60","Pic Blackrock inférieur 57-60","Shaper's Terrace 58-60","Scholomance 58-60","Stratholme 58-60"],"notes":"Rien de testé au-delà de 30. 51 points au 60.","src":"forever"},{"lv":[50,60],"zones":["Cratère d'Un'Goro","Azshara","Gangrebois","Steppes ardentes","Maleterres de l'Ouest","Berceau-de-l'Hiver","Maleterres de l'Est","Silithus"],"dungeons":["Temple d'Atal'Hakkar","Profondeurs de Blackrock","Hache-Tripes","Pic Blackrock inférieur","Scholomance","Stratholme"],"notes":"Ordre Classic, Forever peut différer.","src":"classic"}],"dungeons":[{"name":"Hall of Thanes","lv":[13,18],"where":"Forgefer, nouveau donjon nain","src":"Warcraft Tavern, Wowhead 23/09"},{"name":"Ruins of Lordaeron","lv":[15,20],"where":"Fossoyeuse, Clairières de Tirisfal 72.4, 11.6 ; Alliance admise, 4 quêtes Alliance (Capitaine Truman)","src":"Warcraft Tavern, Icy Veins 15/09, wowforeverbuilds 17/09 (wiki : 15-22)"},{"name":"Excavation Site: Wetlands","lv":[24,29],"where":"Les Paluns, quêtes à Menethil (28 puis 31) ; 26-31 selon les notes Blizzard","src":"warcraft.wiki.gg, notes Blizzard"},{"name":"City of Dalaran","lv":[28,33],"where":"Montagnes d'Alterac, en test depuis le 8 octobre","src":"Warcraft Tavern 08/10"},{"name":"The Drowned City","lv":[35,40],"where":"Île de Gillijim, au large de Strangleronce sud-ouest ; 6 boss","src":"Mobalytics 15/10, Icy Veins 15/09"},{"name":"Krol'dok Stronghold","lv":[40,45],"where":"Riverglades, donjon extérieur","src":"Icy Veins 15/09 (correction Blizzard ; 40-55 sur listes antérieures)"},{"name":"Alcaz Prison","lv":[48,53],"where":"Île d'Alcaz, nord-est du Marécage d'Âprefange","src":"Icy Veins 15/09, Gfinity 09/10"},{"name":"Blackmaw Hold","lv":[55,60],"where":"Derrière les portes furbolgs, Azshara nord","src":"Icy Veins 15/09, Wowhead 23/09"},{"name":"Shaper's Terrace","lv":[58,60],"where":"Collines du Cratère d'Un'Goro","src":"Icy Veins 15/09, wowforeverbuilds 17/09"}],"classes":{"war":{"spec":"Armes (Prot forte en AoE à 30, Fureur après 30)","spikes":[{"lv":12,"t":"Fulgurance"},{"lv":20,"t":"Victory Rush, Enchaînement"},{"lv":30,"t":"Posture berserker, Interception, arme Tourbillon (quête)"},{"lv":36,"t":"Tourbillon"},{"lv":40,"t":"Capstone (Weaponmaster ou Bloodthrill en Arms), plaques"},{"lv":50,"t":"Témérité"}],"hard":[{"from":1,"to":20,"t":"Frappe héroïque et Pourfendre seulement"},{"from":30,"to":40,"t":"Fury faible et dégâts subis avant le capstone (déduit de WT)"}],"quests":[{"lv":30,"t":"The Affray puis arme Tourbillon","where":"Non précisé en Forever ; Classic : Fray Island (Les Tarides) puis Montagnes d'Alterac"}],"tips":["Quêtes 10, 20, 30","Grosses pulls avec Représailles et Mur protecteur","Arms ou Prot pour monter, Fury après 30","Grosse dépendance à l'arme"]},"pal":{"spec":"Vindicte","spikes":[{"lv":10,"t":"Seal of Fury"},{"lv":20,"t":"Consécration, Exorcisme, Éclair lumineux"},{"lv":32,"t":"Bouclier divin"},{"lv":38,"t":"Seal of Wisdom"},{"lv":40,"t":"Destrier, capstone"},{"lv":60,"t":"Charger"}],"hard":[{"from":40,"to":50,"t":"Vitesse de kill limitée par l'arme (Classic)"}],"quests":[{"lv":40,"t":"Destrier (Classic : Tome of Nobility)","where":"Classic : Hurlevent, non confirmé en Forever"}],"tips":["Rédemption 12, Verigan's Fist 20","Salvation sur le groupe sauf tank","Vindicte","Le plus disputé des tier lists (A à D)"]},"hun":{"spec":"Maîtrise des bêtes","spikes":[{"lv":10,"t":"Familier, Aspect du faucon"},{"lv":18,"t":"Flèches multiples"},{"lv":20,"t":"Visée"},{"lv":25,"t":"Summon Hawk"},{"lv":30,"t":"Intimidation, Feindre la mort"},{"lv":40,"t":"Courroux bestial, monture"}],"hard":[],"quests":[],"tips":["Calibrated Blunderbuss via Hall of Thanes","Auto Shot exige 0,5 s immobile (15/10)","BM jusqu'au 60, Survie ou Précision au cap","Auto Shot demande 0,5 s immobile (15/10)","Guide duo druide + chasseur 40-60 sur wowforeverbuilds"]},"rog":{"spec":"Combat","spikes":[{"lv":15,"t":"Improved Slice and Dice"},{"lv":20,"t":"Poisons (quête)"},{"lv":30,"t":"Déluge de lames ou Mutilate"},{"lv":40,"t":"Poussée d'adrénaline ou Venom"}],"hard":[{"from":30,"to":60,"t":"Pas de soin, dépendance aux armes"}],"quests":[],"tips":["Pas de camouflage sur chaque mob","Quête de poisons 20","Combat","Nourriture et bandages"]},"pri":{"spec":"Discipline (baguette) ou Ombre","spikes":[{"lv":20,"t":"Fouet mental, Peste dévorante"},{"lv":30,"t":"Pénitence"},{"lv":40,"t":"Forme d'ombre, Infusion de puissance"}],"hard":[{"from":1,"to":28,"t":"Ombre faible sans puissance des sorts"},{"from":30,"to":40,"t":"Ombre lente avant Forme d'ombre"}],"quests":[],"tips":["Baguettes Lamentations 15 et Brassenoire 18","Racials par quête 10 et 20","Disci jusqu'à 40 puis Ombre, ou Ombre directe","Baguette avec temps immobile (Conquestcapped)"]},"sha":{"spec":"Amélioration","spikes":[{"lv":10,"t":"Totem de feu (Classic)"},{"lv":20,"t":"Respé, totem d'eau (Classic)"},{"lv":30,"t":"Frappe-tempête, Windfury Weapon, totem d'Air"},{"lv":40,"t":"Lava Burst rang 2, mailles"},{"lv":50,"t":"Lava Burst rang 3"}],"hard":[],"quests":[{"lv":4,"t":"Call of Earth (totem de Terre)","where":"Teo Hammerstorm, Anvilmar, Dun Morogh 28.8, 66.2"},{"lv":10,"t":"Call of Fire (totem de Feu)","where":"Bruegs Kindleborn (grotte de Dun Morogh), puis Braldir Ashmantle, Loch Modan 32.0, 66.3"},{"lv":20,"t":"Call of Water","where":"Norric Lochthane, Loch Modan 41.9, 19.0 ; Paluns, Carmines, Orneval, Marche de l'Ouest"},{"lv":30,"t":"Call of Air","where":"Veyric Thunderhame, Hautes-terres d'Arathi 59.8, 27.6"}],"tips":["Nain uniquement côté Alliance","Arme à deux mains, la plus lente avec Frappe-tempête","Amélio, capstone Rage of the Farseer"]},"mag":{"spec":"Givre","spikes":[{"lv":10,"t":"Nova de givre"},{"lv":20,"t":"Blizzard, Ice Lance, Transfert"},{"lv":24,"t":"Frost Blast (15/10)"},{"lv":30,"t":"Fingers of Frost"},{"lv":34,"t":"Mage Armor"},{"lv":40,"t":"Portails, Combustion, double spé"}],"hard":[],"quests":[],"tips":["Arcane pour le solo, Feu pour les donjons","Skyborne seul Skyborne mage","Givre","Le farm de donjon en AoE rapporte moins (nerf XP)"]},"loc":{"spec":"Affliction","spikes":[{"lv":10,"t":"Marcheur du Vide"},{"lv":18,"t":"Gravestone Scepter (Brassenoire)"},{"lv":20,"t":"Succube"},{"lv":22,"t":"Pandemic"},{"lv":30,"t":"Chasseur corrompu, Malevolence"},{"lv":40,"t":"Capstone, monture"}],"hard":[],"quests":[{"lv":30,"t":"Chasseur corrompu (Classic)","where":"Non vérifié en Forever"},{"lv":40,"t":"Destrier corrompu (Classic)","where":"Non vérifié en Forever"}],"tips":["Marcheur pour la sécurité, Succube pour les dégâts","Malédictions sur boss en groupe","Affliction, guide drain-tank 10-60 sur wowforeverbuilds"]},"dru":{"spec":"Farouche chat","spikes":[{"lv":10,"t":"Forme d'ours"},{"lv":20,"t":"Forme de chat, Feral Charge"},{"lv":25,"t":"Shifting Power"},{"lv":30,"t":"Forme de voyage, Leader of the Pack"},{"lv":40,"t":"Berserk"}],"hard":[{"from":1,"to":20,"t":"Début lent, jonglage formes et mana"}],"quests":[],"tips":["Quêtes de forme à Darnassus (elfe) ou Zephras (Skyborne)","Double spé à 40 pour une spé donjon","Farouche","Tank ou soin en donjon via double spé"]}},"tiers":[{"src":"Timesaver (1-30)","date":"2026-10-04","S":["hun","mag"],"A":["loc","pal","sha"],"B":["pri","rog"],"C":["war","dru"]},{"src":"Mobalytics hub (1-20)","date":"2026-10-18","S":["hun","loc"],"A":["mag","sha","pal"],"B":["rog","dru"],"C":["pri","war"]},{"src":"Mobalytics profil maison (solo, Vanilla)","date":"2026-09-17","S":["mag","hun"],"A":["loc","rog"],"B":["sha","dru"],"C":["pri"],"D":["pal","war"]},{"src":"Conquestcapped (1-60)","date":"2026-10-13","S":["hun"],"A":["loc","mag"],"B":["pal","rog","sha","dru"],"C":["war","pri"]},{"src":"wowforeverbuilds (référence Classic 1.12)","date":"2026-09-17","S":["hun","mag"],"A":["pal","rog","loc"],"B":["dru","pri","sha"],"C":["war"]},{"src":"Rankedboost (classe générale, pas leveling)","date":"2026-10-03","S":["pal"],"A":["pri","sha","war","mag","loc","hun"],"B":["dru","rog"],"C":[]}]};
 
 
+/* ================= Routes de leveling par spé et route de groupe (recherche du 22 octobre 2026) =================
+   st : conf = Blizzard ou testé en bêta ; rap = guides, fansites, données du client bêta ; hyp = déduit de Classic.
+   imp : "inc" = donjon Forever qui vaut le détour pour tout le monde (quêtes très payantes) ; "opt" = facultatif selon le style. */
+const LVR_ST = {conf:"confirmé", rap:"rapporté", hyp:"d'après Classic"};
+
+const LVR_ZONES = {
+  elwynn:{name:"Forêt d'Elwynn", races:["human"], hub:"Abbaye de Comté-du-Nord, puis Comté-de-l'Or", next:"Marche de l'Ouest", lv:[1,10]},
+  dunmorogh:{name:"Dun Morogh", races:["dwarf","gnome"], hub:"Anvilmar, puis Kharanos", next:"Loch Modan", lv:[1,10]},
+  teldrassil:{name:"Teldrassil", races:["nelf"], hub:"Sombrevallon, puis Dolanaar", next:"Sombrivage", lv:[1,10]},
+  zephras:{name:"Zephras Isle", races:["sky"], hub:"Île de départ des Skyborne (pack payant)", next:"Marche de l'Ouest, Loch Modan ou Sombrivage", lv:[1,12]}
+};
+const LVR_RACE_ZONE = {human:"elwynn", dwarf:"dunmorogh", gnome:"dunmorogh", nelf:"teldrassil", sky:"zephras"};
+/* Comment rejoindre la zone de départ des autres. Les bateaux et le tram n'exigent aucun niveau. */
+const LVR_TRAVEL = {
+  elwynn:{dunmorogh:"Tram de Forgefer vers Hurlevent, puis la route d'Elwynn.", teldrassil:"Bateau de Rut'theran vers Auberdine, puis nouveau bateau Auberdine vers le Port de Hurlevent.", zephras:"À la fin de Zephras Isle (12) : aéronef Valanaar, Dalaran, portail de Hurlevent."},
+  dunmorogh:{elwynn:"Tram de Hurlevent vers Forgefer, puis la sortie de Forgefer.", teldrassil:"Bateaux jusqu'au Port de Hurlevent, puis tram vers Forgefer.", zephras:"À la fin de Zephras Isle (12) : portail de Hurlevent, puis tram."},
+  teldrassil:{elwynn:"Nouveau bateau Port de Hurlevent vers Auberdine, puis bateau vers Rut'theran.", dunmorogh:"Tram vers Hurlevent, puis bateaux vers Auberdine et Rut'theran.", zephras:"À la fin de Zephras Isle (12) : portail de Hurlevent, puis bateaux."},
+  zephras:{elwynn:"Zephras Isle demande le pack Skyborne : les autres attendent le Skyborne au 12 à Hurlevent.", dunmorogh:"Idem, rendez-vous au 12 à Hurlevent.", teldrassil:"Idem, rendez-vous au 12 à Hurlevent."}
+};
+
+/* La route Alliance commune, dans l'ordre. k : zone, donjon, ville, bateau, prep (préparation), achat. */
+const LVR_STEPS = [
+  {id:"start", lv:[1,10], k:"zone", t:"Zone de départ", d:"Quêtes de la zone de départ de ta race jusqu'au 10. Changement Forever : « The Attack! » à Hurlevent n'est plus une escorte et se partage.", st:"conf"},
+  {id:"cap10", lv:[10,10], k:"ville", t:"Capitale : niveau 10", d:"Premier point de talent, nouveaux sorts, quête de classe du 10. Pierre de foyer en capitale jusqu'au 20 pour les entraînements.", st:"conf"},
+  {id:"z2", lv:[10,14], k:"zone", t:"Deuxième zone", where:"Marche de l'Ouest (9-18), Loch Modan (10-18) ou Sombrivage (11-19)", d:"Marche de l'Ouest après Elwynn, Loch Modan après Dun Morogh, Sombrivage après Teldrassil. Chacune donne des quêtes pour les Mortemines.", st:"rap"},
+  {id:"thanes", lv:[13,18], k:"donjon", imp:"inc", t:"Salle des Thanes", where:"Sous Forgefer : salle du trône de Magni, couloir de gauche, entrée en 43.5, 52.0", d:"5 quêtes Alliance pour environ 13 300 XP, presque un niveau entier au 13. Quête « Old Ironforge Incursion » : Ironforge Greathammer, Calibrated Blunderbuss ou Deepblaze au choix. 4 boss, de Faldrim Anvilmar à Durgen Dirgehammer.", st:"rap"},
+  {id:"boat1", lv:[12,18], k:"bateau", t:"Finir la deuxième zone et se regrouper", d:"Nouveau bateau Port de Hurlevent vers Auberdine : un humain peut rejoindre un elfe à Sombrivage. Les nains et gnomes passent par le tram.", st:"conf"},
+  {id:"vc", lv:[17,22], k:"donjon", imp:"opt", t:"Les Mortemines", where:"Marche de l'Ouest, sous Ruisseau-de-la-Lune", d:"Prendre avant les quêtes de la Colline des Sentinelles et de Hurlevent. Fourchettes publiées : 16-26 (wowhandbook), 18-24 (wowforeverbuilds).", st:"hyp"},
+  {id:"wc", lv:[17,22], k:"donjon", imp:"opt", t:"Cavernes des lamentations", where:"Les Tarides, Kalimdor", d:"Surtout pour qui monte côté Sombrivage. La quête Deviate Hides rapporte 3 100 XP en Forever (1 600 en Classic).", st:"rap"},
+  {id:"redridge", lv:[18,22], k:"zone", t:"Les Carmines", where:"Hub : Comté-du-Lac", d:"Zone 15-25. Garder « WANTED: Incinerator Gar'im » (élite, 25) pour plus tard ou pour le groupe.", st:"rap"},
+  {id:"cap20", lv:[20,20], k:"ville", t:"Capitale : niveau 20", d:"Sorts et quêtes de classe du 20. Commencer à mettre de l'or de côté pour la monte du 40.", st:"hyp"},
+  {id:"z20", lv:[20,25], k:"zone", t:"Bois de la Pénombre ou Orneval", where:"Hubs : Sombre-Comté ou Astranaar", d:"Bois de la Pénombre (19-30) côté Royaumes de l'Est, Orneval (19-30) côté Kalimdor. Quêtes Forever repérées : Silver of the Waves (Loch Modan, 20), Baron Marinous (Sombrivage, 21).", st:"rap"},
+  {id:"bfd", lv:[22,25], k:"donjon", imp:"opt", t:"Profondeurs de Brassenoire", where:"Côte nord d'Orneval", d:"Quêtes d'Auberdine et d'Astranaar.", st:"hyp"},
+  {id:"stocks", lv:[23,26], k:"donjon", imp:"opt", t:"La Prison", where:"Hurlevent", d:"Quêtes de Hurlevent, des Carmines et du Bois de la Pénombre. Entrée en ville, pratique entre deux zones.", st:"hyp"},
+  {id:"exprep", lv:[24,24], k:"prep", t:"Préparer Excavation Site", d:"Prendre avant : Highland Hides (James Halloran, Port de Menethil, après une chaîne), Lost in the Thicket Things (Caitlin Grassman, Menethil ; il faut d'abord Seeking Caitlin auprès de Llana en Orneval), Horrors in the Highland (Rethiel the Greenwarden, Paluns 56.2, 40.6), Songblade Search (Dorin Songblade, Comté-du-Lac, avant de partir).", st:"rap"},
+  {id:"wetlands", lv:[24,28], k:"zone", t:"Les Paluns et les Contreforts de Hautebrande", where:"Hubs : Port de Menethil, Austrivage", d:"Nouveau bateau Port de Menethil, Austrivage, Auberdine. Réapparitions accélérées le 15 octobre dans les Paluns, Hautebrande, Orneval, le Bois de la Pénombre et Mille pointes. Pierre de foyer : Port de Menethil.", st:"conf"},
+  {id:"stonetalon", lv:[24,27], k:"zone", opt:true, t:"Serres-Rocheuses et Mille pointes", where:"Kalimdor", d:"Pour qui vient d'Orneval : Stonetalon Supply Run (24-26), Mille pointes dès 24-26.", st:"rap"},
+  {id:"excav", lv:[26,30], k:"donjon", imp:"inc", t:"Excavation Site", where:"Les Paluns, chemin de montagne au sud-est de l'excavation de Whelgar", d:"24-29 selon Blizzard, 26-31 dans les notes de bêta : entrer vers 26, le dernier boss est niveau 31. Sur place : Lost Relic Carry puis Prehistoric Prism (chacun ramasse la Titan Relic). Récompenses : Heavehammer ou Healer's Staff, bijou Satchel of Potions. Butin du Relic Guardian : Reliquary Mantle, Ring of Power Regulation, Golemsight Long Gun.", st:"rap"},
+  {id:"gnomer", lv:[26,32], k:"donjon", imp:"opt", t:"Gnomeregan", where:"Dun Morogh", d:"Quêtes de Forgefer et de Dun Morogh, utiles surtout aux gnomes et aux ingénieurs.", st:"hyp"},
+  {id:"dalaran", lv:[28,33], k:"donjon", imp:"inc", t:"Cité de Dalaran", where:"Montagnes d'Alterac, entrée par les égouts", d:"Chaîne d'accès « An Alarming Request » auprès de l'Emissary Jacques à Austrivage. Plusieurs chemins dans la ville.", st:"conf"},
+  {id:"cap30", lv:[30,30], k:"ville", t:"Capitale : niveau 30", d:"Nouvelle rangée de talents, sorts et quêtes de classe du 30.", st:"conf"},
+  {id:"z30", lv:[30,35], k:"zone", t:"Hautes-terres d'Arathi, Strangleronce nord, Désolace, Mille pointes", where:"Hubs : Refuge de l'Ornière, Camp rebelle, Pointe de Nijel", d:"Finir les hubs restants pour arriver vers 35 au début de Riverglades. Ordre de Classic, à confirmer en Forever.", st:"hyp"},
+  {id:"sm", lv:[30,40], k:"donjon", imp:"opt", t:"Monastère écarlate", where:"Clairières de Tirisfal, en territoire Horde", d:"Quatre ailes, de la plus basse à la plus haute : Cimetière, Bibliothèque, Armurerie, Cathédrale. Plusieurs soirées.", st:"hyp"},
+  {id:"gold40", lv:[33,40], k:"achat", t:"Réserver l'or de la monte", d:"Monte apprenti au 40 : 100 or, monture comprise selon Method. Overgear parle de 80 or plus 20 or de monture. Le prix de la double spé n'est pas annoncé.", st:"rap"},
+  {id:"river", lv:[35,40], k:"zone", t:"Riverglades, première moitié", where:"Hub Alliance : Farholde Keep (maître de vol Gretchen Mayberry, 60.6, 81.4)", d:"Zone neuve entre Les Carmines, les Steppes ardentes, les Terres ingrates et le Marais des Chagrins, 150 à près de 200 quêtes. Accès à pied par la nouvelle bifurcation de la route des Carmines, ou bateau Steamwheedle Port (Tanaris) vers Powderfuse Port. Vols vers Comté-du-Lac, Veille de Morgan, Thelsamar et Powderfuse Port. Pierre de foyer : Farholde Keep.", st:"conf"},
+  {id:"drowned", lv:[35,40], k:"donjon", imp:"inc", t:"The Drowned City", where:"Au large de Strangleronce, à l'ouest de Grom'gol, entrée sous l'eau", d:"Donjon en plein air, la météo tourne à la tempête.", st:"conf"},
+  {id:"dust", lv:[38,44], k:"zone", t:"Marécage d'Âprefange", where:"Hub : Theramore", d:"Prépare Alcaz Prison pour plus tard.", st:"hyp"},
+  {id:"uld", lv:[38,45], k:"donjon", imp:"opt", t:"Uldaman", where:"Terres ingrates", d:"Ouvert en bêta. Fourchettes publiées : 36-45 ou 44-50.", st:"hyp"},
+  {id:"cap40", lv:[40,40], k:"ville", t:"Niveau 40 : monture et double spé", d:"Monte apprenti (+60 %), double spé, talent à 31 points.", st:"conf"},
+  {id:"river2", lv:[40,45], k:"donjon", imp:"inc", t:"Riverglades, fin, et Krol'dok Stronghold", where:"Depuis Farholde Keep", d:"Krol'dok est à la fois un donjon (40-45 selon Blizzard, 40-55 selon d'autres sites) et le hub de quêtes des 40. Forteresse d'ogres, ateliers et camps.", st:"conf"},
+  {id:"shen", lv:[40,45], k:"zone", opt:true, t:"Shen'dralas", where:"Entre Mulgore et Désolace, par la Vallée des Ossements", d:"Aucun niveau officiel, monstres niveau 43 vus en vidéo, pas de maître de vol dans le client bêta.", st:"rap"},
+  {id:"z45", lv:[44,48], k:"zone", t:"Tanaris, Féralas, Les Hinterlands", where:"Hubs : Gadgetzan, Bastion de Plumelune, Nid-de-l'Aigle", d:"Pierre de foyer : Gadgetzan ou Theramore.", st:"hyp"},
+  {id:"zf", lv:[44,50], k:"donjon", imp:"opt", t:"Zul'Farrak", where:"Tanaris", d:"", st:"hyp"},
+  {id:"mara", lv:[46,52], k:"donjon", imp:"opt", t:"Maraudon", where:"Désolace", d:"", st:"hyp"},
+  {id:"alcaz", lv:[48,53], k:"donjon", imp:"inc", t:"Alcaz Prison", where:"Île d'Alcaz, Marécage d'Âprefange, depuis Theramore", d:"Défias contre nagas.", st:"conf"},
+  {id:"z50", lv:[48,52], k:"zone", t:"Terres ingrates, Gorge des Vents brûlants, Terres foudroyées", d:"", st:"hyp"},
+  {id:"z52", lv:[50,55], k:"zone", t:"Cratère d'Un'Goro, Gangrebois, Azshara", d:"Dans Un'Goro, ramasser des cristaux de puissance : ils servent à Shaper's Terrace.", st:"hyp"},
+  {id:"st", lv:[50,55], k:"donjon", imp:"opt", t:"Temple d'Atal'Hakkar", where:"Marais des Chagrins", d:"", st:"hyp"},
+  {id:"brd", lv:[52,60], k:"donjon", imp:"opt", t:"Profondeurs de Blackrock", where:"Mont Blackrock, entre la Gorge des Vents brûlants et les Steppes ardentes", d:"Beaucoup de quêtes, plusieurs soirées.", st:"hyp"},
+  {id:"z55", lv:[53,57], k:"zone", t:"Steppes ardentes, Berceau-de-l'Hiver, Maleterres de l'Ouest", where:"Hubs : Veille de Morgan, Long-guet, Camp du Noroît", d:"Pierre de foyer : Long-guet ou Chapelle de l'Espoir de Lumière.", st:"hyp"},
+  {id:"blackmaw", lv:[55,60], k:"donjon", imp:"inc", t:"Blackmaw Hold", where:"Azshara, derrière une porte scellée", d:"Cité furbolg, plusieurs routes.", st:"conf"},
+  {id:"dm", lv:[55,60], k:"donjon", imp:"opt", t:"Hache-Tripes", where:"Féralas", d:"", st:"hyp"},
+  {id:"z57", lv:[56,60], k:"zone", t:"Maleterres de l'Est, Silithus", where:"Hubs : Chapelle de l'Espoir de Lumière, Fort cénarien", d:"", st:"hyp"},
+  {id:"shaper", lv:[58,60], k:"donjon", imp:"inc", t:"Shaper's Terrace", where:"Collines au nord d'Un'Goro", d:"Apporter les cristaux de puissance d'Un'Goro, utilisés sur des consoles.", st:"conf"},
+  {id:"end", lv:[57,60], k:"donjon", imp:"opt", t:"Pic Blackrock inférieur, Scholomance, Stratholme", d:"", st:"hyp"},
+  {id:"cap60", lv:[60,60], k:"ville", t:"Niveau 60", d:"Monte compagnon (+100 %) : 1 000 or. Mont Hyjal, zone de niveau 60. Raids Barrow Deeps (10), Hyjal Summit (20) et Onyxia (40) annoncés pour le 9 décembre.", st:"rap"}
+];
+
+/* Quêtes de classe, insérées dans la route au bon niveau. */
+const LVR_CQ = {
+  war:[{lv:10, t:"Quête de guerrier du 10", where:"Posture défensive en Classic, chez le maître d'armes de ta capitale", st:"hyp"},
+       {lv:30, t:"Posture berserker puis arme Tourbillon", where:"Classic : The Affray à Fray Island (Les Tarides), puis Montagnes d'Alterac", st:"hyp"}],
+  pal:[{lv:12, t:"Rédemption", where:"Classic : Tome of Divinity, chez les paladins de Hurlevent ou de Forgefer", st:"hyp"},
+       {lv:20, t:"Verigan's Fist, marteau à deux mains", where:"Classic : chaîne de la capitale", st:"hyp"},
+       {lv:40, t:"Destrier", where:"Classic : Tome of Nobility ; Forever change le modèle de monte, à confirmer", st:"hyp"}],
+  hun:[{lv:10, t:"Dompter son premier familier", where:"Quête du maître des chasseurs de la zone de départ", st:"hyp"}],
+  rog:[{lv:20, t:"Poisons", where:"Quête du maître des voleurs, en capitale", st:"hyp"}],
+  pri:[{lv:10, t:"Quêtes de prêtre du 10 et du 20", where:"Sorts raciaux par quête selon les guides de bêta", st:"rap"}],
+  sha:[{lv:4, t:"Call of Earth, totem de Terre", where:"Teo Hammerstorm, Anvilmar, Dun Morogh 28.8, 66.2", st:"conf"},
+       {lv:10, t:"Call of Fire, totem de Feu", where:"Bruegs Kindleborn (grotte de Dun Morogh), puis Braldir Ashmantle, Loch Modan 32.0, 66.3", st:"conf"},
+       {lv:20, t:"Call of Water, totem d'Eau", where:"Norric Lochthane, Loch Modan 41.9, 19.0 ; étapes dans les Paluns, Les Carmines, Orneval et la Marche de l'Ouest", st:"conf"},
+       {lv:30, t:"Call of Air, totem d'Air", where:"Veyric Thunderhame, Hautes-terres d'Arathi 59.8, 27.6", st:"conf"}],
+  mag:[],
+  loc:[{lv:10, t:"Marcheur du Vide", where:"Classic : quête du maître démoniste", st:"hyp"},
+       {lv:20, t:"Succube", where:"Classic : quête du maître démoniste", st:"hyp"},
+       {lv:30, t:"Chasseur corrompu", where:"Classic : quête du maître démoniste", st:"hyp"},
+       {lv:40, t:"Destrier corrompu", where:"Classic ; Forever change le modèle de monte, à confirmer", st:"hyp"}],
+  dru:[{lv:10, t:"Forme d'ours", where:"Classic : Darnassus puis Reflet-de-Lune ; Skyborne : Zephras Isle", st:"hyp"},
+       {lv:16, t:"Forme aquatique", where:"Classic : Darnassus puis Sombrivage", st:"hyp"}]
+};
+
+/* Trois façons de monter, selon ce que la spé tient seule et ce que les groupes réclament. */
+const LVR_POL = {
+  solo:{t:"Quêtes d'abord", d:"Tu tiens seul : suis la route des quêtes et fais chaque donjon une fois dans sa tranche, avec toutes ses quêtes, quand un groupe se forme vite. Les donjons Forever marqués incontournables valent toujours le détour."},
+  duo:{t:"En duo ou en groupe", d:"Seul, tu passes beaucoup de temps à manger entre deux packs : monte avec quelqu'un et fais tous les donjons de ta tranche avec leurs quêtes."},
+  donjons:{t:"Les donjons comme accélérateur", d:"Tank ou soigneur, tu trouves un groupe en quelques minutes : fais chaque donjon de ta tranche une fois avec ses quêtes, et quête entre deux. Refaire un donjon pour l'XP ne paie pas, seules les quêtes rapportent vraiment."}
+};
+
+/* Route par spé. q = spé jouée pour quêter, par tranche [de, à, spé, note] ; dg = spé de donjon ; dual = double spé au 40 ;
+   pol = solo | duo | donjons ; gear = récompense ou butin à viser, par étape ; tips = conseils propres à la spé. */
+const LVR_B = {
+  war_arms:{q:[[1,60,"Armes","arme à deux mains, Ivresse de la victoire après chaque kill"]], dg:"Armes", dual:"Armes + Protection", pol:"duo",
+    gear:{thanes:"Ironforge Greathammer", excav:"Heavehammer"},
+    tips:["Seul, la Protection survit mieux : Method et Conquestcapped la conseillent pour le solo, Armes en groupe.", "Garde ta Rage entre deux packs : Maîtrise tactique de base au 14 conserve 10 points.", "La Rage est normalisée par la vitesse d'arme : une arme rapide avec une pierre à aiguiser devient intéressante (Conquestcapped)."]},
+  war_fury:{q:[[1,30,"Armes","plus simple au début"],[30,60,"Fureur","posture berserker au 30, deux armes"]], dg:"Fureur", dual:"Fureur + Protection", pol:"duo",
+    gear:{thanes:"Ironforge Greathammer", excav:"Heavehammer"},
+    tips:["Mobalytics monte de 1 à 60 en Fureur (13/38/0), mais la Fureur reste faible entre 30 et 40 avant son talent ultime.", "Ivresse de la victoire au 20 et Rage sur critique doublée depuis le 1er octobre réduisent les temps morts."]},
+  war_prot:{q:[[1,60,"Protection","tient les grosses pulls dès 30, Représailles et Mur protecteur"]], dg:"Protection", dual:"Protection + Armes", pol:"donjons",
+    gear:{excav:"Heavehammer"},
+    tips:["Tank : tu trouves un groupe tout de suite, profites-en à chaque donjon de la route.", "Method et Conquestcapped conseillent la Protection pour le solo.", "Les dégâts absorbés par le bouclier d'un prêtre donnent toujours de la Rage (rapporté par mmonster)."]},
+  pal_holy:{q:[[1,40,"Vindicte","Consécration et Exorcisme au 20"]], dg:"Sacré à partir du 40 (Vindicte soigne très bien les donjons avant)", dual:"Vindicte + Sacré", pol:"donjons",
+    gear:{excav:"Heavehammer"},
+    tips:["Soigneur : groupe garanti pour chaque donjon de ta tranche.", "Les paladins ne portent pas de bâton : prends Heavehammer à Excavation Site."]},
+  pal_prot:{q:[[1,40,"Vindicte ou Protection","Protection si tu montes avec un soigneur"],[40,60,"Protection ou Vindicte","double spé"]], dg:"Protection", dual:"Protection + Vindicte", pol:"donjons",
+    gear:{thanes:"Ironforge Greathammer", excav:"Heavehammer"},
+    tips:["Tank : tu trouves un groupe tout de suite, profites-en à chaque donjon de la route.", "Seal of Fury rang 3 au 26.", "Salvation sur tout le groupe sauf le tank."]},
+  pal_ret:{q:[[1,60,"Vindicte","Mobalytics : 0/0/21 en leveling"]], dg:"Vindicte", dual:"Vindicte + Protection ou Sacré", pol:"solo",
+    gear:{thanes:"Ironforge Greathammer", excav:"Heavehammer"},
+    tips:["Classé S par mmonster le 8 octobre, mais c'est la classe la plus disputée des classements.", "Entre 40 et 50, la vitesse de kill dépend de l'arme : vise les armes de quête."]},
+  pal_shock:{q:[[1,40,"Vindicte","plus rapide pour quêter"],[40,60,"Shockadin","Sacré offensif en double spé"]], dg:"Sacré", dual:"Vindicte + Shockadin", pol:"donjons",
+    gear:{excav:"Heavehammer"},
+    tips:["Horion sacré arrive avec le talent à 31 points : Vindicte jusque-là.", "Soigneur : groupe garanti pour chaque donjon de ta tranche."]},
+  hun_bm:{q:[[1,60,"Maîtrise des bêtes",""]], dg:"Maîtrise des bêtes", dual:"Maîtrise des bêtes + Précision", pol:"solo",
+    gear:{thanes:"Calibrated Blunderbuss", excav:"Golemsight Long Gun (butin du Relic Guardian)"},
+    tips:["Auto Shot demande 0,5 s d'immobilité depuis le 15 octobre.", "Le familier évolue avec ton équipement : il tient les monstres pendant que tu tires.", "Chasseur : premier presque partout dans les classements, le choix le plus sûr pour un débutant."]},
+  hun_mm:{q:[[1,40,"Maîtrise des bêtes",""],[40,60,"Précision","en double spé, ou au 60 (Mobalytics : 0/21/0)"]], dg:"Précision", dual:"Maîtrise des bêtes + Précision", pol:"solo",
+    gear:{thanes:"Calibrated Blunderbuss", excav:"Golemsight Long Gun (butin du Relic Guardian)"},
+    tips:["Visée au 20, mais la Maîtrise des bêtes reste plus rapide pour quêter.", "Auto Shot demande 0,5 s d'immobilité depuis le 15 octobre."]},
+  hun_surv:{q:[[1,20,"Maîtrise des bêtes",""],[20,60,"Survie","si le jeu au contact te plaît"]], dg:"Survie", dual:"Survie + Maîtrise des bêtes", pol:"solo",
+    gear:{thanes:"Calibrated Blunderbuss", excav:"Golemsight Long Gun (butin du Relic Guardian)"},
+    tips:["Repasse en Maîtrise des bêtes si la montée ralentit : c'est la spé la mieux notée pour monter."]},
+  rog_combat:{q:[[1,60,"Combat","épées ou haches"]], dg:"Combat", dual:"Combat + Finesse", pol:"duo",
+    gear:{excav:"Heavehammer"},
+    tips:["Plus rapide qu'en Classic selon Conquestcapped, mais l'énergie limite le rythme (mmonster).", "Aucun soin : nourriture et bandages obligatoires, prends Secourisme.", "Humain : Ruthless (+2 % de critique) remplace la spécialisation épée."]},
+  rog_assa:{q:[[1,60,"Combat",""]], dg:"Combat, puis Assassinat au 60", dual:"Combat + Assassinat", pol:"duo",
+    tips:["Assassinat (21/0/0 chez Mobalytics) prend le relais au 60, ou en double spé au 40.", "Aucun soin : nourriture et bandages obligatoires, prends Secourisme."]},
+  rog_sub:{q:[[1,60,"Combat",""]], dg:"Combat", dual:"Combat + Finesse", pol:"duo",
+    tips:["Finesse sert surtout en JcJ : garde-la pour la double spé.", "Aucun soin : nourriture et bandages obligatoires, prends Secourisme."]},
+  pri_disc:{q:[[1,40,"Discipline","baguette, Spirit Tap 5/5, Wand Specialization"],[40,60,"Ombre","Forme d'ombre en double spé (Zockify)"]], dg:"Discipline", dual:"Ombre + Discipline", pol:"donjons",
+    gear:{excav:"Healer's Staff"},
+    tips:["Rotation de quête (Method) : Bouclier, Attaque mentale, Mot de l'ombre : Douleur, puis baguette.", "Baguettes : rester immobile 0,5 s ; la puissance des sorts ne compte plus.", "Baguettes à viser : Cavernes des lamentations et Profondeurs de Brassenoire."]},
+  pri_holy:{q:[[1,30,"Discipline","baguette"],[30,60,"Ombre",""]], dg:"Sacré à partir du 40 (Discipline avant)", dual:"Ombre + Sacré", pol:"donjons",
+    gear:{excav:"Healer's Staff"},
+    tips:["Le Sacré monte très lentement seul : ne le joue qu'en donjon.", "Esprit divin de base au 30."]},
+  pri_shadow:{q:[[1,30,"Discipline ou Ombre","baguette ; l'Ombre peine sans puissance des sorts jusque vers 28"],[30,60,"Ombre","Forme d'ombre au 40 : sorts d'Ombre à moitié prix"]], dg:"Ombre", dual:"Ombre + Discipline", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Talents (Mobalytics) : Spirit Tap 5/5, Wand Specialization, Shadow Weaving 3/3.", "Peste dévorante pour tous (24 s de recharge), Mot de l'ombre : Mort au 32.", "Classé D au niveau 20 par mmonster, A chez Boostroom : la spé décolle après 30."]},
+  sha_ele:{q:[[1,20,"Amélioration",""],[20,60,"Élémentaire","Lava Burst en rangée 5 au 30, Chain Lightning 35 % moins cher"]], dg:"Élémentaire", dual:"Élémentaire + Restauration", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Nain uniquement côté Alliance : départ à Dun Morogh.", "Les quêtes de totem jalonnent la route : 4, 10, 20, 30."]},
+  sha_enh:{q:[[1,60,"Amélioration","arme à deux mains, la plus lente possible"]], dg:"Amélioration", dual:"Amélioration + Restauration", pol:"solo",
+    gear:{thanes:"Ironforge Greathammer", excav:"Heavehammer"},
+    tips:["Nain uniquement côté Alliance : départ à Dun Morogh.", "Frappe-tempête et Arme Furie-des-vents au 30, gros palier."]},
+  sha_resto:{q:[[1,40,"Amélioration",""]], dg:"Restauration à partir du 40 (Amélioration soigne les donjons d'appoint avant)", dual:"Amélioration + Restauration", pol:"donjons",
+    gear:{excav:"Healer's Staff"},
+    tips:["Soigneur : groupe garanti pour chaque donjon de ta tranche.", "Nain uniquement côté Alliance : départ à Dun Morogh."]},
+  mag_frost:{q:[[1,60,"Givre","Frost Blast au 24"]], dg:"Givre", dual:"Givre + Feu", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Le farm de donjon en zone rapporte moins depuis que le bonus des quêtes de donjon a été divisé par deux.", "Pain et eau pour tout le groupe."]},
+  mag_fire:{q:[[1,60,"Givre",""]], dg:"Feu en double spé au 40", dual:"Givre + Feu", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Le Givre reste le plus sûr pour quêter ; le Feu brille en donjon."]},
+  mag_arcane:{q:[[1,60,"Givre",""]], dg:"Givre, puis Arcanes au 60", dual:"Givre + Arcanes", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Arcanes (21/0/0 chez Mobalytics) se prend au 60 ou en double spé."]},
+  loc_affli:{q:[[1,60,"Affliction","drain tank avec le Marcheur du Vide"]], dg:"Affliction", dual:"Affliction + Démonologie", pol:"solo",
+    gear:{bfd:"Gravestone Scepter", excav:"Healer's Staff"},
+    tips:["Meilleur solo selon Timesaver : DoTs, Life Tap et Marcheur du Vide.", "En groupe : malédictions sur les boss, pierres de soins pour tous."]},
+  loc_demo:{q:[[1,40,"Affliction",""],[40,60,"Démonologie","en double spé"]], dg:"Démonologie", dual:"Affliction + Démonologie", pol:"solo",
+    gear:{bfd:"Gravestone Scepter", excav:"Healer's Staff"},
+    tips:["Marcheur du Vide pour la sécurité, Succube pour les dégâts."]},
+  loc_destro:{q:[[1,60,"Affliction",""]], dg:"Destruction au 60 ou en double spé", dual:"Affliction + Destruction", pol:"solo",
+    gear:{bfd:"Gravestone Scepter", excav:"Healer's Staff"},
+    tips:["La Destruction demande beaucoup de mana pour quêter : garde-la pour les donjons."]},
+  dru_cat:{q:[[1,10,"Équilibre","début lent, forme d'ours au 10"],[10,60,"Farouche","chat et Lambeau au 20"]], dg:"Farouche (chat, ours en dépannage)", dual:"Farouche + Restauration", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Les quêtes de forme se font à Darnassus pour l'elfe, à Zephras Isle pour le Skyborne.", "Forme de voyage au 30 : gros gain de temps entre deux quêtes."]},
+  dru_bear:{q:[[1,10,"Équilibre","début lent"],[10,60,"Farouche","chat pour quêter"]], dg:"Farouche ours", dual:"Farouche + Restauration", pol:"donjons",
+    gear:{excav:"Healer's Staff"},
+    tips:["Tank : tu trouves un groupe tout de suite, profites-en à chaque donjon de la route."]},
+  dru_bal:{q:[[1,10,"Équilibre",""],[10,40,"Farouche","l'Équilibre est jugé faible pour monter"],[40,60,"Équilibre","en double spé"]], dg:"Équilibre", dual:"Farouche + Équilibre", pol:"solo",
+    gear:{excav:"Healer's Staff"},
+    tips:["Rester en Farouche jusqu'au 40 fait gagner beaucoup de temps."]},
+  dru_resto:{q:[[1,10,"Équilibre",""],[10,40,"Farouche",""]], dg:"Restauration à partir du 40 (avant, soins d'appoint)", dual:"Farouche + Restauration", pol:"donjons",
+    gear:{excav:"Healer's Staff"},
+    tips:["Soigneur : groupe garanti pour chaque donjon de ta tranche."]}
+};
+
+/* Ce que chaque classe apporte à un groupe qui monte. */
+const LVR_SYN = {
+  war:"Encaisse et tient les packs ; la Rage monte même quand le bouclier d'un prêtre absorbe les coups.",
+  pal:"Bénédictions et aura pour tous, soins d'appoint, Salvation sur les DPS.",
+  hun:"Tire les monstres un par un, son familier tank d'appoint.",
+  rog:"Assomme une cible avant le combat, interrompt les lanceurs de sorts.",
+  pri:"Bouclier, Robustesse et soins : le groupe ne s'arrête presque plus.",
+  sha:"Totems pour tout le groupe, soins d'appoint.",
+  mag:"Pain et eau pour tous, Intelligence des Arcanes, Métamorphose sur un monstre en trop.",
+  loc:"Pierres de soins, malédictions, invocation pour regrouper tout le monde.",
+  dru:"Marque du fauve, dépanne en tank ou en soin selon la forme."
+};
+
+/* Règles qui comptent quand on monte à plusieurs. */
+const LVR_RULES = [
+  {t:"Écart de niveau : deux à trois niveaux au plus. Si un membre est très au-dessus des monstres, personne ne gagne d'XP ; depuis le 8 octobre, chacun gagne selon son propre niveau.", st:"conf"},
+  {t:"Même couche : Familiar Faces place amis et membres du groupe sur la même couche, avec un avertissement de 3 minutes avant un transfert.", st:"rap"},
+  {t:"Certaines quêtes qui donnent un objet au départ ne se partagent plus depuis le 1er octobre : chacun va voir le donneur.", st:"conf"},
+  {t:"Bonus d'XP de groupe en Classic : ×1,166 à trois, ×1,3 à quatre, ×1,4 à cinq, réparti entre les membres. Pas encore confirmé pour Forever.", st:"hyp"},
+  {t:"Le soir : feu de camp en extérieur pour le repos, plats cuisinés pour un petit bonus d'XP (environ +5 % sur les monstres).", st:"rap"},
+  {t:"Même pierre de foyer pour tout le groupe, pour se retrouver après les entraînements.", st:"hyp"}
+];
+
+/* Faits récents pour le bloc « Ce que la bêta a appris ». */
+const LVR_BETA = [
+  "La bêta ferme le 23 octobre à 19 h et n'a jamais dépassé le niveau 30 : tout ce qui suit le 30 reste extrapolé.",
+  "Courbe d'XP inchangée par rapport à Classic : 20,5 h en moyenne pour atteindre le niveau 20, contre 20,4 h (Blizzard, 24 septembre).",
+  "Quêtes de donjon : bonus divisé par deux le 1er octobre, XP des monstres de donjon remontée d'environ 20 % le 8 octobre. Un groupe parfait en donjon égale à peine un questing optimal (Josh Greenfield).",
+  "Monte façon Burning Crusade : 100 or au 40 pour l'apprenti (+60 %), 1 000 or au 60 pour le compagnon (+100 %). Aucun vol.",
+  "Talents : premier point au 10, paliers à 11, 16, 21 et 31 points, 51 points au 60. Double spé au 40, prix non annoncé.",
+  "Legacy : points de compte dès le niveau 25 ; Well Rested, Talented et Frequent Flier accélèrent les personnages suivants.",
+  "Lancement le 4 novembre à 15 h heure du Pacifique, soit minuit à Paris dans la nuit du 4 au 5. RestedXP gratuit couvre l'Alliance jusqu'au 21.",
+  "9 nouveaux donjons et 4 nouvelles zones (Zephras Isle, Riverglades, Shen'dralas, mont Hyjal), plus Dalaran dans les montagnes d'Alterac."
+];
+
+const LVR_SOURCES = [
+  {u:"https://www.warcrafttavern.com/forever/news/how-to-find-the-hall-of-thanes-dungeon-quests/", t:"Warcraft Tavern, quêtes de la Salle des Thanes"},
+  {u:"https://foreverchanges.pro/dungeons/excavation-site", t:"Forever Changes, Excavation Site"},
+  {u:"https://wowforever.be/guides/flight-paths/", t:"wowforever.be, points de vol"},
+  {u:"https://mmohuts.com/news/world-of-warcraft-forever-shows-post-30-leveling-in-riverglades-and-mount-hyjal", t:"MMOHuts, le leveling après 30 (Riverglades, Hyjal)"},
+  {u:"https://www.icy-veins.com/wow-forever/news/blizzard-reveals-an-interesting-stat-about-wow-forevers-average-leveling-speed/", t:"Icy Veins, vitesse moyenne de leveling"},
+  {u:"https://www.wowhead.com/blue-tracker/topic/us/wow-forever-beta-development-notes-updated-october-15-2360696", t:"Blizzard, notes de développement du 15 octobre"},
+  {u:"https://news.blizzard.com/en-us/article/24307383/get-to-know-the-world-of-warcraft-forever-legacy-system", t:"Blizzard, le système Legacy"},
+  {u:"https://www.method.gg/wow-forever/wow-forever-priest-leveling-guide-and-talents", t:"Method, prêtre en leveling"},
+  {u:"https://mobalytics.gg/wow-forever/classes/priest-leveling-guide", t:"Mobalytics, prêtre en leveling"},
+  {u:"https://www.zockify.com/forever/priest/", t:"Zockify, prêtre"},
+  {u:"https://conquestcapped.com/guides/wow-forever/wow-forever-warrior-leveling/", t:"Conquestcapped, guerrier en leveling"},
+  {u:"https://mmonster.co/wow-forever/guides/tier-lists/leveling-tier-list", t:"mmonster, tier list de leveling"},
+  {u:"https://timesaver.gg/blog/wow-forever-launch-time-every-timezone", t:"Timesaver, heure de lancement"}
+];
+
+
 /* ================= Page Leveling 1-60 ================= */
 const LV_GROUP = [
   "Gardez vos niveaux proches : si un membre est très au-dessus du niveau des monstres, personne ne gagne d'expérience (voulu par Blizzard). Depuis le 8 octobre, chacun gagne selon son propre niveau.",
@@ -7148,14 +7427,7 @@ const LV_GROUP = [
   "Le camp : chacun pose un objet (recharge d'une heure) autour du même feu, et il faut rester assis une minute. Ses bonus ne se cumulent pas avec les buffs de classe équivalents.",
   "À trois, un tank, un soigneur et un DPS couvrent tous les donjons ; la double spé du niveau 40 permet à chacun de garder une spé de groupe et une spé de quête."
 ];
-const LV_BETA = [
-  "Vitesse : 20,5 h pour atteindre le niveau 20 dans Forever, contre 20,4 h dans Classic (podcast Blizzard du 24 septembre, avant les ajustements).",
-  "Les monstres verts rapportent 4 à 20 % d'expérience en moins qu'en Classic, pour compenser les nouveaux bonus : nourriture, tente de camp, sac de couchage, talent Legacy « Well Rested ».",
-  "Le prix de la monture du niveau 40 freine beaucoup de joueurs entre 30 et 40 : mettez de l'or de côté dès le niveau 20.",
-  "9 nouveaux donjons et 4 nouvelles zones (Zephras Isle, Riverglades, Shen'dralas, mont Hyjal), plus Dalaran dans les montagnes d'Alterac.",
-  "Rien n'a été testé au-delà du niveau 30 : la route 30-60 suit les annonces de Blizzard et l'ordre de Classic.",
-  "Les valeurs d'expérience du lancement peuvent encore bouger jusqu'à la fin de la bêta (Aggrend, 8 octobre)."
-];
+const LV_BETA = LVR_BETA;
 const LV_SOURCES = [
   {u:"https://mobalytics.gg/wow-forever/guides/zone-map-level-ranges", t:"Mobalytics, zones et niveaux"},
   {u:"https://wowforeverbuilds.com/leveling/route/alliance", t:"WoW Forever Builds, route Alliance 1-60"},
@@ -7206,8 +7478,10 @@ function lvForMe(){
 }
 const lvl0Hint = p => lvlOf(p) ? "" : `<p class="small muted">Déclare ton niveau dans ta fiche personnage pour que ces conseils suivent ta progression.</p>`;
 function renderLeveling(){
-  const el = $("leveling"); if (!el || el.dataset.rev === String(REV[me.pid] || 0) + "|" + (me.pid || "") + "|" + VIS.map(p=>p.id + lvlOf(p)).join(",")) return;
-  el.dataset.rev = String(REV[me.pid] || 0) + "|" + (me.pid || "") + "|" + VIS.map(p=>p.id + lvlOf(p)).join(",");
+  const el = $("leveling"); if (!el) return;
+  const rev = String(REV[me.pid] || 0) + "|" + (me.pid || "") + "|" + VIS.map(p=>p.id + lvlOf(p)).join(",") + "|" + CP.map(p=>p.id + ":" + lvlOf(p) + ":" + ((ui.comp[p.id] && ui.comp[p.id].b) || (mainBuild(p) || {}).id || "")).join(",") + "|" + (ui.set.lvb || "");
+  if (el.dataset.rev === rev) return;
+  el.dataset.rev = rev;
   const marks = VIS.filter(p=>lvlOf(p)).map(p=>({name:p.name, lv:lvlOf(p), col:p.col}));
   const bands = {}; LVL_DATA.route.forEach(r=>{ const k = r.lv.join("-"); (bands[k] = bands[k] || {}); bands[k][r.src === "classic" ? "classic" : "main"] = r; });
   const mine = new Set(); if (me.pid && PI[me.pid] != null){ const b = mainBuild(PLAYERS[PI[me.pid]]); if (b) mine.add(b.cls); }
@@ -7219,6 +7493,7 @@ function renderLeveling(){
   el.innerHTML = `<div class="panel"><h2 class="h2">${icn("map")}Leveling 1-60 côté Alliance</h2>
       <p class="small muted" style="max-width:84ch;margin:0">La route, les donjons, les paliers de chaque classe et ce que la bêta a appris. La bêta s'arrête au niveau 30 : au-delà, la page suit les annonces de Blizzard <span class="lv-src forever">Forever</span> et l'ordre de Classic <span class="lv-src classic">Classic</span>, qui peut différer.</p></div>
     <div class="spacer"></div>${lvForMe()}
+    ${lvrPanelA()}<div class="spacer"></div>${lvrPanelB()}<div class="spacer"></div>
     <div class="panel"><h3 class="chart-h">${icn("gate")}Les nouveaux donjons, niveau par niveau</h3><p class="chart-sub">En vert, ceux qu'on a pu tester en bêta ; en orange, ceux annoncés pour la suite. Les traits verticaux montrent le niveau déclaré des joueurs affichés.</p><div class="svg-x">${lvDungeonSVG(marks)}</div>
       <div class="lv-dg" style="margin-top:10px">${LVL_DATA.dungeons.map(d=>`<div class="lv-d"><b>${esc(d.name)} <span class="lvr">${d.lv[0]}-${d.lv[1]}</span></b>${esc(d.where || "")}<br><span class="small muted">${esc(d.src || "")}</span></div>`).join("")}</div>
       ${expl("Neuf donjons inédits jalonnent la route, des Halls of Thanes de Forgefer à la Shaper's Terrace d'Un'Goro.", "Niveaux relevés dans les guides et les notes de bêta (sources en bas de page). Quand deux sources divergent, la fiche donne les deux plages. Ruins of Lordaeron est un donjon de Fossoyeuse ouvert à l'Alliance, mais le trajet traverse le territoire de la Horde : prévoyez une soirée entière, pas un détour.")}</div>
@@ -7245,8 +7520,115 @@ function renderLeveling(){
       <div class="tablewrap"><table class="heat tier-t"><thead><tr><th class="left">Classe</th>${T.map(t=>`<th title="${esc(t.src)}">${esc(t.src.replace(/ \(.*\)$/, ""))}<br><span class="small muted">${esc((t.src.match(/\((.*)\)/) || [0, ""])[1])}</span></th>`).join("")}<th>Tendance</th></tr></thead>
       <tbody>${CLS_ORDER.slice().sort((a,b)=>cons(b) - cons(a)).map(c=>`<tr><td class="left"><span class="tl">${icn(c)}${CLS[c].name}</span></td>${T.map(t=>{ const k = tierOf(t, c); return `<td class="${k || ""}">${k || "·"}</td>`; }).join("")}<td class="${consL(cons(c))}"><b>${consL(cons(c))}</b></td></tr>`).join("")}</tbody></table></div>
       ${expl("Chasseur et mage en tête partout, guerrier en bas partout ; le paladin divise le plus.", "La tendance fait la moyenne des cinq classements de leveling (S = 4 points, A = 3, B = 2, C = 1, D = 0). Le classement Rankedboost note les classes en général, pas la vitesse de montée : il est affiché mais pas compté. Un guerrier lent en solo devient précieux en groupe : avec un soigneur derrière lui, c'est lui qui dit « Vous ne passerez pas ! ».")}</div>`;
-  const ul = $("srclist"); if (ul && !ul.dataset.lv){ ul.dataset.lv = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", LV_SOURCES.filter(x=>!have.has(x.u.replace(/\/$/, ""))).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
+  const ul = $("srclist"); if (ul && !ul.dataset.lv){ ul.dataset.lv = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", LV_SOURCES.concat(LVR_SOURCES).filter(x=>{ const k = x.u.replace(/\/$/, ""); if (have.has(k)) return false; have.add(k); return true; }).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
   applyPanels("leveling");
+}
+
+/* ================= Routes par spé (panneau A) et route du groupe (panneau B) ================= */
+const LVR_BANDS = [[1,20],[20,30],[30,40],[40,50],[50,60]];
+const LVR_KIND_IC = {zone:"map", donjon:"gate", ville:"banner", bateau:"compass", prep:"scroll", achat:"coin", classe:"book", spe:"star"};
+const LVR_ST_CLS = {conf:"forever", rap:"beta", hyp:"classic"};
+const lvrBandIx = lv => Math.max(0, LVR_BANDS.findIndex(([a,b], i)=>lv >= a && (lv < b || i === LVR_BANDS.length - 1)));
+const lvrZone = r => LVR_ZONES[LVR_RACE_ZONE[r]] || LVR_ZONES.elwynn;
+const lvrStChip = st => `<span class="lv-src ${LVR_ST_CLS[st] || "classic"}" title="Statut de l'information">${esc(LVR_ST[st] || st)}</span>`;
+function lvrQBand(R, lv){ return R.q.find(x=>lv >= x[0] && lv < x[1]) || (lv >= 60 ? R.q[R.q.length - 1] : R.q[0]); }
+function lvrMyPlayer(){ return me.pid && PI[me.pid] != null ? PLAYERS[PI[me.pid]] : null; }
+function lvrPick(){
+  const p = lvrMyPlayer(), mb = p ? mainBuild(p) : null;
+  return BI[ui.set.lvb] || mb || B[0];
+}
+/* Événements propres à un build : quêtes de classe, changements de spé, équipement. who = nom du joueur pour la route du groupe. */
+function lvrEvents(b, who){
+  const R = LVR_B[b.id] || {q:[[1,60,b.spec,""]]}, pre = who ? esc(who) + " : " : "", ev = [], gear = {};
+  (LVR_CQ[b.cls] || []).forEach(q=>ev.push({lv:[q.lv,q.lv], k:"classe", t:pre + esc(q.t), where:q.where, st:q.st, cq:1}));
+  R.q.slice(1).forEach(x=>ev.push({lv:[x[0],x[0]], k:"spe", t:who ? `${pre}passe en ${esc(x[2])}` : `Passe en ${esc(x[2])}`, d:x[3], sw:1}));
+  Object.entries(R.gear || {}).forEach(([id, it])=>{ (gear[id] = gear[id] || []).push((who ? pre : "Pour toi : ") + esc(it)); });
+  return {ev, gear};
+}
+function lvrTag(s, pol){
+  if (s.opt) return '<span class="lvr-tag opt">Facultatif</span>';
+  if (s.imp === "inc") return '<span class="lvr-tag inc">Incontournable</span>';
+  if (s.imp === "opt") return pol === "solo" ? '<span class="lvr-tag opt">Facultatif</span>' : '<span class="lvr-tag adv">Conseillé</span>';
+  return "";
+}
+/* Frise par tranches : la route commune, plus les événements insérés à leur niveau. */
+function lvrTimeline(pol, startHTML, ev, gear, openLv){
+  const steps = LVR_STEPS.map((s,i)=>({s, i, o:0})).concat(ev.map((e,i)=>({s:e, i, o:1})));
+  steps.sort((x,y)=>(x.s.lv[0] - y.s.lv[0]) || (x.o - y.o) || (x.i - y.i));
+  const open = lvrBandIx(openLv || 1), per = LVR_BANDS.map(()=>[]);
+  steps.forEach(({s})=>{
+    const lvl = s.lv[0] === s.lv[1] ? `${s.lv[0]}` : `${s.lv[0]}-${s.lv[1]}`;
+    const g = (gear[s.id] || []).map(x=>`<span class="lvr-gear">${icn("chest")}${x}</span>`).join("");
+    const head = s.id === "start" ? startHTML : (s.cq || s.sw ? s.t : esc(s.t));
+    per[lvrBandIx(s.lv[0])].push(`<li class="lvr-row k-${s.k}"><span class="lvr-lv">${lvl}</span><span class="lvr-ic">${icn(LVR_KIND_IC[s.k] || "map")}</span><div class="lvr-b"><div class="lvr-t"><b>${head}</b>${lvrTag(s, pol)}${s.st ? lvrStChip(s.st) : ""}</div>${s.where ? `<div class="small muted">${esc(s.where)}</div>` : ""}${s.d ? `<div class="small">${esc(s.d)}</div>` : ""}${g ? `<div class="lvr-gears">${g}</div>` : ""}</div></li>`);
+  });
+  return `<div class="lvr-tl">${LVR_BANDS.map(([a,b],i)=>`<details class="lvr-band"${i === open ? " open" : ""}><summary><span class="lvr-bn">${a}-${b}</span><span class="small muted">${per[i].length} étapes${a >= 30 ? ", extrapolé" : ""}</span></summary><ol class="lvr-list">${per[i].join("")}</ol></details>`).join("")}</div>`;
+}
+function lvrPhaseBar(R){
+  return `<div class="lvr-bar" role="img" aria-label="Spé jouée pour quêter, du niveau 1 au 60">${R.q.map((x,i)=>`<div class="lvr-seg s${i}" style="flex:${Math.max(1, x[1] - x[0])} 1 0" title="${esc(x[2])}, niveaux ${x[0]} à ${x[1]}${x[3] ? " : " + esc(x[3]) : ""}"><b>${esc(x[2])}</b><span>${x[0]}-${x[1]}</span></div>`).join("")}</div>`;
+}
+function lvrPanelA(){
+  const b = lvrPick(), R = LVR_B[b.id], p = lvrMyPlayer();
+  const mine = p && ((p.choix || []).includes(b.id) || mainBuild(p) === b);
+  const race = mine ? raceFor(b, state.answers[p.id]) : b.race[0], Z = lvrZone(race), P = LVR_POL[R.pol];
+  const {ev, gear} = lvrEvents(b, null);
+  const start = `Zone de départ : ${esc(Z.name)} <span class="muted">(${esc(RACES[race].name)}, ${esc(Z.hub)})</span>`;
+  return `<div class="panel" id="lvr-a"><h3 class="chart-h">${icn("compass")}Ta route, spé par spé</h3><p class="chart-sub">Choisis une classe et une spé : la route 1-60, la spé à jouer pour quêter, les quêtes de classe et l'équipement à viser.</p>
+    <div class="lvr-pick"><label>Classe <select data-lvrcls>${CLS_ORDER.map(c=>`<option value="${c}"${c === b.cls ? " selected" : ""}>${esc(CLS[c].name)}</option>`).join("")}</select></label><label>Spé <select data-lvrb>${B.filter(x=>x.cls === b.cls).map(x=>`<option value="${x.id}"${x.id === b.id ? " selected" : ""}>${esc(x.spec)}</option>`).join("")}</select></label>${mine ? '<span class="chip gold">ta spé</span>' : ""}</div>
+    <div class="lvr-sum"><p><b>${icn(b.cls)}${esc(bName(b))} : ${esc(P.t)}.</b> ${esc(P.d)}</p>
+      <ul class="small"><li><b>Double spé au 40 :</b> ${esc(R.dual)}</li><li><b>En donjon :</b> ${esc(R.dg)}</li><li><b>Départ :</b> ${esc(Z.name)} (${esc(RACES[race].name)}), ${esc(Z.hub)}, puis ${esc(Z.next)}</li></ul></div>
+    ${lvrPhaseBar(R)}
+    ${lvrTimeline(R.pol, start, ev, gear, p ? lvlOf(p) : 1)}
+    ${R.tips && R.tips.length ? `<h4 class="lvr-h4">Conseils pour cette spé</h4><ul class="small">${R.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+    <p class="small muted">Au-delà du niveau 30, tout est extrapolé : la bêta s'est arrêtée au 30.</p></div>`;
+}
+/* Peut-on démarrer dans la zone z avec cette classe ? Renvoie la race à prendre, ou null. */
+function lvrRaceIn(z, b, ans){
+  const ok = LVR_ZONES[z].races.filter(r=>CLASS_RACES[b.cls].includes(r) && (r !== "sky" || (ans && ans.pack === "oui")));
+  const rk = r => b.race.includes(r) ? b.race.indexOf(r) : 99;
+  return ok.sort((x,y)=>rk(x) - rk(y))[0] || null;
+}
+function lvrPanelB(){
+  const M = [], none = [];
+  CP.forEach(p=>{ const b = (ui.comp[p.id] && BI[ui.comp[p.id].b]) || mainBuild(p); if (b) M.push({p, b, ans:state.answers[p.id] || {}}); else none.push(p); });
+  const noneL = none.length ? `<p class="small muted">${none.map(p=>`${esc(p.name)} n'a pas encore classé ses spés`).join(". ")}.</p>` : "";
+  const H = `<h3 class="chart-h">${icn("users")}La route du groupe</h3>`;
+  if (M.length < 2) return `<div class="panel" id="lvr-b">${H}<p class="chart-sub">Choisis au moins deux joueurs avec une spé dans « Compo du groupe » : la route du groupe se calcule à partir d'eux.</p>${noneL}<button class="btn sm" data-v="compo">${icn("users")}Compo du groupe</button></div>`;
+  M.forEach(m=>{ m.race = raceFor(m.b, m.ans); m.z = LVR_RACE_ZONE[m.race]; m.lv = lvlOf(m.p); m.R = LVR_B[m.b.id]; });
+  /* zone de départ commune */
+  const zk = Object.keys(LVR_ZONES), score = z => ({z, can:M.filter(m=>lvrRaceIn(z, m.b, m.ans)).length, at:M.filter(m=>m.z === z).length});
+  /* à égalité, l'ordre de LVR_ZONES décide : Elwynn d'abord, à côté de Hurlevent où mènent tous les trajets */
+  const best = zk.map(score).sort((x,y)=>(y.can - x.can) || (zk.indexOf(x.z) - zk.indexOf(y.z)))[0], T = best.z, TZ = LVR_ZONES[T];
+  const same = M.every(m=>m.z === M[0].z), S = [];
+  if (same) S.push(`<p data-lvrzone="${M[0].z}"><b>Tout le monde démarre en ${esc(LVR_ZONES[M[0].z].name)}</b> (${esc(LVR_ZONES[M[0].z].hub)}).</p>`);
+  else {
+    S.push(`<p data-lvrzone="${T}"><b>${best.can === M.length ? "Vous pouvez tous démarrer en" : "Départ commun conseillé :"} ${esc(TZ.name)}</b> (${best.can} sur ${M.length}, ${esc(TZ.hub)}).</p>`);
+    const L = [];
+    M.filter(m=>m.z !== T).forEach(m=>{ const r = lvrRaceIn(T, m.b, m.ans); L.push(r ? `${esc(m.p.name)} passe en ${esc(RACES[r].name)} (au lieu de ${esc(RACES[m.race].name)}).` : `${esc(m.p.name)} garde ${esc(RACES[m.race].name)} et démarre en ${esc(LVR_ZONES[m.z].name)} : ${esc((LVR_TRAVEL[T] || {})[m.z] || "")}`); });
+    if (L.length) S.push(`<ul class="small">${L.map(x=>`<li>${x}</li>`).join("")}</ul>`);
+  }
+  S.push(`<p class="small muted">Zephras Isle se joue seul jusqu'au 12 (pack Skyborne).</p>`);
+  const startZ = same ? LVR_ZONES[M[0].z] : TZ, start = `Zone de départ du groupe : ${esc(startZ.name)} <span class="muted">(${esc(startZ.hub)})</span>`;
+  /* rôles */
+  const role = (r, cap, not) => { const main = M.filter(m=>m.b.role === r); if (main.length) return {m:main[0], dual:false}; const c = M.find(m=>cap.includes(m.b.cls) && (!not || m !== not.m)) || M.find(m=>cap.includes(m.b.cls)); return c ? {m:c, dual:true} : null; };
+  const tk = role("tank", ["war","pal","dru"]), hl = role("heal", ["pal","pri","sha","dru"], tk);
+  const rl = (x, n) => x ? `<li><b>${n} :</b> ${esc(x.m.p.name)}${x.dual ? ` (${n === "Tank" ? "tank" : "soin"} en double spé au 40)` : ""}</li>` : `<li><b>${n} :</b> <span class="warn">personne</span>, il manque au groupe : la guilde le complète pour les donjons.</li>`;
+  const pol = tk && hl ? "donjons" : "duo", P = LVR_POL[pol];
+  const lvs = M.map(m=>m.lv).filter(Boolean), gap = lvs.length > 1 && Math.max(...lvs) - Math.min(...lvs) > 3;
+  /* frise */
+  const ev = [], gear = {};
+  M.forEach(m=>{ const e = lvrEvents(m.b, m.p.name); ev.push(...e.ev); Object.entries(e.gear).forEach(([k,v])=>{ (gear[k] = gear[k] || []).push(...v); }); });
+  const meIn = M.find(m=>m.p.id === me.pid), openLv = (meIn && meIn.lv) || (lvs.length ? Math.min(...lvs) : 1);
+  const RL = {tank:"tank", heal:"soin", dps:"DPS"};
+  return `<div class="panel" id="lvr-b">${H}<p class="chart-sub">Calculée à partir des joueurs de la compo et des spés choisies dans « Compo du groupe ».</p>${noneL}
+    <div class="tablewrap"><table class="dir lvr-mt"><thead><tr><th class="left">Joueur</th><th class="left">Classe et spé</th><th class="left">Race</th><th class="left">Départ</th><th>Niveau</th><th class="left">Spé pour quêter</th><th>Donjon</th></tr></thead><tbody>${M.map(m=>{ const q = m.R ? lvrQBand(m.R, m.lv || 1) : null; return `<tr><td class="left">${pdot(m.p)}<b>${esc(m.p.name)}</b></td><td class="left"><span class="tl">${spIcon(m.b)}${esc(bName(m.b))}</span></td><td class="left">${esc(RACES[m.race].name)}</td><td class="left">${esc(LVR_ZONES[m.z].name)}</td><td>${m.lv || '<span class="muted">·</span>'}</td><td class="left">${q ? esc(q[2]) : esc(m.b.spec)}</td><td>${RL[m.b.role]}</td></tr>`; }).join("")}</tbody></table></div>
+    <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("map")}Le départ</h4>${S.join("")}</div>
+      <div><h4 class="lvr-h4">${icn("tank")}Les rôles</h4><ul class="small">${rl(tk, "Tank")}${rl(hl, "Soin")}</ul>${CP.length < 5 ? `<p class="small">Pour les donjons, il vous manque ${5 - CP.length} joueur${5 - CP.length > 1 ? "s" : ""}.</p>` : ""}
+        <p class="small"><b>Façon de monter : ${esc(P.t)}.</b> ${esc(P.d)}</p>${gap ? `<p class="small warn">${icn("warning")}Plus de trois niveaux d'écart entre vous (${Math.min(...lvs)} à ${Math.max(...lvs)}) : les plus avancés attendent ou montent un autre personnage.</p>` : ""}</div></div>
+    ${lvrTimeline(pol, start, ev, gear, openLv)}
+    <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("campfire")}Ce que chacun apporte</h4><ul class="small">${[...new Set(M.map(m=>m.b.cls))].map(c=>`<li><b>${esc(CLS[c].name)} :</b> ${esc(LVR_SYN[c])}</li>`).join("")}</ul></div>
+      <div><h4 class="lvr-h4">${icn("scroll")}Les règles à plusieurs</h4><ul class="small">${LVR_RULES.map(r=>`<li>${esc(r.t)} ${lvrStChip(r.st)}</li>`).join("")}</ul></div></div>
+    <p class="small muted">Au-delà du niveau 30, tout est extrapolé : la bêta s'est arrêtée au 30.</p></div>`;
 }
 
 /* ================= Visualisations A : blasons, feuille de personnage, soleil des rôles, ruche, liens, semaine ================= */
@@ -8338,6 +8720,8 @@ document.addEventListener("change", e=>{
   if (r.dataset && r.dataset.gpan){ const vk = viewKey(state.view), h = ui.set.hide[vk] = ui.set.hide[vk] || {}; if (r.checked) delete h[r.dataset.gpan]; else h[r.dataset.gpan] = true; saveUI(); applyPanels(state.view); return; }
   if (r.dataset && r.dataset.rspe){ rsvp(r.dataset.rspe, null, r.value); return; }
   if (r.dataset && r.dataset.rset){ const k = r.dataset.rset; ui.set.raid[k] = k === "peut" ? r.checked : r.value; saveUI(); renderRaid(); return; }
+  if (r.dataset && r.dataset.lvrcls != null){ const b = B.find(x=>x.cls === r.value); if (b){ ui.set.lvb = b.id; saveUI(); renderLeveling(); } return; }
+  if (r.dataset && r.dataset.lvrb != null){ if (BI[r.value]){ ui.set.lvb = r.value; saveUI(); renderLeveling(); } return; }
   if (r.dataset && r.dataset.lvl){ ui.set.lvl = Number(r.value); saveUI(); renderGroupes(); return; }
   if (r.dataset && r.dataset.arole){ state.acces.roles[r.dataset.arole] = r.value; saveAcces(); return; }
   if (r.dataset && r.dataset.atab){ const role = r.dataset.atab, P = state.acces.perms[role] = Object.assign({}, PERM_DEFAULT[role], state.acces.perms[role] || {}); P.tabs = (P.tabs || []).filter(x=>x !== r.value); if (r.checked) P.tabs.push(r.value); saveAcces(); return; }
