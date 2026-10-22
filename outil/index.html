@@ -1453,18 +1453,20 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 <script>
 /* ================= Version web : Supabase remplace les capacités de l'artefact Claude =================
    La page garde la même interface (window.claude.use("db" | "user" | "downloads")) ; ce module la sert depuis Supabase.
-   Base : une table docs (col, id, data jsonb). Connexion : Discord. Lecture ouverte à tous, écriture réservée aux connectés,
-   règles fines côté serveur (fiche réservée à son propriétaire, collection guilde à l'admin). */
+   Base : une table docs (col, id, data jsonb). Pas d'écran de connexion : une session anonyme invisible ouvre l'écriture,
+   la connexion Discord ne sert plus qu'à l'admin (réglages de guilde, verrouillés côté serveur). */
 (function(){
   const SB_URL = "https://izflnnbkxolndzmuhnui.supabase.co";
   const SB_KEY = "sb_publishable_Gm_fbHLUSDas6OVQ_abVLg_3reRL_7F";
   if (!window.supabase || !window.supabase.createClient) return;
   const sb = window.supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, flowType:"pkce"}});
   let session = null, admin = false;
+  const isAnon = () => !!(session && session.user && session.user.is_anonymous);
   const ready = sb.auth.getSession().then(async r=>{
     session = (r && r.data && r.data.session) || null;
+    if (!session){ try { const a = await sb.auth.signInAnonymously(); session = (a && !a.error && a.data && a.data.session) || null; } catch(e){ session = null; } }
     try { const u = new URL(location.href); if (u.searchParams.has("code") || u.searchParams.has("error")){ ["code","error","error_code","error_description"].forEach(k=>u.searchParams.delete(k)); history.replaceState(null, "", u.pathname + (u.search || "") + u.hash); } } catch(e){}
-    if (session){ try { const a = await sb.rpc("is_admin"); admin = !!(a && a.data); } catch(e){} }
+    if (session && !isAnon()){ try { const a = await sb.rpc("is_admin"); admin = !!(a && a.data); } catch(e){} }
   }).catch(()=>{});
   sb.auth.onAuthStateChange((ev, s)=>{ if (ev === "SIGNED_OUT" || ev === "TOKEN_REFRESHED" || ev === "SIGNED_IN") session = s || null; });
 
@@ -1532,9 +1534,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   const nameOf = () => { const u = session && session.user, m = (u && u.user_metadata) || {}; return (m.custom_claims && m.custom_claims.global_name) || m.full_name || m.name || m.user_name || ""; };
   const user = {
     isOwner: async () => admin,
-    id: async () => session ? session.user.id : null,
+    id: async () => session && !isAnon() ? session.user.id : null,
     can: async k => k === "data.write" ? !!session : null,
-    me: async () => ({id:session ? session.user.id : null, name:nameOf()}),
+    me: async () => isAnon() ? {id:null, name:""} : {id:session ? session.user.id : null, name:nameOf()},
     profiles: async () => ({})
   };
 
@@ -1565,7 +1567,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
   window.__guildeWeb = {
     sb, ready, flushDiscord,
     signedIn: () => !!session,
-    account: () => session ? {name:nameOf() || "Joueur", avatar:((session.user.user_metadata || {}).avatar_url) || ""} : null,
+    account: () => session && !isAnon() ? {name:nameOf() || "Joueur", avatar:((session.user.user_metadata || {}).avatar_url) || ""} : null,
     signIn: () => sb.auth.signInWithOAuth({provider:"discord", options:{redirectTo:location.origin + location.pathname}}),
     signOut: async () => { try { await sb.auth.signOut(); } catch(e){} location.reload(); }
   };
@@ -5134,9 +5136,7 @@ function renderTabs(){
   const ft = $("nav-foot");
   if (ft){
     const acc = WEB ? WEB.account() : null;
-    ft.innerHTML = WEB && !acc
-      ? `<button class="btn sm primary wlogin" data-wlogin>${icn("key")}Se connecter avec Discord</button><div class="small muted" style="margin-top:6px">Sans connexion, tu consultes tout mais rien n'est enregistré pour la guilde.</div>`
-      : `${icn(ROLE_ICON[myRole()])} ${ROLE_NAMES[myRole()]}${me.shared ? (me.write === false ? " · lecture seule" : "") : " · réponses sur cet appareil"}${acc ? `<div class="small muted" style="margin-top:4px">${esc(acc.name)} · <button class="linkbtn" data-wlogout>se déconnecter</button></div>` : ""}`;
+    ft.innerHTML = `${icn(ROLE_ICON[myRole()])} ${ROLE_NAMES[myRole()]}${me.shared ? (me.write === false ? " · lecture seule" : "") : " · réponses sur cet appareil"}${acc ? `<div class="small muted" style="margin-top:4px">${esc(acc.name)} · <button class="linkbtn" data-wlogout>se déconnecter</button></div>` : WEB ? `<div class="small muted" style="margin-top:4px"><button class="linkbtn" data-wlogin title="Connexion Discord réservée à l'admin de l'outil">Accès admin</button></div>` : ""}`;
   }
   const cur = $("nav-cur"); if (cur) cur.textContent = PI[state.view] != null ? PLAYERS[PI[state.view]].name : (VIEW_LABEL[state.view] || "");
 }
@@ -5163,8 +5163,7 @@ function renderVisible(){
   if (v === "discord") renderDiscord();
   if (v === "tableau") renderDashboard();
   if (v === "leveling") renderLeveling();
-  if (v === "ajout" && WEB && !WEB.signedIn()){ const cb = $("claim-box"); if (cb) cb.innerHTML = `<div class="callout"><h3>${icn("key")}Connecte-toi d'abord</h3><p>Ta connexion Discord relie ta fiche à ton compte : sans elle, rien de ce que tu remplis n'est enregistré pour la guilde.</p><p><button class="btn primary" data-wlogin>${icn("key")}Se connecter avec Discord</button></p></div>`; }
-  else if (v === "ajout"){ const cb = $("claim-box"); if (cb) cb.innerHTML = !me.pid && freeSheets().length ? `<div class="callout"><h3>${icn("visitor")}Ta fiche existe peut-être déjà</h3><p>Avant d'en créer une nouvelle, regarde si quelqu'un l'a déjà préparée pour toi.</p>${claimListHTML()}</div>` : ""; }
+  if (v === "ajout"){ const cb = $("claim-box"); if (cb) cb.innerHTML = !me.pid && freeSheets().length ? `<div class="callout"><h3>${icn("visitor")}Ta fiche existe peut-être déjà</h3><p>Avant d'en créer une nouvelle, regarde si quelqu'un l'a déjà préparée pour toi.</p>${claimListHTML()}</div>` : ""; }
   if (v === "compos") renderKnown();
   applyPanels(v);
   renderGear(false);
@@ -5199,7 +5198,7 @@ const PERM_DEFAULT = {
 };
 const me = {uid:null, pid:null, owner:false, write:null, ready:false, shared:false};
 let userCap = null;
-/* version web (GitHub Pages + Supabase) : connexion Discord, voir web_shim.js */
+/* version web (GitHub Pages + Supabase) : session anonyme, Discord pour l'admin seulement, voir web_shim.js */
 const WEB = window.__guildeWeb || null;
 function resolveMe(){
   let pid = null;
@@ -5216,7 +5215,7 @@ const roleSrc = pid => ROLE_KEYS.includes((state.droles || {})[pid]) ? "discord"
 function myRole(){
   if (!me.shared) return "gm";
   if (me.owner) return "gm";
-  if (!me.pid) return "visiteur";
+  if (!me.pid) return WEB ? "membre" : "visiteur";
   return roleOfPid(me.pid);
 }
 /* valider sorties, compos et équipes : l'admin et le chef de guilde */
@@ -5248,7 +5247,9 @@ function homeView(){
 }
 /* fiche déjà existante : on la retrouve d'après le nom du compte (prénom), sans jamais prendre celle d'un autre */
 const nrm = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-const freeSheets = () => PLAYERS.filter(p=>!p.uid || (me.uid && p.uid === me.uid));
+/* sans compte (version web) : toutes les fiches se choisissent, y compris celles reliées par l'ancienne connexion Discord */
+const isFree = p => (WEB && !me.uid) || !p.uid || (me.uid && p.uid === me.uid);
+const freeSheets = () => PLAYERS.filter(isFree);
 /* empreinte d'une adresse email : seule l'empreinte est stockée, jamais l'adresse */
 async function mailHash(t){
   try { const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(nrm(t))); return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2, "0")).join(""); } catch(e){ return ""; }
@@ -6393,21 +6394,14 @@ function claimListHTML(){
 let claimAsked = false;
 function claimModal(){
   openModal(`<div class="modal-h"><h2 class="h2">${icn("visitor")}Retrouve ta fiche</h2><button class="btn sm" data-modal="close" aria-label="Fermer">${icn("close") || "×"}</button></div>
-    <p>Si quelqu'un a déjà créé ta fiche, relie-la à ton compte : tu retrouves tes réponses, tes spés et ton personnage sur tous tes appareils.</p>
-    <p class="small muted">Pas de mot de passe à créer : c'est ton compte ${WEB ? "Discord" : "Claude"} qui te reconnaît.</p>
+    ${WEB ? `<p>Choisis ta fiche dans la liste ou crée la tienne : tu retrouves tes réponses, tes spés et ton personnage.</p>` : `<p>Si quelqu'un a déjà créé ta fiche, relie-la à ton compte : tu retrouves tes réponses, tes spés et ton personnage sur tous tes appareils.</p>
+    <p class="small muted">Pas de mot de passe à créer : c'est ton compte Claude qui te reconnaît.</p>`}
     ${claimListHTML()}
     <div class="row" style="margin-top:14px"><button class="btn" data-v="ajout" data-modal="close">${icn("plus")}Je n'ai pas encore de fiche</button><button class="btn" data-modal="close">Plus tard</button></div>`);
-}
-function loginModal(){
-  openModal(`<div class="modal-h"><h2 class="h2">${icn("key")}Connecte-toi avec Discord</h2><button class="btn sm" data-modal="close" aria-label="Fermer">${icn("close") || "×"}</button></div>
-    <p>Un clic sur ton compte Discord, sans mot de passe à créer : tu retrouves ta fiche, et tes réponses, tes spés et tes inscriptions sont enregistrées pour toute la guilde.</p>
-    <p class="small muted">Sans connexion, tu peux tout consulter, mais rien n'est enregistré pour les autres.</p>
-    <div class="row" style="margin-top:14px"><button class="btn primary" data-wlogin>${icn("key")}Se connecter avec Discord</button><button class="btn" data-modal="close">Continuer en visiteur</button></div>`);
 }
 function maybeOnboard(){
   if (!me.ready || $("modal") && !$("modal").hidden) return;
   if (!ui.onb) ui.onb = {};
-  if (WEB && !WEB.signedIn()){ if (!claimAsked){ claimAsked = true; loginModal(); } return; }
   /* tant que le compte n'est relié à aucune fiche, on propose de la retrouver à chaque visite (une fois par visite) */
   if (!me.pid && !claimAsked && freeSheets().length){ claimAsked = true; claimModal(); return; }
   const p = me.pid && PI[me.pid] != null ? PLAYERS[PI[me.pid]] : null;
@@ -6480,7 +6474,7 @@ function renderAnnuaire(){
   if (el.contains(document.activeElement) && document.activeElement.matches("input[data-af]")) { paintAnnuaireRows(); return; }
   const r = myRole(), roles = {tank:0, heal:0, dps:0}, linked = PLAYERS.filter(p=>p.uid).length;
   PLAYERS.forEach(p=>{ const w = wishRole(p); if (roles[w] != null) roles[w]++; });
-  const banner = !me.pid ? `<div class="callout"><h3>${icn("visitor")}Qui es-tu ?</h3><p>Relie ton compte à ta fiche pour retrouver tes réponses, ou crée-la si elle n'existe pas.</p>${claimListHTML()}<div class="row" style="margin-top:8px"><button class="btn" data-v="ajout">${icn("plus")}Je n'ai pas encore de fiche</button></div></div>` : "";
+  const banner = !me.pid ? `<div class="callout"><h3>${icn("visitor")}Qui es-tu ?</h3><p>${WEB ? "Choisis ta fiche dans la liste ou crée la tienne." : "Relie ton compte à ta fiche pour retrouver tes réponses, ou crée-la si elle n'existe pas."}</p>${claimListHTML()}<div class="row" style="margin-top:8px"><button class="btn" data-v="ajout">${icn("plus")}Je n'ai pas encore de fiche</button></div></div>` : "";
   const ro = me.shared && me.write === false ? `<div class="callout warn">${icn("lock")}<b>Lecture seule :</b> ton compte ne peut pas enregistrer dans cet outil. Tes réponses restent sur ton appareil ; envoie ta fiche par code à l'admin de l'outil (bouton « Envoyer ma fiche » dans ton profil).</div>` : "";
   el.innerHTML = `${banner}${ro}
     <div class="panel"><h3 class="chart-h">${icn("banner")}La guilde en un coup d'œil</h3><p class="chart-sub">Chaque case est une classe, découpée par spé, à la taille du nombre de joueurs ; l'anneau compte les rôles.</p>${vbGlance()}${expl("Qui joue quoi dans la guilde, d'un regard : les grandes cases sont les classes les plus jouées.", "Chaque joueur compte une fois, sur sa spé principale : son 1er choix classé, sinon la spé la plus proche de ses réponses s'il a répondu à au moins 8 questions. Les autres sont « sans choix ». La surface d'une case est proportionnelle au nombre de joueurs ; l'anneau compte les tanks, soigneurs et DPS de ces mêmes spés principales.")}</div>
@@ -6524,7 +6518,7 @@ function paintAnnuaireRows(){
       <td class="left">${ch.length ? ch.slice(0,3).map((id,k)=>`<span class="chs" title="${k+1}${k ? "e" : "er"} choix">${spIcon(BI[id])}${esc(bName(BI[id]))}</span>`).join("") : sugg.length ? `<span class="muted small">suggéré : ${sugg.map(b=>esc(bName(b))).join(", ")}</span>` : '<span class="muted">·</span>'}</td>
       <td class="left">${fr ? esc(fr.n) : '<span class="muted">·</span>'}</td><td class="left">${met ? esc(met) : '<span class="muted">·</span>'}</td><td class="left small">${sl ? esc(sl) : dd ? "" : '<span class="muted">·</span>'}${dd ? `<span class="d-dispo" title="Message Discord">${icn("horn")}${esc(dd.t)}</span>` : ""}</td>
       <td><span class="mbar" title="${n} réponses sur ${QN}"><i style="width:${Math.round(100*n/QN)}%;background:var(${p.col})"></i></span></td>
-      <td class="nowrap">${canSee(p.id) ? `<button class="btn xs" data-v="${p.id}">Fiche</button>` : ""}${me.shared && !me.pid && !p.uid ? `<button class="btn xs primary" data-claim="${p.id}">C'est moi</button>` : ""}</td></tr>
+      <td class="nowrap">${canSee(p.id) ? `<button class="btn xs" data-v="${p.id}">Fiche</button>` : ""}${me.shared && !me.pid && isFree(p) ? `<button class="btn xs primary" data-claim="${p.id}">C'est moi</button>` : ""}</td></tr>
       ${open ? `<tr class="det"><td colspan="7">${synthHTML(p)}</td></tr>` : ""}`;
   }).join("") || `<tr><td colspan="7" class="muted">Aucun joueur ne correspond.</td></tr>`;
 }
@@ -6643,7 +6637,7 @@ function renderAcces(){
   const el = $("guild-acces"); if (!el) return;
   if (myRole() !== "gm"){ el.innerHTML = `<div class="panel"><p class="muted">Réservé à l'admin de l'outil.</p></div>`; return; }
   const A = state.acces, perms = r => (A.perms && A.perms[r]) || PERM_DEFAULT[r];
-  el.innerHTML = `<div class="callout"><h3>${icn("lock")}Comment ça marche</h3><p>${WEB ? "Chacun se connecte avec son compte Discord, sans mot de passe à créer : il suffit de partager le lien de l'outil sur le serveur. À sa première connexion, l'outil retrouve sa fiche d'après son nom Discord et propose de la relier en un clic. Une fiche reliée ne peut être modifiée que par son propriétaire ou par toi, c'est verrouillé côté base ; la page Rôles et accès et les réglages Discord ne sont modifiables que par toi." : "Pour que chacun enregistre lui-même, invite-le par email comme éditeur depuis le menu Partager de la page, et coupe le lien public. À sa première visite, l'outil retrouve sa fiche d'après le prénom de son compte et propose de la relier en un clic ; ton compte à toi est relié d'office. L'identifiant, c'est le compte Claude de chacun : pas de mot de passe propre à l'outil, qui finirait dans une base lisible par tous les membres et sans mail de réinitialisation possible."} Tous ceux qui créent ou réclament une fiche sont Membres par défaut ; tu choisis ici qui est officier ou invité, et ce que chacun voit.</p><p class="small muted">Seul l'admin de l'outil (toi) modifie cette page, c'est verrouillé côté serveur. Les rôles se donnent sur Discord : quand une fiche est reliée à un pseudo Discord, son rôle Discord (chef de guilde, officier, membre, invité) s'applique ici, et le menu ne sert qu'aux fiches sans Discord. ${WEB ? "Le code de la page vit sur GitHub et seul toi peux le modifier ; les données vivent dans Supabase, sauvegardées chaque jour." : "Un éditeur invité garde le droit technique de republier l'outil depuis son propre Claude ; l'historique des versions permet de revenir en arrière."}</p></div>
+  el.innerHTML = `<div class="callout"><h3>${icn("lock")}Comment ça marche</h3><p>${WEB ? "Pas de compte à créer : il suffit de partager le lien de l'outil sur le serveur. Chacun choisit sa fiche dans la liste ou crée la sienne, et tout ce qu'il remplit est enregistré pour la guilde. Toute personne qui a le lien peut modifier les fiches, les sorties et les compos ; la page Rôles et accès et les réglages Discord ne sont modifiables que par toi, connecté avec ton compte Discord par le lien « Accès admin » du menu." : "Pour que chacun enregistre lui-même, invite-le par email comme éditeur depuis le menu Partager de la page, et coupe le lien public. À sa première visite, l'outil retrouve sa fiche d'après le prénom de son compte et propose de la relier en un clic ; ton compte à toi est relié d'office. L'identifiant, c'est le compte Claude de chacun : pas de mot de passe propre à l'outil, qui finirait dans une base lisible par tous les membres et sans mail de réinitialisation possible."} Tous ceux qui créent ou réclament une fiche sont Membres par défaut ; tu choisis ici qui est officier ou invité, et ce que chacun voit.</p><p class="small muted">Seul l'admin de l'outil (toi) modifie cette page, c'est verrouillé côté serveur. Les rôles se donnent sur Discord : quand une fiche est reliée à un pseudo Discord, son rôle Discord (chef de guilde, officier, membre, invité) s'applique ici, et le menu ne sert qu'aux fiches sans Discord. ${WEB ? "Le code de la page vit sur GitHub et seul toi peux le modifier ; les données vivent dans Supabase, sauvegardées chaque jour." : "Un éditeur invité garde le droit technique de republier l'outil depuis son propre Claude ; l'historique des versions permet de revenir en arrière."}</p></div>
     <div class="panel"><h3 class="chart-h">${icn("users")}Rôles des joueurs</h3><div class="tablewrap" style="margin:8px 0 0"><table class="dir"><thead><tr><th>Joueur</th><th>Compte</th><th>Rôle</th><th class="left">Accès particuliers</th></tr></thead><tbody>${PLAYERS.map(p=>{ const r = roleOfPid(p.id), o = (A.persons || {})[p.id];
       return `<tr><td>${pdot(p)}<b>${esc(p.name)}</b></td><td>${p.uid ? `${icn("link")}lié <button class="btn xs" data-aunlink="${p.id}">Délier</button>` : '<span class="muted small">pas encore lié</span>'}</td><td>${p.uid && p.uid === me.uid ? `<span class="chip gold">${icn("key")}Admin de l'outil</span>${roleSrc(p.id) === "discord" ? ` <span class="chip">${esc(ROLE_NAMES[roleOfPid(p.id)])} (Discord)</span>` : ""}` : roleSrc(p.id) === "discord" ? `<span class="chip gold" title="Rôle lu sur Discord">${icn(ROLE_ICON[roleOfPid(p.id)])}${esc(ROLE_NAMES[roleOfPid(p.id)])} (Discord)</span>` : `<select data-arole="${p.id}">${ROLE_KEYS.map(k=>`<option value="${k}"${r === k ? " selected" : ""}>${ROLE_NAMES[k]}</option>`).join("")}</select>`}</td><td class="left"><button class="btn xs" data-apers="${p.id}">${o ? "Personnalisé" : "Personnaliser"}</button>${o ? ` <button class="btn xs" data-apreset="${p.id}">Revenir au rôle</button>` : ""}</td></tr>
       ${acPers === p.id ? `<tr class="det"><td colspan="4"><div class="perm-grid">${TABS_CFG.map(([k,t])=>`<label class="gp-it"><input type="checkbox" data-aptab="${p.id}" value="${k}"${(o ? o.tabs : perms(r).tabs).includes(k) ? " checked" : ""}>${esc(t)}</label>`).join("")}<label class="gp-it"><input type="checkbox" data-apfiche="${p.id}"${(o && typeof o.fiches === "boolean" ? o.fiches : perms(r).fiches) ? " checked" : ""}><b>Voit les fiches détaillées des autres</b></label></div></td></tr>` : ""}`; }).join("")}</tbody></table></div></div>
@@ -7727,7 +7721,7 @@ let db = null, canWrite = true, syncMode = "local";
 const wq = {}, timers = {};
 let rosterSeen = false, accesSeen = false;
 function setSyncText(){
-  const txt = {shared:'<span class="dot on"></span>Réponses enregistrées pour toute la guilde', readonly:'<span class="dot ro"></span>Enregistrement refusé : envoie ta fiche par code à l\'admin de l\'outil', local:'<span class="dot"></span>Réponses gardées sur cet appareil', visitor:'<span class="dot"></span>Tes réponses restent sur cet appareil tant que tu n\'es pas connecté <button class="btn xs" data-wlogin>Se connecter avec Discord</button>'}[syncMode];
+  const txt = {shared:'<span class="dot on"></span>Réponses enregistrées pour toute la guilde', readonly:'<span class="dot ro"></span>Enregistrement refusé : envoie ta fiche par code à l\'admin de l\'outil', local:'<span class="dot"></span>Réponses gardées sur cet appareil', visitor:'<span class="dot"></span>Enregistrement indisponible pour le moment : tes réponses restent sur cet appareil'}[syncMode];
   PLAYERS.forEach(p=>{ const el = $("sync-" + p.id); if (el) el.innerHTML = txt; });
 }
 function queueWrite(path, body){
@@ -7752,7 +7746,8 @@ function queueWrite(path, body){
   })();
 }
 const pushPlayer = pid => { if (PI[pid] != null) queueWrite("reponses/" + pid, {answers:state.answers[pid], updatedAt:state.meta[pid], v:8}); };
-const rosterBody = p => ({name:p.name, note:p.note, order:p.order, removed:false, updatedAt:p.upd, uid:p.uid || null, choix:p.choix || [], metiers:p.metiers || [], perso:p.perso || null, created:p.created || 0});
+/* sans compte, on n'écrit jamais de propriétaire sur une fiche */
+const rosterBody = p => ({name:p.name, note:p.note, order:p.order, removed:false, updatedAt:p.upd, uid:WEB && !me.uid ? null : p.uid || null, choix:p.choix || [], metiers:p.metiers || [], perso:p.perso || null, created:p.created || 0});
 const pushRoster = p => queueWrite("joueurs/" + p.id, rosterBody(p));
 const pushRemoved = (pid, ts) => queueWrite("joueurs/" + pid, {removed:true, updatedAt:ts});
 const pushPrio = () => queueWrite("reponses/reglages", {prio:state.prio, group:state.group, updatedAt:state.gmeta || Date.now()});
@@ -7781,7 +7776,7 @@ function onCol(name, fn){ try { db.collection(name).onSnapshot(fn, ()=>{}); } ca
   try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch(e){ db = null; }
   if (!db){ syncMode = "local"; me.shared = false; me.ready = true; setSyncText(); structural(); tryHome(); return; }
   syncMode = "shared"; me.shared = true;
-  if (WEB && !WEB.signedIn()){ canWrite = false; syncMode = "visitor"; me.write = false; }
+  if (WEB && !WEB.signedIn()){ canWrite = false; syncMode = "visitor"; me.write = false; const m = $("main"); if (m && !$("save-off")) m.insertAdjacentHTML("afterbegin", '<div class="callout warn small" id="save-off" role="status" style="margin:0 0 12px;padding:8px 12px">Enregistrement indisponible pour le moment : tu consultes tout, mais rien n\'est enregistré pour la guilde.</div>'); }
   setSyncText();
   initIdentity();
   onCol("joueurs", snap=>{
@@ -7995,7 +7990,7 @@ document.addEventListener("click", e=>{
   if (t.closest("[data-wlogin]")){ e.preventDefault(); if (WEB) WEB.signIn(); return; }
   if (t.closest("[data-wlogout]")){ e.preventDefault(); if (WEB) WEB.signOut(); return; }
   const co = t.closest("[data-claimopen]");
-  if (co){ document.body.classList.remove("nav-open"); if (WEB && !WEB.signedIn()) loginModal(); else claimModal(); return; }
+  if (co){ document.body.classList.remove("nav-open"); claimModal(); return; }
   const cl = t.closest("[data-claim]");
   if (cl){ const ok = claimPlayer(cl.dataset.claim); closeModal(); if (ok){ structural(); showView(cl.dataset.claim, true); maybeOnboard(); } return; }
   const gq = t.closest("[data-gquick]");
@@ -8354,7 +8349,7 @@ document.addEventListener("keydown", e=>{
 });
 $("prio").addEventListener("change", e=>{ state.prio = e.target.value; state.gmeta = Date.now(); saveLocal(); renderCompo(); pushPrio(); dirty.composer = true; });
 /* poignée de test de la version web (lecture seule de l'état, appels internes) */
-if (WEB) WEB.dbg = {me:()=>me, state:()=>state, canWrite:()=>canWrite, syncMode:()=>syncMode, queueWrite, touch, myRole, queueDiscord, pushAcces};
+if (WEB) WEB.dbg = {me:()=>me, state:()=>state, canWrite:()=>canWrite, syncMode:()=>syncMode, queueWrite, touch, pushRosterOf:id=>pushRoster(PLAYERS[PI[id]]), canSee, myRole, queueDiscord, pushAcces};
 
 
 /* ================= Contenu de référence ================= */
