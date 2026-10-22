@@ -7276,6 +7276,12 @@ const LVR_POL = {
   donjons:{t:"Les donjons comme accélérateur", d:"Tank ou soigneur, tu trouves un groupe en quelques minutes : fais chaque donjon de ta tranche une fois avec ses quêtes, et quête entre deux. Refaire un donjon pour l'XP ne paie pas, seules les quêtes rapportent vraiment."}
 };
 
+/* La même chose, vue depuis le groupe. */
+const LVR_POL_G = {
+  duo:{t:"Quêtes ensemble, donjons avec la guilde", d:"Il vous manque un tank ou un soigneur : quêtez ensemble, et pour chaque donjon de votre tranche complétez le groupe avec la guilde."},
+  donjons:{t:"Les donjons comme accélérateur", d:"Avec un tank et un soigneur, il ne vous manque que des DPS : faites chaque donjon de votre tranche une fois avec ses quêtes, et quêtez ensemble entre deux. Refaire un donjon pour l'XP ne paie pas, seules les quêtes rapportent vraiment."}
+};
+
 /* Route par spé. q = spé jouée pour quêter, par tranche [de, à, spé, note] ; dg = spé de donjon ; dual = double spé au 40 ;
    pol = solo | duo | donjons ; gear = récompense ou butin à viser, par étape ; tips = conseils propres à la spé. */
 const LVR_B = {
@@ -7597,8 +7603,8 @@ function lvrPanelB(){
   M.forEach(m=>{ m.race = raceFor(m.b, m.ans); m.z = LVR_RACE_ZONE[m.race]; m.lv = lvlOf(m.p); m.R = LVR_B[m.b.id]; });
   /* zone de départ commune */
   const zk = Object.keys(LVR_ZONES), score = z => ({z, can:M.filter(m=>lvrRaceIn(z, m.b, m.ans)).length, at:M.filter(m=>m.z === z).length});
-  /* à égalité, l'ordre de LVR_ZONES décide : Elwynn d'abord, à côté de Hurlevent où mènent tous les trajets */
-  const best = zk.map(score).sort((x,y)=>(y.can - x.can) || (zk.indexOf(x.z) - zk.indexOf(y.z)))[0], T = best.z, TZ = LVR_ZONES[T];
+  /* d'abord la zone où le plus de joueurs peuvent démarrer, puis celle qui demande le moins de changements de race, puis l'ordre de LVR_ZONES (Elwynn d'abord) */
+  const best = zk.map(score).sort((x,y)=>(y.can - x.can) || (y.at - x.at) || (zk.indexOf(x.z) - zk.indexOf(y.z)))[0], T = best.z, TZ = LVR_ZONES[T];
   const same = M.every(m=>m.z === M[0].z), S = [];
   if (same) S.push(`<p data-lvrzone="${M[0].z}"><b>Tout le monde démarre en ${esc(LVR_ZONES[M[0].z].name)}</b> (${esc(LVR_ZONES[M[0].z].hub)}).</p>`);
   else {
@@ -7613,7 +7619,7 @@ function lvrPanelB(){
   const role = (r, cap, not) => { const main = M.filter(m=>m.b.role === r); if (main.length) return {m:main[0], dual:false}; const c = M.find(m=>cap.includes(m.b.cls) && (!not || m !== not.m)) || M.find(m=>cap.includes(m.b.cls)); return c ? {m:c, dual:true} : null; };
   const tk = role("tank", ["war","pal","dru"]), hl = role("heal", ["pal","pri","sha","dru"], tk);
   const rl = (x, n) => x ? `<li><b>${n} :</b> ${esc(x.m.p.name)}${x.dual ? ` (${n === "Tank" ? "tank" : "soin"} en double spé au 40)` : ""}</li>` : `<li><b>${n} :</b> <span class="warn">personne</span>, il manque au groupe : la guilde le complète pour les donjons.</li>`;
-  const pol = tk && hl ? "donjons" : "duo", P = LVR_POL[pol];
+  const pol = tk && hl ? "donjons" : "duo", P = LVR_POL_G[pol];
   const lvs = M.map(m=>m.lv).filter(Boolean), gap = lvs.length > 1 && Math.max(...lvs) - Math.min(...lvs) > 3;
   /* frise */
   const ev = [], gear = {};
