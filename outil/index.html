@@ -7616,9 +7616,13 @@ function lvrPanelB(){
   S.push(`<p class="small muted">Zephras Isle se joue seul jusqu'au 12 (pack Skyborne).</p>`);
   const startZ = same ? LVR_ZONES[M[0].z] : TZ, start = `Zone de départ du groupe : ${esc(startZ.name)} <span class="muted">(${esc(startZ.hub)})</span>`;
   /* rôles */
-  const role = (r, cap, not) => { const main = M.filter(m=>m.b.role === r); if (main.length) return {m:main[0], dual:false}; const c = M.find(m=>cap.includes(m.b.cls) && (!not || m !== not.m)) || M.find(m=>cap.includes(m.b.cls)); return c ? {m:c, dual:true} : null; };
-  const tk = role("tank", ["war","pal","dru"]), hl = role("heal", ["pal","pri","sha","dru"], tk);
-  const rl = (x, n) => x ? `<li><b>${n} :</b> ${esc(x.m.p.name)}${x.dual ? ` (${n === "Tank" ? "tank" : "soin"} en double spé au 40)` : ""}</li>` : `<li><b>${n} :</b> <span class="warn">personne</span>, il manque au groupe : la guilde le complète pour les donjons.</li>`;
+  const capT = ["war","pal","dru"], capH = ["pal","pri","sha","dru"];
+  const tM = M.find(m=>m.b.role === "tank"), hM = M.find(m=>m.b.role === "heal" && m !== tM);
+  const tc = tM ? null : M.find(m=>capT.includes(m.b.cls) && m !== hM), tk = tM ? {m:tM, dual:false} : tc ? {m:tc, dual:true} : null;
+  const hc = hM ? null : M.find(m=>capH.includes(m.b.cls) && (!tk || m !== tk.m)), hl = hM ? {m:hM, dual:false} : hc ? {m:hc, dual:true} : null;
+  /* un même joueur ne tient pas les deux rôles : s'il est le seul à pouvoir soigner (ou tanker), le rôle manque et on le dit */
+  const alt = (cap, other) => other && cap.includes(other.m.b.cls) ? other.m : null;
+  const rl = (x, n, a) => x ? `<li><b>${n} :</b> ${esc(x.m.p.name)}${x.dual ? ` (${n === "Tank" ? "tank" : "soin"} en double spé au 40)` : ""}</li>` : `<li><b>${n} :</b> <span class="warn">personne</span>, il manque au groupe : la guilde le complète pour les donjons.${a ? ` ${esc(a.p.name)} pourrait ${n === "Tank" ? "tanker" : "soigner"} en double spé, mais tient déjà l'autre rôle.` : ""}</li>`;
   const pol = tk && hl ? "donjons" : "duo", P = LVR_POL_G[pol];
   const lvs = M.map(m=>m.lv).filter(Boolean), gap = lvs.length > 1 && Math.max(...lvs) - Math.min(...lvs) > 3;
   /* frise */
@@ -7629,7 +7633,7 @@ function lvrPanelB(){
   return `<div class="panel" id="lvr-b">${H}<p class="chart-sub">Calculée à partir des joueurs de la compo et des spés choisies dans « Compo du groupe ».</p>${noneL}
     <div class="tablewrap"><table class="dir lvr-mt"><thead><tr><th class="left">Joueur</th><th class="left">Classe et spé</th><th class="left">Race</th><th class="left">Départ</th><th>Niveau</th><th class="left">Spé pour quêter</th><th>Donjon</th></tr></thead><tbody>${M.map(m=>{ const q = m.R ? lvrQBand(m.R, m.lv || 1) : null; return `<tr><td class="left">${pdot(m.p)}<b>${esc(m.p.name)}</b></td><td class="left"><span class="tl">${spIcon(m.b)}${esc(bName(m.b))}</span></td><td class="left">${esc(RACES[m.race].name)}</td><td class="left">${esc(LVR_ZONES[m.z].name)}</td><td>${m.lv || '<span class="muted">·</span>'}</td><td class="left">${q ? esc(q[2]) : esc(m.b.spec)}</td><td>${RL[m.b.role]}</td></tr>`; }).join("")}</tbody></table></div>
     <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("map")}Le départ</h4>${S.join("")}</div>
-      <div><h4 class="lvr-h4">${icn("tank")}Les rôles</h4><ul class="small">${rl(tk, "Tank")}${rl(hl, "Soin")}</ul>${CP.length < 5 ? `<p class="small">Pour les donjons, il vous manque ${5 - CP.length} joueur${5 - CP.length > 1 ? "s" : ""}.</p>` : ""}
+      <div><h4 class="lvr-h4">${icn("tank")}Les rôles</h4><ul class="small">${rl(tk, "Tank", alt(capT, hl))}${rl(hl, "Soin", alt(capH, tk))}</ul>${CP.length < 5 ? `<p class="small">Pour les donjons, il vous manque ${5 - CP.length} joueur${5 - CP.length > 1 ? "s" : ""}.</p>` : ""}
         <p class="small"><b>Façon de monter : ${esc(P.t)}.</b> ${esc(P.d)}</p>${gap ? `<p class="small warn">${icn("warning")}Plus de trois niveaux d'écart entre vous (${Math.min(...lvs)} à ${Math.max(...lvs)}) : les plus avancés attendent ou montent un autre personnage.</p>` : ""}</div></div>
     ${lvrTimeline(pol, start, ev, gear, openLv)}
     <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("campfire")}Ce que chacun apporte</h4><ul class="small">${[...new Set(M.map(m=>m.b.cls))].map(c=>`<li><b>${esc(CLS[c].name)} :</b> ${esc(LVR_SYN[c])}</li>`).join("")}</ul></div>
