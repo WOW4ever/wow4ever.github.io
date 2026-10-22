@@ -1345,6 +1345,33 @@ select,input,textarea{background:#0d1017;color:#ebe5d8;border-color:#2c3445;font
 .nav-site{margin-top:10px;padding-top:4px;border-top:1px solid #2c3445}
 .nav-site .nav-it{display:flex;align-items:center;text-decoration:none}
 @media (max-width:979px){.b-site a:not(:first-child){display:none}.b-site a{min-height:44px;padding:0 8px;font-size:.7rem}}
+/* Musique de la guilde : bouton du bandeau, lecteur Spotify fixé en bas à droite, pastille quand il est réduit */
+.b-site .b-mus{appearance:none;background:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 11px;color:#d2ccbf;font-family:var(--f-cz);font-weight:600;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+.b-site .b-mus .ic{width:15px;height:15px;color:#c9a45c}
+.b-site .b-mus:hover,.b-site .b-mus[aria-expanded="true"]{color:#f1d79a}
+@media (max-width:979px){.b-site .b-mus{min-height:44px;padding:0 8px;font-size:.7rem}}
+.mus{position:fixed;right:16px;bottom:16px;width:360px;max-width:calc(100vw - 16px);box-sizing:border-box;z-index:57;background:#141a24;border:1px solid #3a3326;border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.55);color:#ebe5d8}
+.mus.min{width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;clip-path:inset(50%);border:0;box-shadow:none}
+.mus-h{display:flex;align-items:center;gap:2px;padding:4px 4px 4px 12px;border-bottom:1px solid #2c3445}
+.mus-t{flex:1;display:flex;align-items:center;gap:8px;font-family:var(--f-cz);font-weight:600;font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:#e3c07a}
+.mus-x{appearance:none;background:none;border:0;color:#9aa3b5;width:40px;height:40px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.mus-x:hover,.mus-x:focus-visible{color:#f1d79a;background:rgba(235,229,216,.07)}
+.mus-body{padding:10px 12px 12px}
+.mus iframe{display:block;width:100%;height:152px;border:0;border-radius:12px;background:#0d1118}
+.mus-src{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-top:8px;font-size:.84rem;color:#c3bcae}
+.mus-src span{color:#ebe5d8;font-weight:600}
+.mus-lk{appearance:none;background:none;border:0;padding:2px 0;color:#e3c07a;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:.8rem}
+.mus-lk:hover{color:#f1d79a}
+.mus-f{margin-top:8px}
+.mus-lb{display:block;font-size:.8rem;color:#c3bcae;margin:0 0 4px}
+.mus-f input{width:100%;box-sizing:border-box}
+.mus-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mus-msg{min-height:1.1em;font-size:.8rem;color:#e8a08f;margin-top:4px}
+.mus-hint{margin:8px 0 0;font-size:.76rem;line-height:1.4;color:#9aa3b5}
+.mus-pill{position:fixed;right:16px;bottom:16px;z-index:57;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid #c9a45c;background:#141a24;color:#f1d79a;font-family:var(--f-cz);font-weight:600;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.mus-pill[hidden]{display:none}
+.mus-pill:hover{background:#1b2230}
+@media (max-width:600px){.mus{left:8px;right:8px;bottom:8px;width:auto;max-width:none}.mus-pill{right:8px;bottom:8px}}
 
 /* Effets animés du site public : le bandeau laisse déborder ses bannières, l'image et les voiles restent découpés dans .banner-clip */
 .banner{overflow:visible}
@@ -1885,7 +1912,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 <path d="M40 226 22 298 M120 226 138 298 M80 232 V298" stroke="#1b1e24" stroke-width="7" stroke-linecap="round"/>
 <path d="M40 226 22 298 M120 226 138 298" stroke="#4a505c" stroke-width="2" stroke-linecap="round" opacity=".6"/>
 </svg></template><span class="b-chainfx" aria-hidden="true"></span>
-  <div class="wrap banner-top"><a class="b-logo" href="/"><span class="b-logo-c"><img width="33" height="35" src="/img/blason-wow4ever.svg" alt="Blason de la guilde"></span><span class="b-logo-t">WOW4ever</span></a><nav class="b-site" aria-label="Site de la guilde"><a href="/">Le site</a><a href="/recrutement/">Recrutement</a><a href="/wow-forever/">WoW Forever</a><a href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener">Discord</a></nav></div>
+  <div class="wrap banner-top"><a class="b-logo" href="/"><span class="b-logo-c"><img width="33" height="35" src="/img/blason-wow4ever.svg" alt="Blason de la guilde"></span><span class="b-logo-t">WOW4ever</span></a><nav class="b-site" aria-label="Site de la guilde"><a href="/">Le site</a><a href="/recrutement/">Recrutement</a><a href="/wow-forever/">WoW Forever</a><a href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener">Discord</a><button type="button" class="b-mus" data-mus="toggle" aria-expanded="false" title="Écouter la musique de la guilde"><svg class="ic" aria-hidden="true" focusable="false"><use href="#i-music"/></svg>Musique</button></nav></div>
   <div class="wrap banner-in">
     <button class="nav-toggle" data-navtoggle aria-label="Ouvrir le menu" aria-controls="sidenav"><span class="burger" aria-hidden="true"></span><span id="nav-cur"></span></button>
     <div class="brand">
@@ -1897,7 +1924,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 </header>
 
 <div class="shell">
-  <nav id="sidenav" aria-label="Menu principal"><div id="tabs"></div><div class="nav-site"><div class="nav-gh">Le site</div><a class="nav-it" href="/"><span class="nav-l">Accueil du site</span></a><a class="nav-it" href="/recrutement/"><span class="nav-l">Recrutement</span></a><a class="nav-it" href="/wow-forever/"><span class="nav-l">WoW Forever</span></a><a class="nav-it" href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener"><span class="nav-l">Discord de la guilde</span></a></div><div class="nav-foot small muted" id="nav-foot"></div></nav>
+  <nav id="sidenav" aria-label="Menu principal"><div id="tabs"></div><div class="nav-site"><div class="nav-gh">Le site</div><a class="nav-it" href="/"><span class="nav-l">Accueil du site</span></a><a class="nav-it" href="/recrutement/"><span class="nav-l">Recrutement</span></a><a class="nav-it" href="/wow-forever/"><span class="nav-l">WoW Forever</span></a><a class="nav-it" href="https://discord.gg/2EJUvwRDWz" target="_blank" rel="noopener"><span class="nav-l">Discord de la guilde</span></a><button type="button" class="nav-it" data-mus="toggle" aria-expanded="false"><span class="nav-l">Musique de la guilde</span></button></div><div class="nav-foot small muted" id="nav-foot"></div></nav>
   <div class="nav-scrim" data-navtoggle></div>
   <main id="main"><div class="wrap-in">
     <div id="player-views"></div>
@@ -2509,6 +2536,7 @@ const ICONS = {
   banner: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 3.5h16M6.5 3.5V20.5l5.5-3.5 5.5 3.5V3.5'/><path d='M12 7.5l2 2.5-2 2.5-2-2.5z' fill='currentColor'/></g>",
   flag: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M5 21V3.5M5 4.5c2.6-1.4 5-1.4 7.3 0s4.7 1.4 7.2 0V13c-2.5 1.4-4.9 1.4-7.2 0s-4.7-1.4-7.3 0'/></g>",
   key: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='6.5' cy='12' r='3.6'/><path d='M10.1 12h10.4M17 12v3.8M20.5 12v3'/></g>",
+  music: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18V5.5l11-2.2V16'/><circle cx='6.5' cy='18' r='2.6'/><circle cx='17.5' cy='16' r='2.6'/><path d='M9 9.3l11-2.2'/></g>",
   compass: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M12 5.8l2.3 6.2-2.3 6.2-2.3-6.2z'/><path d='M12 5.8l2.3 6.2H9.7z' fill='currentColor'/></g>"
 };
 function iconSprite(){ return `<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>${Object.entries(ICONS).map(([k,v])=>`<symbol id="i-${k}" viewBox="0 0 24 24">${v}</symbol>`).join("")}</defs></svg>`; }
@@ -5036,7 +5064,7 @@ const FIXED = ["tableau","ajout","annuaire","discord","comparatif","compo","comp
 const SANS_GUILDE = typeof window !== "undefined" && !!window.W4E_SANS_GUILDE, GUILD_VIEWS = ["annuaire","sorties","raid","groupes","discord","acces"];
 const viewOn = v => !(SANS_GUILDE && GUILD_VIEWS.includes(v));
 const idOk = id => typeof id === "string" && /^[a-z0-9_-]{1,40}$/.test(id) && !FIXED.includes(id) && id !== "reglages" && id !== "first";
-const state = {view:null, prio:"autonome", answers:{}, meta:{}, group:{together:80, friends:30, goal:"tout"}, gmeta:0, removed:{}, acces:{roles:{}, perms:{}, persons:{}, mails:{}, mail:"", updatedAt:0}, sorties:{}, inscr:{}, equipes:{}, discord:{on:false, out:{sortie:true, rappel:true, raid:true, membre:true, hebdo:true, recrutement:false}, in:{rsvp:true, niveau:true, dispo:true, absent:true, arrivee:true, activite:true, roles:true}, rolemap:{chef:"Chef de guilde, Maître de guilde, GM", officier:"Officier, Officer", membre:"Membre, Member", invite:"Invité, Guest"}, salon:"", updatedAt:0}, outbox:[], dIn:[]};
+const state = {view:null, prio:"autonome", answers:{}, meta:{}, group:{together:80, friends:30, goal:"tout"}, gmeta:0, removed:{}, acces:{roles:{}, perms:{}, persons:{}, mails:{}, mail:"", updatedAt:0}, sorties:{}, inscr:{}, equipes:{}, musique:{url:"", by:null, at:0}, discord:{on:false, out:{sortie:true, rappel:true, raid:true, membre:true, hebdo:true, recrutement:false}, in:{rsvp:true, niveau:true, dispo:true, absent:true, arrivee:true, activite:true, roles:true}, rolemap:{chef:"Chef de guilde, Maître de guilde, GM", officier:"Officier, Officer", membre:"Membre, Member", invite:"Invité, Guest"}, salon:"", updatedAt:0}, outbox:[], dIn:[]};
 const ui = {mode:"q", open:{}, sec:{}, comp:{}, me:null, onb:{}, set:{shown:null, group:null, hide:{}, order:{}, strict:false, compact:false, raid:{size:20, src:"tous", pick:null}, lvl:3}};
 PLAYERS.forEach((p,i)=>{ p.upd = 0; p.order = i; p.uid = null; p.choix = p.choix || []; p.metiers = []; });
 function cleanPlayer(p, i){
@@ -5058,6 +5086,7 @@ try {
     state.gmeta = Number(s.gmeta) || 0;
     if (s.acces && typeof s.acces === "object") state.acces = Object.assign(state.acces, s.acces);
     ["sorties","inscr","equipes"].forEach(k=>{ if (s[k] && typeof s[k] === "object") state[k] = s[k]; });
+    if (s.musique && typeof s.musique === "object") state.musique = Object.assign(state.musique, s.musique);
     if (s.discord && typeof s.discord === "object") state.discord = Object.assign(state.discord, s.discord, {out:Object.assign({}, state.discord.out, s.discord.out || {}), in:Object.assign({}, state.discord.in, s.discord.in || {})});
   }
   const u = JSON.parse(localStorage.getItem(LSUI) || "null");
@@ -5072,7 +5101,7 @@ try {
 function ensureAnswers(p){ if (!state.answers[p.id]){ state.answers[p.id] = clone(PREFILL[p.id] || {}); state.meta[p.id] = 0; } }
 function sortPlayers(){ PLAYERS.sort((x,y)=>x.order - y.order); reindex(); }
 sortPlayers(); PLAYERS.forEach(ensureAnswers);
-function saveLocal(){ try { localStorage.setItem(LS, JSON.stringify({players:PLAYERS.map(p=>({id:p.id, name:p.name, note:p.note, upd:p.upd, order:p.order, uid:p.uid, choix:p.choix, metiers:p.metiers, perso:p.perso || null, created:p.created || 0})), removed:state.removed, answers:state.answers, meta:state.meta, prio:state.prio, group:state.group, gmeta:state.gmeta, acces:state.acces, sorties:state.sorties, inscr:state.inscr, equipes:state.equipes, discord:state.discord})); } catch(e){} }
+function saveLocal(){ try { localStorage.setItem(LS, JSON.stringify({players:PLAYERS.map(p=>({id:p.id, name:p.name, note:p.note, upd:p.upd, order:p.order, uid:p.uid, choix:p.choix, metiers:p.metiers, perso:p.perso || null, created:p.created || 0})), removed:state.removed, answers:state.answers, meta:state.meta, prio:state.prio, group:state.group, gmeta:state.gmeta, acces:state.acces, sorties:state.sorties, inscr:state.inscr, equipes:state.equipes, discord:state.discord, musique:state.musique})); } catch(e){} }
 function saveUI(){ try { localStorage.setItem(LSUI, JSON.stringify(ui)); } catch(e){} }
 
 /* ================= Outils de rendu ================= */
@@ -8153,6 +8182,91 @@ function decoView(v){
   if (el) el.querySelector(".vi-img").loading = "eager";
 }
 
+/* ================= Musique de la guilde : lecteur Spotify flottant =================
+   Panneau fixé en bas à droite, hors des vues : changer de vue ne recharge jamais le lecteur.
+   Rien n'est demandé à Spotify avant la première ouverture. Réduire garde l'iframe (la musique continue), fermer la retire.
+   Source : le lien perso (ui.set.spotify), sinon celui de la guilde (guilde/musique), sinon la playlist officielle de Blizzard. */
+const SPOTIFY_DEFAULT = "https://open.spotify.com/playlist/59peCzICqRHimd57hJxTZz";
+const SPOTIFY_TYPES = ["playlist","album","track","artist","show","episode"];
+function parseSpotify(s){
+  s = String(s || "").trim();
+  const m = s.match(/^spotify:([a-z]+):([A-Za-z0-9]+)$/) || s.match(/^https:\/\/open\.spotify\.com\/(?:intl-[a-z]{2}(?:-[A-Za-z]{2})?\/)?(?:embed\/)?([a-z]+)\/([A-Za-z0-9]+)\/?(?:\?[^\s#]*)?$/);
+  if (!m || !SPOTIFY_TYPES.includes(m[1]) || !/^[A-Za-z0-9]{22}$/.test(m[2])) return null;
+  return {type:m[1], id:m[2]};
+}
+const spotifyEmbed = r => `https://open.spotify.com/embed/${r.type}/${r.id}?utm_source=generator&theme=0`;
+const spotifyUrl = r => `https://open.spotify.com/${r.type}/${r.id}`;
+function musicSource(){
+  const own = parseSpotify(ui.set.spotify); if (own) return {r:own, k:"perso", label:"Ta playlist"};
+  const g = parseSpotify((state.musique || {}).url); if (g) return {r:g, k:"guilde", label:"Playlist de la guilde"};
+  return {r:parseSpotify(SPOTIFY_DEFAULT), k:"defaut", label:"Playlist officielle de Blizzard"};
+}
+let musSt = "closed";
+function musicAria(){ document.querySelectorAll('[data-mus="toggle"]').forEach(b=>b.setAttribute("aria-expanded", musSt === "open" ? "true" : "false")); }
+function musicLine(){
+  const el = $("mus-src"); if (!el) return;
+  const s = musicSource();
+  el.innerHTML = `<span>${esc(s.label)}</span><button type="button" class="mus-lk" data-mus="chg" aria-expanded="${$("mus-f") && !$("mus-f").hidden ? "true" : "false"}">Changer</button>` + (s.k === "perso" ? `<button type="button" class="mus-lk" data-mus="reset">Revenir à la playlist de la guilde</button>` : "");
+}
+/* recharge l'iframe seulement si la source a changé */
+function musicRefresh(){
+  const f = document.querySelector("#mus iframe"); if (!f) return;
+  const src = spotifyEmbed(musicSource().r);
+  if (f.getAttribute("src") !== src) f.setAttribute("src", src);
+  musicLine();
+}
+function musicOpen(){
+  if (!$("mus")){
+    document.body.insertAdjacentHTML("beforeend", `<aside id="mus" class="mus" aria-label="Musique de la guilde">
+  <div class="mus-h"><span class="mus-t">${icn("music")}Musique de la guilde</span><button type="button" class="mus-x" data-mus="min" title="Réduire" aria-label="Réduire le lecteur">${icn("minus")}</button><button type="button" class="mus-x" data-mus="close" title="Fermer" aria-label="Fermer le lecteur">${icn("close")}</button></div>
+  <div class="mus-body">
+    <iframe title="Lecteur Spotify" src="${esc(spotifyEmbed(musicSource().r))}" width="100%" height="152" frameborder="0" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    <div class="mus-src" id="mus-src"></div>
+    <div class="mus-f" id="mus-f" hidden></div>
+    <p class="mus-hint">Connecte-toi à Spotify dans ce navigateur pour écouter les titres en entier, sinon Spotify ne joue que des extraits de 30 secondes.</p>
+  </div>
+</aside><button type="button" class="mus-pill" id="mus-pill" data-mus="open" hidden aria-label="Rouvrir le lecteur de musique">${icn("music")}Musique</button>`);
+    musicLine();
+  }
+  const a = $("mus"); a.classList.remove("min"); a.removeAttribute("inert"); a.removeAttribute("aria-hidden");
+  $("mus-pill").hidden = true; musSt = "open"; musicAria();
+}
+function musicMin(){
+  const a = $("mus"); if (!a) return;
+  a.classList.add("min"); a.setAttribute("inert", ""); a.setAttribute("aria-hidden", "true");
+  $("mus-pill").hidden = false; musSt = "min"; musicAria();
+}
+function musicClose(){ const a = $("mus"), p = $("mus-pill"); if (a) a.remove(); if (p) p.remove(); musSt = "closed"; musicAria(); }
+function musicForm(){
+  const f = $("mus-f"); if (!f) return;
+  f.hidden = !f.hidden;
+  if (!f.hidden){
+    f.innerHTML = `<label for="mus-in" class="mus-lb">Colle un lien Spotify (playlist, album, titre)</label><input id="mus-in" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://open.spotify.com/playlist/...">
+<div class="mus-acts"><button type="button" class="btn" data-mus="me">Pour moi</button>${myRole() === "gm" ? `<button type="button" class="btn" data-mus="guild">Pour toute la guilde</button>` : ""}</div><div class="mus-msg" id="mus-msg" role="status"></div>`;
+    $("mus-in").addEventListener("keydown", e=>{ if (e.key === "Enter"){ e.preventDefault(); musicSet("me"); } });
+    $("mus-in").focus();
+  }
+  musicLine();
+}
+function musicSet(who){
+  const r = parseSpotify(($("mus-in") || {}).value);
+  if (!r){ const m = $("mus-msg"); if (m) m.textContent = "Lien Spotify non reconnu"; return; }
+  if (who === "guild"){
+    if (myRole() !== "gm") return;
+    state.musique = {url:spotifyUrl(r), by:me.pid || null, at:Date.now()}; saveLocal(); pushMusique();
+  } else { ui.set.spotify = spotifyUrl(r); saveUI(); }
+  $("mus-f").hidden = true; musicRefresh();
+}
+function musicAct(a){
+  if (a === "toggle"){ if (musSt === "open") musicMin(); else musicOpen(); }
+  else if (a === "open") musicOpen();
+  else if (a === "min") musicMin();
+  else if (a === "close") musicClose();
+  else if (a === "chg") musicForm();
+  else if (a === "me" || a === "guild") musicSet(a);
+  else if (a === "reset"){ delete ui.set.spotify; saveUI(); musicRefresh(); }
+}
+
 
 /* ================= Rendu global ================= */
 function renderLive(){
@@ -8244,6 +8358,7 @@ const pushRoster = p => queueWrite("joueurs/" + p.id, rosterBody(p));
 const pushRemoved = (pid, ts) => queueWrite("joueurs/" + pid, {removed:true, updatedAt:ts});
 const pushPrio = () => queueWrite("reponses/reglages", {prio:state.prio, group:state.group, updatedAt:state.gmeta || Date.now()});
 const pushAcces = () => { if (myRole() === "gm") queueWrite("guilde/acces", state.acces); };
+const pushMusique = () => { if (myRole() === "gm") queueWrite("guilde/musique", state.musique); };
 const pushDiscordCfg = () => { if (myRole() === "gm") queueWrite("guilde/discord", state.discord); };
 const pushSortie = s => queueWrite("sorties/" + s.id, s);
 const pushInscr = x => queueWrite("inscriptions/" + x.sid + "__" + x.pid, x);
@@ -8321,13 +8436,16 @@ function onCol(name, fn){ try { db.collection(name).onSnapshot(fn, ()=>{}); } ca
     if (changed){ saveLocal(); if (state.view === "compo") renderGroupCtx(); renderLive(); }
   });
   onCol("guilde", snap=>{
-    let changed = false;
+    let changed = false, mus = false;
     snap.docs.forEach(d=>{
       if (!d.exists) return;
       const b = d.data() || {}, ts = Number(b.updatedAt) || 0;
       if (d.id === "acces" && ts > (state.acces.updatedAt || 0)){ state.acces = Object.assign({roles:{}, perms:{}, persons:{}, mails:{}, mail:""}, b); changed = true; }
       if (d.id === "discord" && ts > (state.discord.updatedAt || 0)){ state.discord = Object.assign({}, state.discord, b); changed = true; }
+      if (d.id === "musique" && (Number(b.at) || 0) > (state.musique.at || 0)){ state.musique = {url:parseSpotify(b.url) ? String(b.url).slice(0,300) : "", by:typeof b.by === "string" ? b.by.slice(0,40) : null, at:Number(b.at) || 0}; mus = true; }
     });
+    if (mus && !changed) saveLocal();
+    if (mus) musicRefresh();
     if (changed){ saveLocal(); lastIds = ""; structural(); }
     accesSeen = true; tryHome();
   });
@@ -8463,6 +8581,8 @@ document.addEventListener("click", e=>{
   if (mo && !t.closest("[data-v]") && !t.closest("[data-chopen]")){ closeModal(); return; }
   const nb = t.closest("[data-navtoggle]");
   if (nb){ document.body.classList.toggle("nav-open"); return; }
+  const mu = t.closest("[data-mus]");
+  if (mu){ e.preventDefault(); if (mu.closest("#sidenav")) document.body.classList.remove("nav-open"); musicAct(mu.dataset.mus); return; }
   const gb = t.closest("[data-gear]");
   if (gb){ toggleGear(gb.dataset.gear === "close" ? false : undefined); return; }
   const tab = t.closest("[data-v]");
