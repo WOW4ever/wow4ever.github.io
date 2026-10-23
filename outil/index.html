@@ -5379,6 +5379,8 @@ function canSee(v){
   if (v === "discord") return p.gerer;
   if (v === "ajout") return PLAYERS.length < MAXP;
   if (PI[v] != null) return v === me.pid || p.fiches;
+  /* contenu de référence ouvert à tous, même quand une liste d'onglets enregistrée avant son ajout ne le contient pas */
+  if (v === "addons") return true;
   return p.tabs.includes(v);
 }
 const canManage = () => myPerm().gerer;
