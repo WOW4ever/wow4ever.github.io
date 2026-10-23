@@ -1542,6 +1542,32 @@ select,input,textarea{background:#0d1017;color:#ebe5d8;border-color:#2c3445;font
   .lvr-ic{display:none}
   .lvr-pick label,.lvr-pick select{width:100%}
 }
+/* Addons : filtres en puces, grille de cartes (1 colonne au téléphone, 2 à 3 sur ordinateur) */
+.ad-before{margin:0}.ad-before h3{margin-top:0}.ad-before ul{margin:6px 0 0;padding-left:1.2em}
+.ad-filt{display:flex;flex-direction:column;gap:10px}
+.ad-chips,.ad-seg{display:flex;flex-wrap:wrap;gap:6px}
+.ad-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ad-chip{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.84rem;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.25;max-width:100%;text-align:left}
+.ad-chip:hover{border-color:var(--gold)}
+.ad-chip.on{background:var(--gold-soft);border-color:var(--gold);color:var(--ink)}
+.ad-n{color:var(--muted);font-size:.78em;margin-left:2px}
+.ad-search{display:flex;align-items:center;gap:6px;flex:1 1 220px;max-width:340px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--surface)}
+.ad-search input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;padding:2px 0;outline:none}
+.ad-search:focus-within{border-color:var(--gold)}
+.ad-list{display:flex;flex-direction:column;gap:16px}
+.ad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:12px;margin-top:10px}
+.ad-card{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface-2);min-width:0;overflow-wrap:anywhere}
+.ad-card p{margin:0}
+.ad-card[hidden],.ad-cat[hidden],.ad-empty[hidden]{display:none}
+.ad-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ad-name{font-weight:700;font-size:1.02rem;color:var(--gold);text-decoration:none}
+.ad-name:hover{text-decoration:underline}
+.ad-st{flex:none;font-size:.72rem;border-radius:999px;padding:2px 8px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.ad-st.forever{color:var(--heal);border-color:color-mix(in srgb,var(--heal) 50%,var(--line));background:color-mix(in srgb,var(--heal) 10%,transparent)}
+.ad-btn{align-self:flex-start;margin-top:auto;text-decoration:none}
+.ad-empty{text-align:center;color:var(--muted)}
+.ad-avoid{margin:8px 0 0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.ad-alt{color:var(--heal)}
 </style><style>.linkbtn{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}.wlogin{width:100%;justify-content:center}</style>
 <script>window.W4E_SANS_GUILDE = true;</script>
 <script>
@@ -1936,6 +1962,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
     <section class="view" id="v-discord" data-view="discord" hidden><div id="guild-discord"></div></section>
     <section class="view" id="v-acces" data-view="acces" hidden><div id="guild-acces"></div></section>
     <section class="view" id="v-leveling" data-view="leveling" hidden><div id="leveling"></div></section>
+    <section class="view" id="v-addons" data-view="addons" hidden><div id="addons"></div></section>
     <section class="view" id="v-ajout" data-view="ajout" hidden>
       <div id="claim-box" style="max-width:760px"></div>
       <div class="panel" style="max-width:760px">
@@ -2467,6 +2494,7 @@ const PROF_FIT = {
 };
 
 const ICONS = {
+  addon: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4.5 8.5h3.4a2.3 2.3 0 1 1 4.4 0h3.4v3.4a2.3 2.3 0 1 1 0 4.4v3.4H4.5v-3.3a2.2 2.2 0 1 0 0-4.6z'/></g>",
   tank: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2.8l7.5 2.6V11c0 4.9-3.2 8.2-7.5 10.2C7.7 19.2 4.5 15.9 4.5 11V5.4z'/><path d='M12 6.5v10.5M7.8 10.5h8.4'/></g>",
   heal: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9.8 3h4.4M10.8 3v5.8a5.8 5.8 0 1 0 2.4 0V3'/><path d='M12 11.8v5M9.5 14.3h5'/></g>",
   dps: "<g fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M20.5 3.5l-.8 3.8-9.4 9.4-3-3 9.4-9.4z'/><path d='M5.5 12.2l6.3 6.3M8.6 15.4l-4.1 4.1'/></g>",
@@ -5059,7 +5087,7 @@ function suggestTeams(players, size){
 /* ================= État et stockage ================= */
 const clone = o => JSON.parse(JSON.stringify(o));
 const LS = "wow-forever-v7", LSUI = "wow-forever-ui7", CODE = "WOW8-", MAXP = 80;
-const FIXED = ["tableau","ajout","annuaire","discord","comparatif","compo","compositeur","sorties","raid","groupes","acces","leveling","histoire","compos","classes","races","metiers","regles"];
+const FIXED = ["tableau","ajout","annuaire","discord","comparatif","compo","compositeur","sorties","raid","groupes","acces","leveling","histoire","compos","classes","races","metiers","addons","regles"];
 /* version web sans la partie guilde (indicateur posé par assemble_web.py) : ces vues sortent du menu et des vues accessibles */
 const SANS_GUILDE = typeof window !== "undefined" && !!window.W4E_SANS_GUILDE, GUILD_VIEWS = ["annuaire","sorties","raid","groupes","discord","acces"];
 const viewOn = v => !(SANS_GUILDE && GUILD_VIEWS.includes(v));
@@ -5211,9 +5239,9 @@ const expl = (s, d) => `<div class="expl"><p>${s}</p>${d ? `<details><summary>Co
 const gc = (title, sub, body, wide, ex) => `<div class="gcard${wide ? " wide" : ""}"><h3 class="chart-h">${esc(title)}</h3>${sub ? `<p class="chart-sub">${esc(sub)}</p>` : ""}${body}${ex ? expl(ex[0], ex[1]) : ""}</div>`;
 
 /* ================= Menu latéral ================= */
-const VIEW_LABEL = {tableau:"Tableau de bord", ajout:"Ajouter un joueur", annuaire:"Membres", discord:"Discord", comparatif:"Comparatif", compo:"Compo du groupe", compositeur:"Compositeur", sorties:"Sorties", raid:"Raids", groupes:"Équipes de leveling", acces:"Rôles et accès", leveling:"Leveling 1-60", histoire:"Histoire", compos:"Compos types", classes:"Classes et spés", races:"Races", metiers:"Métiers", regles:"Règles Forever"};
-const VIEW_ICON = {tableau:"compass", ajout:"plus", annuaire:"users", discord:"horn", comparatif:"swords", compo:"tank", compositeur:"anvil", sorties:"calendar", raid:"dragon", groupes:"campfire", acces:"lock", leveling:"map", histoire:"book", compos:"scroll", classes:"war", races:"banner", metiers:"chest", regles:"scroll"};
-const NAV_GROUPS = [["Moi",["tableau"]],SANS_GUILDE ? ["Joueurs",[]] : ["Guilde",["annuaire","sorties","raid","groupes","discord","acces"]],["Compos",["comparatif","compo","compositeur","compos"]],["Savoir",["leveling","classes","races","metiers","regles","histoire"]]];
+const VIEW_LABEL = {tableau:"Tableau de bord", ajout:"Ajouter un joueur", annuaire:"Membres", discord:"Discord", comparatif:"Comparatif", compo:"Compo du groupe", compositeur:"Compositeur", sorties:"Sorties", raid:"Raids", groupes:"Équipes de leveling", acces:"Rôles et accès", leveling:"Leveling 1-60", histoire:"Histoire", compos:"Compos types", classes:"Classes et spés", races:"Races", metiers:"Métiers", addons:"Addons", regles:"Règles Forever"};
+const VIEW_ICON = {tableau:"compass", ajout:"plus", annuaire:"users", discord:"horn", comparatif:"swords", compo:"tank", compositeur:"anvil", sorties:"calendar", raid:"dragon", groupes:"campfire", acces:"lock", leveling:"map", histoire:"book", compos:"scroll", classes:"war", races:"banner", metiers:"chest", addons:"addon", regles:"scroll"};
+const NAV_GROUPS = [["Moi",["tableau"]],SANS_GUILDE ? ["Joueurs",[]] : ["Guilde",["annuaire","sorties","raid","groupes","discord","acces"]],["Compos",["comparatif","compo","compositeur","compos"]],["Savoir",["leveling","classes","races","metiers","addons","regles","histoire"]]];
 const views = () => PLAYERS.map(p=>p.id).concat(FIXED.filter(viewOn));
 const dirty = {compare:true, compo:true, composer:true, guild:true, players:new Set()};
 const builtP = new Set();
@@ -5276,6 +5304,7 @@ function renderVisible(){
   if (v === "discord") renderDiscord();
   if (v === "tableau") renderDashboard();
   if (v === "leveling") renderLeveling();
+  if (v === "addons") renderAddons();
   if (v === "ajout"){ const cb = $("claim-box"); if (cb) cb.innerHTML = !me.pid && freeSheets().length ? `<div class="callout"><h3>${icn("visitor")}Ta fiche existe peut-être déjà</h3><p>Avant d'en créer une nouvelle, regarde si quelqu'un l'a déjà préparée pour toi.</p>${claimListHTML()}</div>` : ""; }
   if (v === "compos") renderKnown();
   applyPanels(v);
@@ -5301,13 +5330,13 @@ const ROLE_NAMES = {gm:"Admin de l'outil", chef:"Chef de guilde", officier:"Offi
 const ROLE_ICON = {gm:"key", chef:"gm", officier:"officer", membre:"member", invite:"guest", visiteur:"visitor"};
 const ROLE_KEYS = ["chef","officier","membre","invite"];
 /* pages réglables par rôle ; « fiches » = les questionnaires détaillés des autres joueurs */
-const TABS_CFG = [["annuaire","Guilde et profils synthétiques"],["comparatif","Comparatif"],["compo","Compo du groupe"],["compositeur","Compositeur"],["sorties","Sorties"],["raid","Raids"],["groupes","Groupes de leveling"],["leveling","Leveling"],["histoire","Histoire"],["compos","Compos types"],["classes","Classes et spés"],["races","Races"],["metiers","Métiers"],["regles","Règles Forever"]];
+const TABS_CFG = [["annuaire","Guilde et profils synthétiques"],["comparatif","Comparatif"],["compo","Compo du groupe"],["compositeur","Compositeur"],["sorties","Sorties"],["raid","Raids"],["groupes","Groupes de leveling"],["leveling","Leveling"],["histoire","Histoire"],["compos","Compos types"],["classes","Classes et spés"],["races","Races"],["metiers","Métiers"],["addons","Addons"],["regles","Règles Forever"]];
 const ALL_TABS = TABS_CFG.map(t=>t[0]);
 const PERM_DEFAULT = {
   chef:{tabs:ALL_TABS.slice(), fiches:true, gerer:true},
   officier:{tabs:ALL_TABS.slice(), fiches:true, gerer:true},
   membre:{tabs:ALL_TABS.slice(), fiches:false, gerer:false},
-  invite:{tabs:["annuaire","leveling","histoire","compos","classes","races","metiers","regles"], fiches:false, gerer:false}
+  invite:{tabs:["annuaire","leveling","histoire","compos","classes","races","metiers","addons","regles"], fiches:false, gerer:false}
 };
 const me = {uid:null, pid:null, owner:false, write:null, ready:false, shared:false};
 let userCap = null;
@@ -7670,6 +7699,69 @@ function lvrPanelB(){
     <p class="small muted">Au-delà du niveau 30, tout est extrapolé : la bêta s'est arrêtée au 30.</p></div>`;
 }
 
+
+/* ================= Addons WoW Forever (recherche et liens vérifiés le 23 octobre 2026) ================= */
+const ADDONS = {"checked":"2026-10-23","notes":["Forever tourne sur le client Retail de Midnight (interface 16001) : les addons Classic ne se chargent pas.","Sur CurseForge, utiliser le filtre WoW Forever et prendre le fichier qui finit par -forever quand il existe ; un fichier antérieur à début 2026 a peu de chances de fonctionner.","Installer BugSack et BugGrabber en premier pour voir les erreurs Lua.","Midnight ferme le journal de combat aux addons : compteurs, alertes et suivis de recharges en font moins qu'avant.","Une seule interface complète, une seule carte du monde et un seul outil d'itinéraire à la fois ; exporter ses réglages avant de mettre à jour un addon en bêta.","Liens vérifiés un par un sur CurseForge le 23 octobre 2026 ; les téléchargements sont ceux de chaque projet sur CurseForge."],"cats":[{"id":"ui","t":"Interface et barres"},{"id":"quetes","t":"Quêtes et leveling"},{"id":"confort","t":"Confort au quotidien"},{"id":"sacs","t":"Sacs, hôtel des ventes et métiers"},{"id":"cartes","t":"Cartes et navigation"},{"id":"donjons","t":"Donjons, boss et butin"},{"id":"combat","t":"Dégâts, menace et alertes"},{"id":"soins","t":"Soins et cadres de groupe"},{"id":"auras","t":"Auras, recharges et barres de vie"},{"id":"jcj","t":"JcJ"}],"addons":[{"name":"Bartender4","cat":"ui","why":"Remplace les barres d'action : nombre, taille, position et visibilité de chaque barre.","status":"compatible","url":"https://www.curseforge.com/wow/addons/bartender4","dl":"81,9 M","rec":["Kami Labs"],"note":"Pas de fichier -forever, le fichier Retail se charge."},{"name":"ClassicUI Forever","cat":"ui","why":"Redonne l'allure de l'interface vanilla (barres et cadres) par-dessus le mode Édition.","status":"forever","url":"https://www.curseforge.com/wow/addons/classicui-forever","dl":"134,3 k","rec":["Kami Labs","ExitLag","Gfinity"],"note":"Conflit avec DarkMode. Une seule interface complète à la fois."},{"name":"ForeverUI","cat":"ui","why":"Interface complète pensée pour Forever : cadres de groupe et de raid, compteur intégré, aide aux sacs et au butin.","status":"forever","url":"https://www.curseforge.com/wow/addons/foreverui","dl":"21,0 k","rec":["Kami Labs","Gfinity"],"note":"Ne pas confondre avec Forever UI (autre projet). Une seule interface complète à la fois."},{"name":"ElvUI","cat":"ui","why":"Suite d'interface complète et très réglable qui remplace la quasi-totalité de l'interface Blizzard.","status":"compatible","url":"https://tukui.org/elvui","dl":null,"rec":["Kami Labs","Gfinity"],"note":"Hors CurseForge : à prendre sur tukui.org. Une seule interface complète à la fois."},{"name":"EllesmereUI","cat":"ui","why":"Suite moderne écrite pour Midnight, avec minicarte et gestionnaire de recharges intégrés.","status":"compatible","url":"https://www.curseforge.com/wow/addons/ellesmereui","dl":"7,7 M","rec":["Kami Labs","Icy Veins"],"note":"Une seule interface complète à la fois."},{"name":"MoveAny","cat":"ui","why":"Déplace et redimensionne les fenêtres et éléments que le mode Édition ne gère pas.","status":"forever","url":"https://www.curseforge.com/wow/addons/moveany","dl":"21,7 M","rec":["Kami Labs"],"note":"Prendre le fichier -forever."},{"name":"Prat 3.0","cat":"ui","why":"Personnalise le chat : horodatage, couleurs de classe, historique, liens et filtres.","status":"compatible","url":"https://www.curseforge.com/wow/addons/prat-3-0","dl":"35,0 M","rec":["WowVendor"],"note":"Ne pas prendre Prat 3.0 (Classic), qui ne se charge pas sur Forever."},{"name":"Questie","cat":"quetes","why":"Affiche donneurs de quêtes, objectifs et points de rendu sur la carte et la minicarte.","status":"forever","url":"https://www.curseforge.com/wow/addons/questie","dl":"209,5 M","rec":["Kami Labs","Gfinity","ExitLag","WowVendor"],"note":"Base de quêtes issue de Classic : les quêtes inédites de Forever peuvent manquer."},{"name":"RestedXP Guide","cat":"quetes","why":"Guide de leveling optimisé avec flèche, suivi des quêtes et itinéraire adapté au personnage.","status":"compatible","url":"https://www.curseforge.com/wow/addons/restedxp-guide","dl":"27,9 M","rec":["Kami Labs","Icy Veins"],"note":"Gratuit jusqu'au niveau 20, guide complet payant."},{"name":"Guidelime","cat":"quetes","why":"Guide pas à pas gratuit avec flèche et étape suivante, qui lit des guides écrits par la communauté.","status":"compatible","url":"https://www.curseforge.com/wow/addons/guidelime","dl":"5,4 M","rec":["Kami Labs"],"note":"Alternative gratuite à RestedXP : ne pas utiliser les deux ensemble. Installer aussi le guide TUGs."},{"name":"TUGs Leveling Guide","cat":"quetes","why":"Guide de leveling gratuit pour Guidelime, avec une route Forever de 12 à 30 puis la route vanilla.","status":"compatible","url":"https://www.curseforge.com/wow/addons/guidelime_tugs","dl":"4,1 M","rec":["Kami Labs"],"note":"Nécessite Guidelime. Route 30 à 60 mise à jour après la sortie."},{"name":"Nova Spell Rank Checker","cat":"quetes","why":"Signale les sorts encore au rang périmé dans les barres d'action après un passage chez le maître.","status":"forever","url":"https://www.curseforge.com/wow/addons/nova-spell-rank-checker","dl":"301,6 k","rec":["Kami Labs"],"note":null},{"name":"Talents Forever","cat":"quetes","why":"Calculateur de talents en jeu pour préparer, tester et partager un build sans dépenser de points.","status":"forever","url":"https://www.curseforge.com/wow/addons/talents-forever","dl":"180,3 k","rec":["Icy Veins"],"note":"Ne pas confondre avec TalentsForever ni Forever Talents."},{"name":"Forever Quest Tint","cat":"quetes","why":"Colore dans le journal les quêtes absentes du Classic d'origine pour repérer le contenu inédit.","status":"forever","url":"https://www.curseforge.com/wow/addons/forever-quest-tint","dl":"68,6 k","rec":["Kami Labs"],"note":null},{"name":"QuestieTrace","cat":"quetes","why":"Enregistre les quêtes inédites de Forever et les envoie à l'équipe Questie pour compléter sa base.","status":"forever","url":"https://www.curseforge.com/wow/addons/questietrace","dl":"20,1 k","rec":["Kami Labs"],"note":"Complément de Questie, utile pour la communauté plus que pour soi."},{"name":"Leatrix Plus","cat":"confort","why":"Regroupe des dizaines de petits réglages : vente auto des objets gris, réparation, zoom caméra, refus des duels.","status":"forever","url":"https://www.curseforge.com/wow/addons/leatrix-plus","dl":"73,9 M","rec":["Kami Labs","Gfinity","WowVendor"],"note":"Prendre le fichier -forever. Menu avec /ltp."},{"name":"BugSack","cat":"confort","why":"Range les erreurs Lua dans un sac consultable au lieu de les afficher en plein écran.","status":"compatible","url":"https://www.curseforge.com/wow/addons/bugsack","dl":"17,5 M","rec":["Kami Labs","Icy Veins"],"note":"Nécessite BugGrabber. À installer en premier."},{"name":"BugGrabber","cat":"confort","why":"Capture les erreurs Lua pour BugSack et les autres addons de diagnostic.","status":"compatible","url":"https://www.curseforge.com/wow/addons/bug-grabber","dl":"19,0 M","rec":["Kami Labs","Icy Veins"],"note":"À installer avec BugSack."},{"name":"ForeverPlus","cat":"confort","why":"Confort taillé pour Forever : prise et rendu auto des quêtes, achat des composants exacts, infobulles enrichies.","status":"forever","url":"https://www.curseforge.com/wow/addons/foreverplus","dl":"49,1 k","rec":["Kami Labs","Gfinity"],"note":"Traduit en français. Ne pas confondre avec ForeverPlusPlus."},{"name":"Myslot","cat":"confort","why":"Exporte et importe barres d'action, macros et raccourcis pour équiper un reroll en une minute.","status":"compatible","url":"https://www.curseforge.com/wow/addons/myslot","dl":"5,2 M","rec":["Kami Labs"],"note":null},{"name":"Bagnon","cat":"sacs","why":"Fusionne les sacs et la banque en une fenêtre avec recherche, tri et décompte des objets par personnage.","status":"compatible","url":"https://www.curseforge.com/wow/addons/bagnon","dl":"168,6 M","rec":["Kami Labs","WowVendor","Gfinity","ExitLag"],"note":"Icy Veins conseille plutôt Baganator : un seul gestionnaire de sacs."},{"name":"Auctionator","cat":"sacs","why":"Simplifie l'hôtel des ventes : recherche, historique des prix et mise en vente rapide.","status":"compatible","url":"https://www.curseforge.com/wow/addons/auctionator","dl":"203,7 M","rec":["Kami Labs","WowVendor","Gfinity"],"note":"À utiliser à la place de TSM."},{"name":"SkillUp Forever","cat":"sacs","why":"Indique la chance de monter le métier et le coût de chaque recette pour monter au moins cher.","status":"forever","url":"https://www.curseforge.com/wow/addons/skillup-forever","dl":"76,0 k","rec":["Kami Labs"],"note":"Prendre le fichier -forever."},{"name":"Blackthornes Tradeskills","cat":"sacs","why":"Fenêtre de métiers enrichie avec plus de 600 recettes, leurs sources et les composants manquants.","status":"forever","url":"https://www.curseforge.com/wow/addons/blackthornes-tradeskills","dl":"14,7 k","rec":["Kami Labs"],"note":"Prendre le fichier -forever."},{"name":"Extended Vendor Forever","cat":"sacs","why":"Agrandit la fenêtre du marchand avec plus d'objets par page et des filtres.","status":"forever","url":"https://www.curseforge.com/wow/addons/extended-vendor-forever","dl":"10,7 k","rec":["Kami Labs"],"note":"Un seul addon de fenêtre marchand ; vérifier l'option de vente auto."},{"name":"Leatrix Maps","cat":"cartes","why":"Améliore la carte du monde : coordonnées, icônes de donjons et de raids, zones non explorées révélées.","status":"forever","url":"https://www.curseforge.com/wow/addons/leatrix-maps","dl":"41,0 M","rec":["Kami Labs","Icy Veins","WowVendor"],"note":"Prendre le fichier -forever. Conflit avec OpenMap : choisir l'un des deux."},{"name":"OpenMap","cat":"cartes","why":"Carte du monde à zoom fluide avec boss, butins, objectifs de quêtes, trajets de vol et de bateau.","status":"forever","url":"https://www.curseforge.com/wow/addons/openmap","dl":"105,4 k","rec":["Gfinity","Kami Labs"],"note":"En bêta. Conflit avec Leatrix Maps et Mapster : choisir l'un des deux."},{"name":"TomTom","cat":"cartes","why":"Pose des repères par coordonnées et affiche une flèche de direction, y compris vers son cadavre.","status":"compatible","url":"https://www.curseforge.com/wow/addons/tomtom","dl":"90,7 M","rec":["Kami Labs","WowVendor"],"note":null},{"name":"Shortest Path Forever","cat":"cartes","why":"Calcule le trajet le plus court vers un point de la carte, vols et portails compris.","status":"forever","url":"https://www.curseforge.com/wow/addons/shortest-path-forever","dl":"93,7 k","rec":["Kami Labs"],"note":"Maj + clic sur la carte. Un seul outil d'itinéraire (pas Mapzeroth ni Travelcraft en plus)."},{"name":"HandyNotes: WoW Forever","cat":"cartes","why":"Ajoute sur la carte les points d'intérêt du contenu Forever : rares, trésors, nouveautés de l'île de Zephras.","status":"forever","url":"https://www.curseforge.com/wow/addons/handynotes-wow-forever","dl":"18,4 k","rec":["Kami Labs","WowVendor"],"note":"Nécessite le cœur HandyNotes, dont seul le fichier alpha se charge pour l'instant.","req":{"name":"HandyNotes","url":"https://www.curseforge.com/wow/addons/handynotes"}},{"name":"RareScanner","cat":"cartes","why":"Alerte quand un monstre rare, un trésor ou un événement apparaît à proximité et le place sur la carte.","status":"forever","url":"https://www.curseforge.com/wow/addons/rarescanner","dl":"139,6 M","rec":["Kami Labs","WowVendor"],"note":"Prendre le fichier RareScanner_FOREVER (bêta). Pas avec SilverDragon."},{"name":"Minimap Button: Forever","cat":"cartes","why":"Range les boutons d'addons de la minicarte dans une barre mobile.","status":"forever","url":"https://www.curseforge.com/wow/addons/minimap-button-forever","dl":"1,6 k","rec":["Kami Labs"],"note":null},{"name":"Deadly Boss Mods","cat":"donjons","why":"Alertes et barres de temps sur les techniques des boss en donjon et en raid.","status":"compatible","url":"https://www.curseforge.com/wow/addons/deadly-boss-mods","dl":"637,8 M","rec":["Kami Labs","Gfinity"],"note":"Seul boss mod avec des modules Forever, préférable à BigWigs."},{"name":"AtlasLoot Classic Forever","cat":"donjons","why":"Consulte en jeu les tables de butin des donjons, raids et métiers, avec les listes BiS par phase.","status":"forever","url":"https://www.curseforge.com/wow/addons/atlasloot-forever","dl":"6,1 M","rec":["Kami Labs","WowVendor"],"note":"Certains objets inédits restent masqués tant qu'ils n'ont pas été vus sur un serveur."},{"name":"DungeonJournal","cat":"donjons","why":"Journal des donjons façon Retail : butins possibles, quêtes liées, niveau requis.","status":"forever","url":"https://www.curseforge.com/wow/addons/dungeonjournal","dl":"1,4 M","rec":["Kami Labs","Icy Veins"],"note":"Commande /dj. Tables incomplètes au-delà du niveau 30 et en raid."},{"name":"Nova Instance Tracker","cat":"donjons","why":"Suit les verrous d'instance, le nombre d'entrées par heure et le temps de chaque run.","status":"compatible","url":"https://www.curseforge.com/wow/addons/nova-instance-tracker","dl":"18,8 M","rec":["Kami Labs"],"note":null},{"name":"Pawn","cat":"donjons","why":"Note chaque objet selon les statistiques de sa spécialisation et signale les améliorations.","status":"forever","url":"https://www.curseforge.com/wow/addons/pawn","dl":"129,9 M","rec":["Kami Labs"],"note":null},{"name":"Details! Damage Meter","cat":"combat","why":"Compteur de dégâts, soins et dégâts subis, plus détaillé que le compteur intégré.","status":"compatible","url":"https://www.curseforge.com/wow/addons/details","dl":"371,3 M","rec":["Kami Labs","Icy Veins","Gfinity","ExitLag"],"note":"Passer au fichier alpha si les fenêtres restent vides."},{"name":"Forever Meter","cat":"combat","why":"Compteur dédié à Forever qui ajoute la menace aux dégâts et aux soins, utile aux tanks.","status":"forever","url":"https://www.curseforge.com/wow/addons/forever-meter","dl":"19,5 k","rec":["Kami Labs"],"note":"Plusieurs homonymes sur CurseForge (ForeverThreat, Forever Threat) : prendre celui-ci."},{"name":"HealBot Continued","cat":"soins","why":"Cadres de groupe et de raid pour soigneurs avec sorts au clic et au survol.","status":"forever","url":"https://www.curseforge.com/wow/addons/heal-bot-continued","dl":"86,2 M","rec":["Kami Labs"],"note":"Un seul addon de cadres de soin à la fois."},{"name":"Grid2","cat":"soins","why":"Cadres de groupe légers et modulaires, très appréciés en raid.","status":"forever","url":"https://www.curseforge.com/wow/addons/grid2","dl":"15,4 M","rec":["Kami Labs"],"note":"Prendre le fichier -forever."},{"name":"Decursive","cat":"soins","why":"Affiche les malédictions, maladies et poisons du groupe et les retire en un clic.","status":"forever","url":"https://www.curseforge.com/wow/addons/decursive","dl":"34,0 M","rec":["Kami Labs"],"note":"Prendre le fichier -forever."},{"name":"Platynator","cat":"auras","why":"Barres de vie au-dessus des ennemis, simples à régler, qui signalent les monstres utiles à vos quêtes.","status":"compatible","url":"https://www.curseforge.com/wow/addons/platynator","dl":"17,5 M","rec":["Kami Labs","Icy Veins"],"note":"Plater est l'alternative pour les experts : un seul addon de barres de nom.","req":{"name":"Plater (alternative)","url":"https://www.curseforge.com/wow/addons/plater-nameplates"}},{"name":"TellMeWhen","cat":"auras","why":"Icônes et barres pour suivre buffs, débuffs et recharges selon vos propres conditions.","status":"compatible","url":"https://www.curseforge.com/wow/addons/tellmewhen","dl":"27,5 M","rec":["Kami Labs"],"note":null},{"name":"ForeverAuras","cat":"auras","why":"Reprise de WeakAuras pour Forever : alertes visuelles et sonores sur procs, recharges et auras.","status":"forever","url":"https://www.curseforge.com/wow/addons/foreverauras","dl":"273,0 k","rec":["Kami Labs"],"note":"En développement : les imports WeakAuras ne passent pas tous."},{"name":"tullaCTC","cat":"auras","why":"Affiche le temps restant en chiffres sur les icônes de sorts et d'objets.","status":"compatible","url":"https://www.curseforge.com/wow/addons/tullactc","dl":"45,0 k","rec":["Kami Labs"],"note":"Remplace OmniCC, qui ne fonctionne pas sur Forever."},{"name":"Cooldown Manager Centered","cat":"auras","why":"Centre et rend lisible le gestionnaire de recharges intégré de Blizzard.","status":"compatible","url":"https://www.curseforge.com/wow/addons/cooldown-manager-centered","dl":"7,0 M","rec":["Kami Labs"],"note":"Activer d'abord le gestionnaire natif (désactivé par défaut) dans les options de jeu."},{"name":"Capping Battleground Timers","cat":"jcj","why":"Minuteurs de capture, de résurrection et de fin de partie en champ de bataille.","status":"compatible","url":"https://www.curseforge.com/wow/addons/capping-bg-timers","dl":"11,3 M","rec":["Kami Labs"],"note":null},{"name":"Forever Simple DR","cat":"jcj","why":"Affiche les rendements décroissants des contrôles sur les ennemis.","status":"forever","url":"https://www.curseforge.com/wow/addons/forever-simple-dr","dl":"1,8 k","rec":["Kami Labs"],"note":"Ne voit que les ennemis ciblés, en focus ou avec barre de nom."},{"name":"BetterBlizzFrames","cat":"jcj","why":"Améliore les cadres Blizzard pour le JcJ : auras visibles, noms et indicateurs plus lisibles.","status":"compatible","url":"https://www.curseforge.com/wow/addons/betterblizzframes","dl":"8,6 M","rec":["Kami Labs"],"note":null}],"avoid":[{"name":"WeakAuras","why":"Pas de version Forever : le portage est à l'arrêt et l'addon ne fonctionne pas sous les règles de Midnight.","alt":"ForeverAuras"},{"name":"OmniCD","why":"Pas de version Midnight, ne charge pas sur Forever.","alt":"MiniAuras"},{"name":"OmniBar","why":"Repose sur le journal de combat, fermé aux addons sur Forever.","alt":"Counterclock"},{"name":"OmniCC","why":"Ne vise que les clients Classic.","alt":"tullaCTC"},{"name":"BigDebuffs","why":"Pas de version Forever et les auras sont masquées en combat.","alt":null},{"name":"Nova World Buffs","why":"Pas de version Forever (fichiers MoP, Classic et TBC seulement).","alt":null},{"name":"Hekili","why":"Indiqué incompatible avec Midnight par sa propre page.","alt":null},{"name":"AdiBags","why":"Version Classic qui ne se charge pas sur le client Forever.","alt":"Bagnon"}],"sources":[{"u":"https://kami-labs.fr/addons-wow-forever/","t":"Kami Labs : liste complète des addons Forever (vérifiée le 20/10/2026)"},{"u":"https://kami-labs.fr/en/wow-forever/addons-leveling-wow-forever/","t":"Kami Labs : addons de leveling pour Forever"},{"u":"https://www.gfinityesports.com/article/8-best-curseforge-add-ons-you-need-to-install-for-world-of-warcraft-forever","t":"Gfinity : meilleurs addons CurseForge pour Forever"},{"u":"https://www.gfinityesports.com/article/world-of-warcraft-forever-ui-addons-setup-guide","t":"Gfinity : guide interface et addons Forever"},{"u":"https://www.exitlag.com/blog/wow-forever-addons/","t":"ExitLag : addons Forever et addons à éviter"},{"u":"https://www.icy-veins.com/wow-forever/news/set-up-your-wow-forever-ui-before-launch-with-these-9-addons/","t":"Icy Veins : préparer son interface Forever avant la sortie"},{"u":"https://wowvendor.com/media/wow-forever/best-wow-forever-addons/","t":"WowVendor : top 10 des addons Forever"}]};
+
+/* ================= Addons recommandés pour Forever ================= */
+/* La page se construit une fois ; les filtres (catégorie, statut, recherche) masquent cartes et panneaux sans réécrire le contenu,
+   pour garder le focus du champ de recherche et l'ordre des panneaux réglé par l'utilisateur. */
+const ADD_ICON = {ui:"gear", quetes:"scroll", confort:"campfire", sacs:"chest", cartes:"map", donjons:"gate", combat:"target", soins:"heal", auras:"hourglass", jcj:"swords"};
+const ADD_ST = {forever:"Version Forever", compatible:"Compatible"};
+const addF = () => { const f = ui.set.addf = Object.assign({cat:"tous", st:"tous", q:""}, ui.set.addf || {}); if (f.cat !== "tous" && !ADDONS.cats.some(c=>c.id === f.cat)) f.cat = "tous"; if (!ADD_ST[f.st]) f.st = "tous"; f.q = String(f.q || "").slice(0, 60); return f; };
+const addLink = (u, t, cls) => `<a${cls ? ` class="${cls}"` : ""} href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`;
+function addCard(a){
+  const alt = a.req && /alternative/i.test(a.req.name);
+  const reqName = a.req ? a.req.name.replace(/\s*\(?\balternative\b\)?\s*/i, " ").trim() : "";
+  return `<article class="ad-card" data-cat="${a.cat}" data-st="${a.status}" data-q="${esc(nrm([a.name, a.why, a.note || ""].join(" ")))}">
+    <div class="ad-top">${addLink(a.url, esc(a.name), "ad-name")}<span class="ad-st ${a.status}">${ADD_ST[a.status]}</span></div>
+    ${a.dl ? `<p class="ad-dl small muted">${esc(a.dl)} téléchargements</p>` : ""}
+    <p class="ad-why">${esc(a.why)}</p>
+    ${a.note ? `<p class="ad-note small muted">${esc(a.note)}</p>` : ""}
+    ${a.req ? `<p class="ad-req small">${alt ? "Alternative" : "Nécessite"} : ${addLink(a.req.url, esc(reqName))}</p>` : ""}
+    ${a.rec && a.rec.length ? `<p class="ad-rec small muted">Recommandé par : ${esc(a.rec.join(", "))}</p>` : ""}
+    ${addLink(a.url, icn("link") + "Télécharger", "btn ad-btn")}</article>`;
+}
+function renderAddons(){
+  const el = $("addons"); if (!el) return;
+  const f = addF();
+  if (!el.dataset.built){
+    el.dataset.built = 1;
+    const n = id => ADDONS.addons.filter(a=>a.cat === id).length;
+    const chip = (attr, v, t, on) => `<button type="button" class="ad-chip${on ? " on" : ""}" ${attr}="${v}" aria-pressed="${on}">${t}</button>`;
+    el.innerHTML = `<div class="panel"><h2 class="h2">${icn("addon")}Addons pour WoW Forever</h2>
+      <p class="small muted" style="max-width:84ch;margin:0 0 10px">50 addons choisis parmi les plus téléchargés et les plus recommandés, vérifiés le 23 octobre 2026.</p>
+      <div class="callout ad-before"><h3>${icn("warning")}Avant d'installer</h3><ul class="small">${ADDONS.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div>
+    <div class="spacer"></div>
+    <div class="panel ad-filt" role="search">
+      <div class="ad-chips" role="group" aria-label="Catégorie">${chip("data-adfc", "tous", `Tous <span class="ad-n">${ADDONS.addons.length}</span>`, f.cat === "tous")}${ADDONS.cats.map(c=>chip("data-adfc", c.id, `${esc(c.t)} <span class="ad-n">${n(c.id)}</span>`, f.cat === c.id)).join("")}</div>
+      <div class="ad-row"><div class="ad-seg" role="group" aria-label="Statut">${[["tous","Tous"],["forever","Version Forever"],["compatible","Compatible"]].map(([k,t])=>chip("data-adfs", k, t, f.st === k)).join("")}</div>
+        <label class="ad-search">${icn("search")}<input type="search" data-adfq maxlength="60" placeholder="Chercher un addon" aria-label="Chercher un addon" value="${esc(f.q)}"></label></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="ad-list">${ADDONS.cats.map(c=>`<div class="panel ad-cat" data-adpan="${c.id}"><h3 class="chart-h">${icn(ADD_ICON[c.id] || "addon")}${esc(c.t)}</h3><div class="ad-grid">${ADDONS.addons.filter(a=>a.cat === c.id).map(addCard).join("")}</div></div>`).join("")}</div>
+    <p class="ad-empty panel" hidden>Aucun addon ne correspond</p>
+    <div class="spacer"></div>
+    <div class="panel"><h3 class="chart-h">${icn("warning")}À éviter sur Forever</h3><ul class="ad-avoid">${ADDONS.avoid.map(x=>`<li><b>${esc(x.name)}</b> <span>${esc(x.why)}</span>${x.alt ? ` <span class="ad-alt">À la place : ${esc(x.alt)}</span>` : ""}</li>`).join("")}</ul></div>`;
+    const ul = $("srclist"); if (ul && !ul.dataset.ad){ ul.dataset.ad = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", ADDONS.sources.filter(x=>{ const k = x.u.replace(/\/$/, ""); if (have.has(k)) return false; have.add(k); return true; }).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
+  }
+  addonsFilter();
+  applyPanels("addons");
+}
+function addonsFilter(){
+  const el = $("addons"); if (!el) return;
+  const f = addF(), q = nrm(f.q);
+  el.querySelectorAll("[data-adfc]").forEach(b=>{ const on = b.dataset.adfc === f.cat; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  el.querySelectorAll("[data-adfs]").forEach(b=>{ const on = b.dataset.adfs === f.st; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  let total = 0;
+  el.querySelectorAll(".ad-cat").forEach(p=>{
+    let n = 0;
+    p.querySelectorAll(".ad-card").forEach(c=>{ const ok = (f.cat === "tous" || c.dataset.cat === f.cat) && (f.st === "tous" || c.dataset.st === f.st) && (!q || c.dataset.q.includes(q)); c.hidden = !ok; if (ok) n++; });
+    p.hidden = !n; total += n;
+  });
+  el.querySelector(".ad-empty").hidden = total > 0;
+}
+
 /* ================= Visualisations A : blasons, feuille de personnage, soleil des rôles, ruche, liens, semaine ================= */
 const VZ_ARCH_COL = ["--heal","--muted","--p5","--p3","--gold","--p2","--accent","--tank","--p1","--dps","--warn","--p7","--disagree","--p4","--p6","--p8"];
 const VZ_ROLE = {tank:["Tank","--tank"], heal:["Soin","--heal"], dps:["Dégâts","--dps"]};
@@ -8046,7 +8138,7 @@ const BANNER_VIEWS = {tableau:"bataille-alliance", accueil:"bataille-alliance",
   sorties:"champ-bannieres", raid:"champ-bannieres", groupes:"champ-bannieres",
   comparatif:"epee-bleue", compo:"epee-bleue", compos:"epee-bleue", compositeur:"epee-bleue",
   leveling:"port-cite", histoire:"port-cite",
-  classes:"forteresse-neige", races:"forteresse-neige", metiers:"forteresse-neige", regles:"forteresse-neige"};
+  classes:"forteresse-neige", races:"forteresse-neige", metiers:"forteresse-neige", addons:"taverne-toast", regles:"forteresse-neige"};
 const bannerArtFor = v => PI[v] != null ? "lame-rousse" : (BANNER_VIEWS[v] || "bataille-alliance");
 function bannerArt(v){
   bannerFxView();
@@ -8153,6 +8245,7 @@ const DECO_VIEWS = {
   classes:["spadassin", "Classes et spés", "Les neuf classes et leurs 29 builds, pour trouver la spé qui te ressemble."],
   races:["spectre-foret", "Races", "Les techniques actives et passives de chaque race de l'Alliance, pour choisir la tienne en connaissance de cause."],
   metiers:["spadassin", "Métiers", "Répartis les métiers dans le groupe et repère ce que Forever change pour chacun."],
+  addons:["spadassin", "Addons", "Les 50 addons les plus populaires et recommandés pour Forever, classés par usage, avec leur lien de téléchargement."],
   regles:["spectre-foret", "Règles Forever", "Ce que Forever change par rapport à Classic, mode par mode et royaume par royaume."]};
 const decoFor = v => PI[v] != null
   ? ["spectre-foret", "Fiche de " + PLAYERS[PI[v]].name, "Réponds au questionnaire à ton rythme et classe tes spés : le profil se dessine au fil des réponses."]
@@ -8576,6 +8669,8 @@ document.addEventListener("click", e=>{
   const ib = t.closest(".ibtn");
   if (ib){ e.preventDefault(); e.stopPropagation(); const card = ib.closest("[data-biok]"); if (tipPinned && tipFor === card) hideTip(); else showTip(card, true); return; }
   if (tipPinned) hideTip();
+  const adf = t.closest("[data-adfc],[data-adfs]");
+  if (adf){ const f = addF(); if (adf.dataset.adfc) f.cat = adf.dataset.adfc; else f.st = adf.dataset.adfs; saveUI(); addonsFilter(); return; }
   if (t.closest("#modal") && !t.closest(".modal-in")){ closeModal(); return; }
   const mo = t.closest("[data-modal]");
   if (mo && !t.closest("[data-v]") && !t.closest("[data-chopen]")){ closeModal(); return; }
@@ -8827,6 +8922,7 @@ document.addEventListener("click", e=>{
 let noteTimer = null, grpTimer = null;
 document.addEventListener("input", e=>{
   const r = e.target;
+  if (r.dataset && r.dataset.adfq != null){ addF().q = r.value.slice(0, 60); saveUI(); addonsFilter(); return; }
   if (r.dataset && r.dataset.gset && r.type === "range"){ const k = r.dataset.gset, v = Number(r.value); state.group[k] = v; r.style.setProperty("--v", v + "%"); const l = $("gsv-" + k); if (l) l.textContent = v + " %"; clearTimeout(grpTimer); grpTimer = setTimeout(()=>{ state.gmeta = Date.now(); saveLocal(); pushPrio(); renderCompo(); dirty.composer = true; }, 350); return; }
   if (r.dataset && r.dataset.note){
     const p = PLAYERS[PI[r.dataset.note]]; if (!p) return;
