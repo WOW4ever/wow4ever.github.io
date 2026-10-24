@@ -2081,7 +2081,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 
     <!-- CLASSES -->
     <section class="view" id="v-classes" data-view="classes" hidden>
-      <p class="section-intro">Les neuf classes sont jouables côté Alliance, chaman compris (nain uniquement). Chaque spé a sa fiche : son jeu en solo, son jeu en groupe et ses talents clés dans Forever. Le classement de leveling croise deux tests de la bêta : il reste indicatif tant que le jeu n'est pas sorti.</p>
+      <p class="section-intro">Les neuf classes sont jouables dans les deux factions : chaman nain côté Alliance (orc, troll, tauren ou Skyborne côté Horde), paladin humain ou nain côté Alliance (mort-vivant côté Horde). La bascule en haut de page choisit la faction affichée. Chaque spé a sa fiche : son jeu en solo, son jeu en groupe et ses talents clés dans Forever. Le classement de leveling croise deux tests de la bêta : il reste indicatif tant que le jeu n'est pas sorti.</p>
       <h2 class="h2">Grille des 29 builds</h2>
       <p class="small muted" style="margin:0 0 10px;max-width:82ch">Notes de 1 à 5, synthèse indicative des tests bêta, des guides de leveling et du fonctionnement de Classic. Prise en main : 5 = difficile. Solo : 5 = très à l'aise seul. Temps mort : 5 = s'assoit souvent. Équipement : 5 = très dépendant de son arme. Demande : 5 = très recherché par une guilde. Débuts : 5 = premiers niveaux laborieux. Leveling : 5 = spé idéale pour monter. Le calcul de la compo utilise ces notes. Clique sur un build pour lire son gameplay et l'explication de chaque note.</p>
       <div class="tablewrap">
@@ -2713,6 +2713,35 @@ function spikeCurve(b){
   }
   return {pts, ev:ev.slice().sort((x,y)=>x.lv-y.lv)};
 }
+
+
+/* ================= Données Horde de Forever (recherche du 25 octobre 2026) ================= */
+const RACES_H = {"orc":{"name":"Orc","why":"Blood Fury (+10 % de puissance d'attaque et des sorts pendant 15 s, recharge 3 min), Hardiness (étourdissements réduits de 20 %), Savage (+1 % de critique, remplace la spécialisation hache le 15 octobre), Shatter Curse (dissipe malédictions et fléaux, dégâts magiques subis -5 %)"},"troll":{"name":"Troll","why":"Berserking (+10 % de vitesse d'attaque et d'incantation pendant 10 s), Regeneration (20 % de régénération de vie en combat, contre 10 % avant le 15 octobre), Rapid Regeneration (50 % de la vie sur la durée), Beast Slaying (+5 % de dégâts contre les bêtes)"},"tauren":{"name":"Tauren","why":"Choc martial (War Stomp, étourdit 2 s, recharge 90 s), Endurance (+5 % de vie, +2 % de dégâts et soins critiques), Plainsrunning (vitesse qui monte en courant, +3 % en monture), Cultivation (herbes sans Herboristerie, recharge 15 min)"},"undead":{"name":"Mort-vivant","why":"Volonté des Réprouvés (peur, charme, sommeil), Touch of the Grave (5 % de chance de drainer jusqu'à 5 % de la vie max, déclenchement revu le 15 octobre), Cannibalisme, respiration sous l'eau prolongée ; prêtre : Dark Sacrifice et Toucher de faiblesse"},"skyh":{"name":"Skyborne (Façonneurs de vent)","why":"Skysight (+10 % de vitesse de course, utilisable en mouvement), Wind Blessed (+3 % de hâte), Walk on Air (vol plané 10 s, recharge 90 s), Elemental Insight (+5 % contre les élémentaires) ; pack payant"}};
+const CLASS_RACES_H = {"war":["orc","troll","tauren","undead","skyh"],"pal":["undead"],"hun":["orc","troll","tauren","skyh"],"rog":["orc","troll","undead","skyh"],"pri":["troll","undead"],"sha":["orc","troll","tauren","skyh"],"mag":["orc","troll","undead"],"loc":["orc","troll","undead"],"dru":["tauren","skyh"]};
+const RACE_FIT_H = {"orc":{"war":[3,"Savage et Hardiness, Blood Fury pour le burst"],"hun":[3,"Blood Fury et Savage, Hardiness en JcJ"],"rog":[3,"Hardiness contre les étourdissements, Blood Fury"],"loc":[3,"Blood Fury sur la puissance des sorts, Shatter Curse"],"sha":[3,"Blood Fury et Savage en Amélioration"],"mag":[2,"Nouveau : Blood Fury sur la puissance des sorts"]},"troll":{"hun":[3,"Berserking et +5 % contre les bêtes, partout en leveling"],"pri":[3,"Berserking et Regeneration à 20 % en combat"],"mag":[3,"Berserking : +10 % de vitesse d'incantation"],"rog":[2,"Berserking et Beast Slaying"],"war":[2,"Berserking et Regeneration en combat"],"sha":[2,"Berserking en Élémentaire"],"loc":[2,"Nouveau : Berserking et Rapid Regeneration"]},"tauren":{"war":[3,"Endurance et Choc martial en tank"],"dru":[3,"Seule race druide sans le pack, Choc martial"],"sha":[3,"Choc martial et Endurance, soins critiques +2 %"],"hun":[2,"Endurance et Plainsrunning"]},"undead":{"pal":[3,"Seule race paladin de la Horde, hub de classe et monture dédiés"],"loc":[3,"Volonté des Réprouvés et Cannibalisme"],"pri":[3,"Dark Sacrifice et Toucher de faiblesse, sorts raciaux"],"mag":[3,"Volonté des Réprouvés et Touch of the Grave"],"rog":[3,"Volonté des Réprouvés en JcJ, Cannibalisme"],"war":[2,"Volonté des Réprouvés contre les peurs"]},"skyh":{"sha":[3,"Chaman exclusif des Façonneurs de vent, Wind Blessed"],"dru":[3,"Skysight et Wind Blessed"],"hun":[2,"Wind Blessed : +3 % de hâte"],"war":[2,"Wind Blessed et Walk on Air"],"rog":[2,"Wind Blessed et Walk on Air"]}};
+const RACE_NEW_H = {"orc":["mag"],"troll":["loc"],"undead":["pal"],"skyh":["war","hun","rog","sha","dru"]};
+const ZONES_H = {"orc":"Durotar","troll":"Durotar","tauren":"Mulgore","undead":"Clairières de Tirisfal","skyh":"Zephras Isle"};
+const LVR_ZONES_H = {"durotar":{"name":"Durotar","races":["orc","troll"],"hub":"Vallée des épreuves, puis Tranchecolline","next":"Les Tarides (La Croisée)","lv":[1,10]},"mulgore":{"name":"Mulgore","races":["tauren"],"hub":"Camp Narache, puis Sabot-de-Sang","next":"Les Tarides (La Croisée)","lv":[1,10]},"tirisfal":{"name":"Clairières de Tirisfal","races":["undead"],"hub":"Deathknell, puis Brill","next":"Forêt des Pins-Argentés (Le Sépulcre)","lv":[1,10]},"zephras":{"name":"Zephras Isle","races":["skyh"],"hub":"Thendal Village, puis Valanaar (phase des Façonneurs de vent, pack payant)","next":"Mulgore ou Les Tarides, depuis les Pitons-du-Tonnerre","lv":[1,12]}};
+const LVR_RACE_ZONE_H = {"orc":"durotar","troll":"durotar","tauren":"mulgore","undead":"tirisfal","skyh":"zephras"};
+const LVR_TRAVEL_H = {"durotar":{"mulgore":"À pied par Les Tarides : route de La Croisée, puis Orgrimmar.","tirisfal":"Zeppelin de la tour de Fossoyeuse (Clairières de Tirisfal) vers Orgrimmar, aucun niveau requis.","zephras":"À la fin de Zephras Isle : Skycutter de Valanaar vers les Pitons-du-Tonnerre, puis Les Tarides jusqu'à Orgrimmar."},"mulgore":{"durotar":"Sortie ouest d'Orgrimmar, La Croisée, puis la route du sud-ouest des Tarides vers Mulgore.","tirisfal":"Zeppelin vers Orgrimmar, puis à pied par Les Tarides.","zephras":"Skycutter de Valanaar vers les Pitons-du-Tonnerre : arrivée directe en Mulgore."},"tirisfal":{"durotar":"Zeppelin de la tour d'Orgrimmar (hors des portes, en Durotar) vers Fossoyeuse.","mulgore":"Les Tarides jusqu'à Orgrimmar, puis zeppelin vers Fossoyeuse.","zephras":"Skycutter vers les Pitons-du-Tonnerre, Orgrimmar, puis zeppelin vers Fossoyeuse."},"zephras":{"durotar":"Zephras Isle demande le pack Skyborne : les autres attendent le Skyborne au 12 aux Pitons-du-Tonnerre.","mulgore":"Idem, rendez-vous au 12 aux Pitons-du-Tonnerre, à deux pas de Sabot-de-Sang.","tirisfal":"Idem, rendez-vous au 12 aux Pitons-du-Tonnerre."}};
+const LVR_STEPS_H = [{"id":"h_start","lv":[1,10],"k":"zone","t":"Zone de départ","where":"Vallée des épreuves (orcs, trolls), Camp Narache (taurens), Deathknell (morts-vivants), Zephras Isle (Skyborne, jusqu'au 12)","d":"Quêtes de la zone de départ de ta race jusqu'au 10. Paladin mort-vivant : premières quêtes de classe vers Bandarion Keep, dans le Bois des murmures (Whispering Wood) de Tirisfal.","st":"rap"},{"id":"cap10","lv":[10,10],"k":"ville","t":"Capitale : niveau 10","where":"Orgrimmar, Pitons-du-Tonnerre ou Fossoyeuse","d":"Premier point de talent, nouveaux sorts, quête de classe du 10. Pierre de foyer en capitale ou au relais le plus proche jusqu'au 20.","st":"conf"},{"id":"h_z2","lv":[10,15],"k":"zone","t":"Deuxième zone","where":"Les Tarides (La Croisée) ou Forêt des Pins-Argentés (Le Sépulcre)","d":"Orcs, trolls et taurens montent aux Tarides. Les morts-vivants finissent Tirisfal puis les Pins-Argentés, ou prennent le zeppelin vers Orgrimmar pour rejoindre les autres.","st":"hyp"},{"id":"h_rfc","lv":[13,18],"k":"donjon","imp":"opt","t":"Gouffre de Ragefeu","where":"Orgrimmar, Faille de l'Ombre","d":"Quêtes d'Orgrimmar, pratique pour un groupe parti de Durotar.","st":"hyp"},{"id":"h_lordaeron","lv":[15,20],"k":"donjon","imp":"inc","t":"Ruins of Lordaeron","where":"Devant Fossoyeuse, Tirisfal 72.4, 11.6 : porte principale, puis l'escalier à gauche avant le donjon","d":"Le donjon Forever de la Horde. Quêtes : Light's Justice (Morbin Lightbane, Fossoyeuse 57.8, 89.7), The New Plague (Theodore Griffs, Fossoyeuse 46.7, 71.9), The Wrath of Rath'mael (Deathguard Kristof, Tirisfal 65.2, 60.1), A Frightened Request (Tabetha Heartweaver, Pins-Argentés 44.6, 42.9) ; Unending Torment et Crest of Lordaeron dans le donjon. 6 boss, de Witherfang à The Abandoned.","st":"rap"},{"id":"h_thanes","lv":[13,18],"k":"donjon","imp":"opt","t":"Salle des Thanes","where":"Sous Forgefer, en territoire Alliance","d":"Deux quêtes Horde pour 5 250 XP au total, mais il faut traverser Dun Morogh et Forgefer. À tenter en groupe complet, sinon passer. Les récompenses des deux quêtes Horde ne sont pas publiées.","st":"rap"},{"id":"h_zep1","lv":[12,18],"k":"bateau","t":"Se regrouper par zeppelin","d":"Trois zeppelins sans niveau requis : Orgrimmar vers Fossoyeuse, Orgrimmar vers Grom'gol, Fossoyeuse vers Grom'gol. Un mort-vivant rejoint Les Tarides en dix minutes.","st":"rap"},{"id":"h_wc","lv":[17,22],"k":"donjon","imp":"opt","t":"Cavernes des lamentations","where":"Les Tarides, oasis au sud-ouest de La Croisée","d":"Quêtes de La Croisée et de l'oasis. Deviate Hides rapporte 3 100 XP en Forever (1 600 en Classic).","st":"rap"},{"id":"h_sfk","lv":[18,24],"k":"donjon","imp":"opt","t":"Donjon d'Ombrecroc","where":"Forêt des Pins-Argentés","d":"Quêtes du Sépulcre et de Fossoyeuse, à combiner avec Ruins of Lordaeron côté Tirisfal.","st":"hyp"},{"id":"cap20","lv":[20,20],"k":"ville","t":"Capitale : niveau 20","d":"Sorts et quêtes de classe du 20. Commencer à mettre de l'or de côté pour la monte du 40.","st":"hyp"},{"id":"h_z20","lv":[20,25],"k":"zone","t":"Serres-Rocheuses et Orneval","where":"Hubs : Sun Rock Retreat, Splintertree Post (Bois-Brisé)","d":"Serres-Rocheuses par le nord des Tarides, Orneval par la route de La Croisée. Réapparitions accélérées en Orneval le 15 octobre.","st":"hyp"},{"id":"h_bfd","lv":[22,26],"k":"donjon","imp":"opt","t":"Profondeurs de Brassenoire","where":"Côte nord d'Orneval","d":"Quêtes de l'avant-poste de Zoram'gar, sur la côte d'Orneval.","st":"hyp"},{"id":"h_hills","lv":[24,28],"k":"zone","t":"Contreforts de Hautebrande","where":"Hub : Moulin-de-Tarren","d":"Zeppelin vers Fossoyeuse, puis Pins-Argentés vers le sud. Réapparitions accélérées le 15 octobre. Pierre de foyer : Moulin-de-Tarren, utile pour Dalaran.","st":"hyp"},{"id":"h_tn","lv":[24,30],"k":"zone","t":"Mille pointes","where":"Hub : Freewind Post (Poste de Librevent)","d":"Par le sud des Tarides. Réapparitions accélérées le 15 octobre.","st":"hyp"},{"id":"h_rfk","lv":[25,30],"k":"donjon","imp":"opt","t":"Kraal de Tranchebauge","where":"Sud des Tarides","d":"Quêtes de La Croisée et de Camp Taurajo.","st":"hyp"},{"id":"h_excav","lv":[26,30],"k":"donjon","imp":"opt","t":"Excavation Site","where":"Les Paluns, près du Rocher de Thelgen et de Dun Algaz","d":"Aucun hub Horde dans les Paluns : venir par le Pont de Thandol depuis Arathi ou par Loch Modan. Sur place : Lost Relic Carry puis Prehistoric Prism. Quêtes Horde d'accès non publiées.","st":"rap"},{"id":"dalaran","lv":[28,33],"k":"donjon","imp":"inc","t":"Cité de Dalaran","where":"Montagnes d'Alterac, entrée par les égouts (8.8, 59.6)","d":"Chaîne Horde auprès de Magus Wordeen Voidglare, bâtiment sud-est de Moulin-de-Tarren (61.5, 20.7) : Prison Break In et Key to the City (camp d'internement de Lordamere), Dalaran Patrols, Blood in the Streets, puis Heart of Disruption, qui donne la clé des égouts. Quêtes clés au niveau 30.","st":"rap"},{"id":"cap30","lv":[30,30],"k":"ville","t":"Capitale : niveau 30","d":"Nouvelle rangée de talents, sorts et quêtes de classe du 30.","st":"conf"},{"id":"h_z30","lv":[30,35],"k":"zone","t":"Hautes-terres d'Arathi, Strangleronce, Désolace","where":"Hubs : Trépas-d'Orgrim, Camp de base de Grom'gol, Shadowprey Village","d":"Finir Mille pointes et Hautebrande, puis ces trois hubs pour arriver vers 35 aux Riverglades. Ordre de Classic, à confirmer en Forever.","st":"hyp"},{"id":"h_sm","lv":[30,40],"k":"donjon","imp":"opt","t":"Monastère écarlate","where":"Clairières de Tirisfal, nord-est de Brill","d":"À deux pas de Fossoyeuse. Quatre ailes : Cimetière, Bibliothèque, Armurerie, Cathédrale. Plusieurs soirées.","st":"hyp"},{"id":"gold40","lv":[33,40],"k":"achat","t":"Réserver l'or de la monte","d":"Monte apprenti au 40 : 100 or, monture comprise selon Method. Le prix de la double spé n'est pas annoncé.","st":"rap"},{"id":"drowned","lv":[35,40],"k":"donjon","imp":"inc","t":"The Drowned City","where":"Au large de Strangleronce, à l'ouest de Grom'gol, entrée sous l'eau","d":"Le zeppelin de Grom'gol dépose le groupe à côté. Donjon en plein air, la météo tourne à la tempête.","st":"conf"},{"id":"h_river","lv":[35,40],"k":"zone","t":"Riverglades, première moitié","where":"Hub Horde : Rog'mar (points de vol Horde)","d":"Zone neuve 35-45. Accès à pied depuis les Terres ingrates, au nord de Twilight's Shroud, ou bateau neutre de Steamwheedle Port (Tanaris) vers Powderfuse Port. Pierre de foyer : Rog'mar.","st":"rap"},{"id":"h_rfd","lv":[35,40],"k":"donjon","imp":"opt","t":"Souilles de Tranchebauge","where":"Sud-est des Tarides","d":"Quêtes de Camp Taurajo et de Mille pointes.","st":"hyp"},{"id":"h_dust","lv":[36,42],"k":"zone","t":"Marécage d'Âprefange","where":"Hub : Brackenwall Village","d":"Hub Horde au nord du marécage. Prépare Alcaz Prison pour plus tard.","st":"hyp"},{"id":"h_uld","lv":[38,45],"k":"donjon","imp":"opt","t":"Uldaman","where":"Terres ingrates, hub Horde : Kargath","d":"Fourchettes publiées : 36-45 ou 44-50.","st":"hyp"},{"id":"cap40","lv":[40,40],"k":"ville","t":"Niveau 40 : monture et double spé","d":"Monte apprenti (+60 %), double spé, talent à 31 points. Paladin mort-vivant : Undead Warhorse.","st":"conf"},{"id":"river2","lv":[40,45],"k":"donjon","imp":"inc","t":"Riverglades, fin, et Krol'dok Stronghold","where":"Depuis Rog'mar","d":"Krol'dok est à la fois un donjon (40-45) et le hub de quêtes des 40. Forteresse d'ogres et du Marteau du crépuscule.","st":"rap"},{"id":"shen","lv":[40,45],"k":"zone","opt":true,"t":"Shen'dralas","where":"Entre Mulgore et Désolace, par la Vallée des Ossements","d":"Proche du territoire Horde. Aucun niveau officiel, monstres niveau 43 vus en vidéo, pas de maître de vol dans le client bêta.","st":"rap"},{"id":"h_z45","lv":[42,48],"k":"zone","t":"Tanaris, Féralas, Les Hinterlands, Marais des Chagrins","where":"Hubs : Gadgetzan, Camp Mojache, Revantusk Village, Pierrêche","d":"Pierre de foyer : Gadgetzan ou Camp Mojache.","st":"hyp"},{"id":"h_zf","lv":[44,50],"k":"donjon","imp":"opt","t":"Zul'Farrak","where":"Tanaris","d":"","st":"hyp"},{"id":"h_mara","lv":[46,52],"k":"donjon","imp":"opt","t":"Maraudon","where":"Désolace","d":"Quêtes de Shadowprey Village.","st":"hyp"},{"id":"h_alcaz","lv":[48,53],"k":"donjon","imp":"opt","t":"Alcaz Prison","where":"Île d'Alcaz, Marécage d'Âprefange, au large de Theramore","d":"Défias contre nagas. Accès Horde non publié : l'île touche Theramore, prévoir le trajet en groupe. Sans quête Horde connue, il ne vaut le détour qu'en groupe déjà formé.","st":"conf"},{"id":"h_z50","lv":[48,52],"k":"zone","t":"Terres ingrates, Gorge des Vents brûlants, Azshara","where":"Hubs : Kargath, Valormok","d":"","st":"hyp"},{"id":"h_z52","lv":[50,55],"k":"zone","t":"Cratère d'Un'Goro, Gangrebois, Féralas","where":"Hubs : Marshal's Refuge, Bloodvenom Post, Camp Mojache","d":"Dans Un'Goro, ramasser des cristaux de puissance : ils servent à Shaper's Terrace.","st":"hyp"},{"id":"h_st","lv":[50,55],"k":"donjon","imp":"opt","t":"Temple d'Atal'Hakkar","where":"Marais des Chagrins","d":"Quêtes de Pierrêche et de Revantusk Village.","st":"hyp"},{"id":"h_brd","lv":[52,60],"k":"donjon","imp":"opt","t":"Profondeurs de Blackrock","where":"Mont Blackrock, entre la Gorge des Vents brûlants et les Steppes ardentes","d":"Quêtes de Kargath et d'Orgrimmar, plusieurs soirées.","st":"hyp"},{"id":"h_z55","lv":[53,57],"k":"zone","t":"Steppes ardentes, Berceau-de-l'Hiver, Maleterres de l'Ouest","where":"Hubs : Flame Crest, Long-guet, The Bulwark","d":"Pierre de foyer : Long-guet ou Chapelle de l'Espoir de Lumière.","st":"hyp"},{"id":"blackmaw","lv":[55,60],"k":"donjon","imp":"inc","t":"Blackmaw Hold","where":"Azshara, derrière une porte scellée","d":"Cité furbolg, plusieurs routes. Hub Horde le plus proche : Valormok.","st":"conf"},{"id":"h_dm","lv":[55,60],"k":"donjon","imp":"opt","t":"Hache-Tripes","where":"Féralas, à l'est de Camp Mojache","d":"","st":"hyp"},{"id":"h_z57","lv":[56,60],"k":"zone","t":"Maleterres de l'Est, Silithus","where":"Hubs : Chapelle de l'Espoir de Lumière, Fort cénarien","d":"","st":"hyp"},{"id":"shaper","lv":[58,60],"k":"donjon","imp":"inc","t":"Shaper's Terrace","where":"Collines au nord d'Un'Goro","d":"Apporter les cristaux de puissance d'Un'Goro, utilisés sur des consoles.","st":"conf"},{"id":"h_end","lv":[57,60],"k":"donjon","imp":"opt","t":"Pic Blackrock inférieur, Scholomance, Stratholme","d":"","st":"hyp"},{"id":"cap60","lv":[60,60],"k":"ville","t":"Niveau 60","d":"Monte compagnon (+100 %) : 1 000 or. Paladin mort-vivant : longue chaîne du destrier épique, voie Vindicte côté Horde. Mont Hyjal, zone de niveau 60. Raids annoncés pour le 9 décembre.","st":"rap"}];
+const LVR_CQ_H = {"war":[{"lv":10,"t":"Posture défensive","where":"Classic : Veteran Uzzek, puis Path of Defense auprès de Thun'grim Firegaze, Les Tarides","st":"hyp"},{"lv":30,"t":"Posture berserker puis arme Tourbillon","where":"Classic : The Affray à Fray Island (Les Tarides), puis la chaîne de l'arme","st":"hyp"}],"pal":[{"lv":12,"t":"The Tarnished","where":"Danitha Morr, Tirisfal 22.1, 44.7, après Making Repairs (11) ; chaîne de Bandarion Keep, Bois des murmures","st":"rap"},{"lv":40,"t":"Undead Warhorse","where":"Bandarion Keep ; détail de la quête non publié","st":"rap"},{"lv":60,"t":"Destrier épique","where":"Longue chaîne, voie Vindicte pour la Horde (BlizzCon)","st":"rap"}],"hun":[{"lv":10,"t":"Dompter son premier familier","where":"Classic : Thotar à Tranchecolline (orcs, trolls), Yaw Sharpmane à Sabot-de-Sang (taurens) ; Skyborne : Zephras Isle","st":"hyp"}],"rog":[{"lv":20,"t":"Poisons","where":"Classic : quête du maître des voleurs d'Orgrimmar ou de Fossoyeuse","st":"hyp"}],"pri":[{"lv":10,"t":"Sorts raciaux de prêtre","where":"Mort-vivant : Dark Sacrifice et Toucher de faiblesse ; troll : sorts raciaux de Classic, à confirmer","st":"rap"}],"sha":[{"lv":4,"t":"Call of Earth, totem de Terre","where":"Classic : Shikrik, Vallée des épreuves (orcs, trolls) ; Meela Dawnstrider, Camp Narache (taurens) ; Skyborne : Zephras Isle","st":"hyp"},{"lv":10,"t":"Call of Fire, totem de Feu","where":"Classic : Kranal Fiss à Tranchecolline ou Narm Skychaser à Sabot-de-Sang, puis Telf Joolam en Durotar","st":"hyp"},{"lv":20,"t":"Call of Water, totem d'Eau","where":"Classic : chaîne d'Islen Waterseer, Les Tarides","st":"hyp"},{"lv":30,"t":"Call of Air, totem d'Air","where":"Quête Forever (Veyric Thunderhame côté Alliance) ; donneur Horde non publié","st":"hyp"}],"mag":[],"loc":[{"lv":10,"t":"Marcheur du Vide","where":"Classic : maître démoniste d'Orgrimmar ou Carendin Halgar à Fossoyeuse","st":"hyp"},{"lv":20,"t":"Succube","where":"Classic : maître démoniste d'Orgrimmar ou de Fossoyeuse","st":"hyp"},{"lv":30,"t":"Chasseur corrompu","where":"Classic : maître démoniste d'Orgrimmar ou de Fossoyeuse","st":"hyp"},{"lv":40,"t":"Destrier corrompu","where":"Classic ; Forever change le modèle de monte, à confirmer","st":"hyp"}],"dru":[{"lv":10,"t":"Forme d'ours","where":"Classic : Turak Runetotem aux Pitons-du-Tonnerre, puis Reflet-de-Lune ; Skyborne : Zephras Isle","st":"hyp"},{"lv":16,"t":"Forme aquatique","where":"Classic : Pitons-du-Tonnerre, puis Reflet-de-Lune et la côte des Tarides","st":"hyp"}]};
+const LVR_RULES_H = [{"t":"Zeppelins : trois liaisons sans niveau requis (Orgrimmar et Fossoyeuse, Orgrimmar et Grom'gol, Fossoyeuse et Grom'gol). Fixer le rendez-vous à une tour, pas en ville.","st":"rap"},{"t":"Le Skyborne Horde quitte Zephras Isle au 12 par le Skycutter de Valanaar (58.2, 79.5) vers les Pitons-du-Tonnerre : rendez-vous là-bas.","st":"rap"},{"t":"Trois donjons Forever sont en terre Alliance (Salle des Thanes sous Forgefer, Excavation Site dans les Paluns, Alcaz Prison près de Theramore) : y aller en groupe complet, prévoir le trajet. La Prison de Hurlevent n'est pas faisable pour la Horde.","st":"hyp"},{"t":"Ruins of Lordaeron est devant Fossoyeuse : le donjon Forever le plus simple d'accès pour la Horde, à placer vers 15-20.","st":"rap"},{"t":"Paladin mort-vivant : hub de classe à Bandarion Keep (Tirisfal), prévoir les détours vers Fossoyeuse à chaque palier de quête.","st":"rap"},{"t":"Riverglades : à pied depuis les Terres ingrates vers Rog'mar, ou bateau neutre Steamwheedle Port vers Powderfuse Port depuis Tanaris.","st":"rap"}];
+const HORDE_SOURCES = [{"u":"https://www.icy-veins.com/wow-forever/news/all-new-race-and-class-combos-and-racial-abilities-in-wow-forever-official/","t":"Icy Veins, races, classes et raciaux officiels (22 septembre)"},{"u":"https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/","t":"Warcraft Tavern, raciaux revus le 15 octobre"},{"u":"https://kami-labs.fr/en/wow-forever/patch-notes-15-octobre-races-refaites/","t":"Kami Labs, patch du 15 octobre et races"},{"u":"https://www.warcrafttavern.com/forever/guides/undead/","t":"Warcraft Tavern, le mort-vivant"},{"u":"https://www.warcrafttavern.com/forever/guides/undead-paladin/","t":"Warcraft Tavern, le paladin mort-vivant"},{"u":"https://warcraft.wiki.gg/wiki/The_Tarnished","t":"Warcraft Wiki, quête The Tarnished"},{"u":"https://www.warcrafttavern.com/forever/guides/skyborne/","t":"Warcraft Tavern, Skyborne et Façonneurs de vent"},{"u":"https://www.warcrafttavern.com/forever/guides/the-ruins-of-lordaeron/","t":"Warcraft Tavern, Ruins of Lordaeron"},{"u":"https://conquestcapped.com/guides/wow-forever/wow-forever-dalaran-attunement/","t":"Conquestcapped, accès à Dalaran"},{"u":"https://warcraft.wiki.gg/wiki/Riverglades","t":"Warcraft Wiki, Riverglades"},{"u":"https://www.icy-veins.com/wow-forever/news/all-9-new-wow-forever-dungeons-previewed-how-to-access-level-ranges-locations-and-more/","t":"Icy Veins, les 9 nouveaux donjons"},{"u":"https://www.warcrafttavern.com/forever/news/how-to-find-the-hall-of-thanes-dungeon-quests/","t":"Warcraft Tavern, quêtes de la Salle des Thanes"}];
+const HORDE_DOUBTS = ["Notes Blizzard du 15 octobre non relues ici (accès refusé) : raciaux repris de Warcraft Tavern et Kami Labs.","Mort-vivant : les notes du 15 octobre parlent de Touch of the Dead (30 % pour les lanceurs de sorts, 20 % pour paladin, voleur et guerrier, 25 s de recharge interne), le guide Warcraft Tavern de Touch of the Grave (5 % de chance) : sans doute le même raciale avant et après réglage, à vérifier en jeu.","Troll : aucune source sur un changement de zone de départ, Vallée des épreuves supposée comme en Classic.","Salle des Thanes : les récompenses Alliance (Ironforge Greathammer, Calibrated Blunderbuss) viennent d'une quête Alliance ; les récompenses des deux quêtes Horde ne sont pas publiées.","Excavation Site et Alcaz Prison : aucun donneur ni accès Horde publié.","Riverglades : Rog'mar sans coordonnées ni nom du maître de vol ; niveau 35-45.","Paladin mort-vivant : seule The Tarnished (12) est documentée ; Rédemption et quêtes du 20 inconnues.","Chaman : Call of Air existe en Forever côté Alliance, donneur Horde inconnu ; quêtes de totem Horde reprises de Classic.","Noms français non vérifiés, gardés en anglais : Deathknell, Sun Rock Retreat, Splintertree Post, Freewind Post (Poste de Librevent ?), Shadowprey Village, Brackenwall Village, Revantusk Village, Bloodvenom Post, Flame Crest, The Bulwark, Marshal's Refuge, Bois des murmures (Whispering Wood).","Tout ce qui dépasse le niveau 30 n'a pas été testé en bêta : ordre des zones Horde repris de Classic."];
+
+/* ================= Faction : Alliance (guilde, par défaut) ou Horde ================= */
+Object.assign(RACES, RACES_H); Object.assign(RACE_FIT, RACE_FIT_H); Object.assign(RACE_NEW, RACE_NEW_H); Object.assign(ZONES, ZONES_H);
+const FAC_RACES = {alliance:["human","dwarf","nelf","gnome","sky"], horde:["orc","troll","tauren","undead","skyh"]};
+const FAC_NAME = {alliance:"Alliance", horde:"Horde"};
+const isSky = r => r === "sky" || r === "skyh";
+/* faction d'une fiche (id) ou d'un jeu de réponses : Horde seulement si la réponse est « horde » */
+function facOf(x){
+  const a = typeof x === "string" ? ((typeof state !== "undefined" && state.answers && state.answers[x]) || {}) : (x || {});
+  return a.faction === "horde" ? "horde" : "alliance";
+}
+const classRaces = (cls, fac) => ((fac === "horde" ? CLASS_RACES_H : CLASS_RACES)[cls] || []);
+const facChip = x => facOf(x) === "horde" ? ' <span class="chip warn fac-chip">Horde</span>' : "";
 
 const LORE = {
   intro: "WoW Forever reprend Azeroth en l'an 25 après l'ouverture de la Porte des ténèbres, soit environ quatre ans après Warcraft III: The Frozen Throne, au moment où commence WoW Classic. Blizzard le situe après la campagne Forsaken Kingdom de Warcraft III Reforged et avant le Cœur du Magma, dans une ligne temporelle alternative : rien de ce qui suit dans le Retail (Burning Crusade et au-delà) n'y est garanti.",
@@ -3432,11 +3461,15 @@ const Q = [
     {k:"cuir", t:"Cuir sombre et souple", sw:"--a-leather", cls:{rog:8,dru:8}},
     {k:"robe", t:"Robe et capuche brodées", sw:"--a-cloth", cls:{pri:8,mag:8,loc:8}}]},
   {id:"sons_ambiance", sec:"univers", type:"multi", label:"L'ambiance que tu supporterais des centaines d'heures sans couper le son", opts:[{k:"cloches", t:"Les cloches lointaines d'une cathédrale de Hurlevent", cls:{pal:1,pri:1}, rc:{human:1}},{k:"foret", t:"Une forêt la nuit, des feuilles qui bruissent, un loup au loin", cls:{dru:2,hun:1}, rc:{nelf:1}},{k:"forge", t:"Le tintement régulier d'une enclume, sous la montagne", rc:{dwarf:1.5}, pf:{craft:.5}},{k:"engrenages", t:"Des engrenages qui cliquettent et une bricole qui crépite", rc:{gnome:1.5}, pf:{util:.5}},{k:"vent", t:"Le vent qui siffle sur les hauts plateaux", rc:{sky:1.5}},{k:"orage", t:"Un orage qui gronde au-dessus des collines", cls:{sha:2,dru:1}},{k:"camp", t:"Un feu de camp qui crépite pendant que le groupe discute", p:{support:.5}},{k:"silence", t:"Presque rien : tes pas feutrés et ton souffle", p:{stealth:1}, cls:{rog:1}}]},
+  {id:"faction", sec:"univers", type:"one", label:"La faction que tu veux jouer", desc:"La guilde joue Alliance. Alliance et Horde ne se groupent jamais.", opts:[
+    {k:"alliance", t:"Alliance, avec la guilde"},{k:"horde", t:"Horde"},{k:"nsp", t:"Peu importe"}]},
   {id:"pack", sec:"univers", type:"one", label:"Le pack Skyborne (race payante) ?", desc:"Sans le pack, la race Skyborne n'est pas jouable.", opts:[
     {k:"oui", t:"Oui, je le prends"},{k:"non", t:"Non"},{k:"nsp", t:"Pas encore décidé"}]},
   {id:"race", sec:"univers", type:"multi", label:"Les races qui te tentent", desc:"« Indispensable » limite les classes proposées à celles que cette race peut jouer.", lv:["Ça me plaît","Indispensable"], opts:[
-    {k:"human", t:"Humain", rc:{human:2}},{k:"dwarf", t:"Nain", rc:{dwarf:2}},{k:"nelf", t:"Elfe de la nuit", rc:{nelf:2}},
-    {k:"gnome", t:"Gnome", rc:{gnome:2}},{k:"sky", t:"Skyborne (pack payant)", rc:{sky:2}}]},
+    {k:"human", t:"Humain", rc:{human:2}, fac:"alliance"},{k:"dwarf", t:"Nain", rc:{dwarf:2}, fac:"alliance"},{k:"nelf", t:"Elfe de la nuit", rc:{nelf:2}, fac:"alliance"},
+    {k:"gnome", t:"Gnome", rc:{gnome:2}, fac:"alliance"},{k:"sky", t:"Skyborne (pack payant)", rc:{sky:2}, fac:"alliance"},
+    {k:"orc", t:"Orc", rc:{orc:2}, fac:"horde"},{k:"troll", t:"Troll", rc:{troll:2}, fac:"horde"},{k:"tauren", t:"Tauren", rc:{tauren:2}, fac:"horde"},
+    {k:"undead", t:"Mort-vivant", rc:{undead:2}, fac:"horde"},{k:"skyh", t:"Skyborne Horde (pack payant)", rc:{skyh:2}, fac:"horde"}]},
   {id:"complexite", sec:"confort", type:"slider", label:"La complexité de jeu que tu veux", desc:"Certaines classes se jouent avec trois touches, d'autres demandent de surveiller procs, énergie et positionnement.", lo:"Très simple", hi:"Très exigeante",
     ticks:["Très simple","Simple","Équilibrée","Exigeante","Une classe réputée difficile"], lin:{c:{diff:[-4,5]}}},
   {id:"g_rythme", sec:"confort", type:"grid", label:"Ta façon de monter de niveau", xl:["Explorer","Aller vite"], yl:["Seul","En groupe"],
@@ -4529,12 +4562,15 @@ function profile(ans){
   /* races voulues : bonus aux classes jouables par ces races ; « indispensable » exclut les autres */
   const req = [];
   if (ans.race && typeof ans.race === "object") for (const r in ans.race) if (ans.race[r] === 2) req.push(r);
-  const allowed = r => !(r === "sky" && ans.pack === "non");
+  /* races de la faction choisie ; « peu importe » ou sans réponse : les deux factions comptent pour orienter les classes */
+  const fx = ans.faction === "alliance" || ans.faction === "horde" ? [ans.faction] : ["alliance","horde"];
+  const allowed = r => !(isSky(r) && ans.pack === "non") && fx.some(f=>FAC_RACES[f].includes(r));
+  const crOf = cl => fx.flatMap(f=>classRaces(cl, f));
   for (const cl of CLS_ORDER){
     let v = 0;
-    for (const r in rc) if (allowed(r) && CLASS_RACES[cl].includes(r)) v += rc[r]*1.5;
+    for (const r in rc) if (allowed(r) && crOf(cl).includes(r)) v += rc[r]*1.5;
     const reqOk = req.filter(allowed);
-    if (reqOk.length && !reqOk.some(r=>CLASS_RACES[cl].includes(r))) v -= 30;
+    if (reqOk.length && !reqOk.some(r=>crOf(cl).includes(r))) v -= 30;
     if (v) dc[cl] = (dc[cl]||0) + v;
   }
   return {p, c, dc, db, pf, rc, req};
@@ -4802,14 +4838,15 @@ function raceFor(b, ans){
   ans = ans || {};
   const want = (ans.race && typeof ans.race === "object") ? ans.race : {};
   let best = null;
-  CLASS_RACES[b.cls].forEach(r=>{
-    if (r === "sky" && ans.pack === "non") return;
+  const fac = facOf(ans), L = classRaces(b.cls, fac);
+  L.forEach(r=>{
+    if (isSky(r) && ans.pack === "non") return;
     let s = (want[r] === 2 ? 10 : want[r] === 1 ? 5 : 0) + (RACE_FIT[r] && RACE_FIT[r][b.cls] ? RACE_FIT[r][b.cls][0] : 0);
     const i = b.race.indexOf(r); if (i >= 0) s += 3 - i;
-    if (r === "sky" && ans.pack !== "oui" && !want.sky) s -= 6;
+    if (isSky(r) && ans.pack !== "oui" && !want[r]) s -= 6;
     if (!best || s > best.s) best = {r, s};
   });
-  return best ? best.r : b.race[0];
+  return best ? best.r : fac === "horde" ? L[0] : b.race[0];
 }
 /* zones de départ, groupe Skyborne, atouts raciaux */
 function analyzeRaces(bs, A){
@@ -4822,7 +4859,9 @@ function analyzeRaces(bs, A){
     S.push("Tout le groupe en Skyborne : Read Ley Line pour tout le monde (régénération de vie et de mana doublée près des lignes telluriques), +3 % de hâte et +5 % de dégâts contre les élémentaires, idéal pour farmer leurs matériaux.");
     W.push({t:"Tout le groupe en Skyborne : seules cinq classes possibles (guerrier, chasseur, voleur, mage, druide), donc aucun paladin, prêtre, chaman ni démoniste.", fx:["Le soin passe forcément par un druide Restauration, le tank par un guerrier ou un druide ours.", "Exemple de groupe Skyborne équilibré : Guerrier Protection, Druide Restauration ou Farouche, Mage Givre.", `Un pack à acheter par joueur (${bs.length}).`]});
   } else if (nSky >= 2) S.push(`${cap(NUMW[nSky] || String(nSky))} Skyborne : Read Ley Line réduit fortement les pauses des classes à mana.`);
-  if (A.some((a,i)=>a.race && a.race.sky && a.pack === "non")) W.push({t:"Un joueur veut un Skyborne mais ne prend pas le pack : la race n'est pas jouable sans lui.", fx:[], minor:true});
+  if (A.some((a,i)=>a.race && (a.race.sky || a.race.skyh) && a.pack === "non")) W.push({t:"Un joueur veut un Skyborne mais ne prend pas le pack : la race n'est pas jouable sans lui.", fx:[], minor:true});
+  const fs = [...new Set(A.map(facOf))];
+  if (fs.length > 1) W.push({t:`Alliance et Horde mélangées (${bs.map((b,i)=>`${NM(i)} : ${FAC_NAME[facOf(A[i])]}`).join(", ")}) : les deux factions ne se groupent jamais.`, fx:["Pour jouer ensemble, tout le monde doit choisir la même faction."]});
   const has = r => races.includes(r);
   if (has("human")) S.push("Un humain dans le groupe : Perception repère les voleurs camouflés en JcJ.");
   if (has("dwarf")) S.push("Un nain : Forme de pierre contre poisons et saignements, précieuse face aux voleurs et aux guerriers.");
@@ -5623,7 +5662,7 @@ function qBody(pid, q){
     return tileBtn(pid, q, o, `<span class="mono" style="background:var(${CARD_COLS[i % CARD_COLS.length]})">${esc(initials(o.t))}</span><span class="ot"><b>${esc(o.t)}${bio ? `<span class="ibtn" data-bio="${o.k}" aria-hidden="true">i</span>` : ""}</b><small>${esc(o.sub || "")}</small></span><span class="lvl" aria-hidden="true"></span>`,
       {cls:"card-o" + (bio ? " has-bio" : ""), attrs: bio ? ` data-biok="${o.k}" aria-describedby="${bid}"` : "", tail: bio ? `<span hidden id="${bid}">${esc(bio)}</span>` : ""});
   }).join("")}</div>`;
-  return `<div class="opts tiles" role="group" aria-label="${esc(q.label)}">${q.opts.map(o=>tileBtn(pid, q, o, `<span class="lvl" aria-hidden="true"></span><span class="ot">${o.sw ? `<span class="sw" style="background:var(${o.sw})"></span>` : ""}${esc(o.t)}</span>`)).join("")}</div>`;
+  return `<div class="opts tiles" role="group" aria-label="${esc(q.label)}">${q.opts.map(o=>tileBtn(pid, q, o, `<span class="lvl" aria-hidden="true"></span><span class="ot">${o.sw ? `<span class="sw" style="background:var(${o.sw})"></span>` : ""}${esc(o.t)}${o.fac ? `<small class="fac-sfx" id="fx-${pid}-${q.id}-${o.k}"> (${FAC_NAME[o.fac]})</small>` : ""}</span>`)).join("")}</div>`;
 }
 function qHint(q){
   if (q.type === "multi") return `plusieurs choix · 2 clics : ${q.lv[1].toLowerCase()}`;
@@ -5788,6 +5827,11 @@ function paintQ(pid, q, v, pre){
       const el = $(`o-${pid}-${q.id}-${o.k}`), lv = g[o.k] === 1 || g[o.k] === 2 ? g[o.k] : 0;
       if (el){ el.dataset.lv = String(lv); el.setAttribute("aria-pressed", String(lv > 0)); }
       const lt = $(`lt-${pid}-${q.id}-${o.k}`); if (lt) lt.textContent = lv ? q.lv[lv-1] : "";
+      if (o.fac){ /* races : seulement celles de la faction choisie, toutes (avec la faction en suffixe) sinon */
+        const f = (state.answers[pid] || {}).faction, pick = f === "alliance" || f === "horde";
+        if (el) el.hidden = pick && o.fac !== f;
+        const sx = $(`fx-${pid}-${q.id}-${o.k}`); if (sx) sx.hidden = pick;
+      }
     }
   } else if (q.type === "one"){
     for (const o of q.opts){ const el = $(`o-${pid}-${q.id}-${o.k}`); if (el) el.setAttribute("aria-pressed", String(v === o.k)); }
@@ -5868,7 +5912,7 @@ function setAcc(pid, sid, open){
 }
 function updateHead(p){
   const n = count(p.id), h = $("head-" + p.id);
-  if (h) h.innerHTML = `${ring(100*n/QN, p.col)}<div><h2>${esc(p.name)}</h2><span class="small muted">${n} réponses sur ${QN}</span></div>`;
+  if (h) h.innerHTML = `${ring(100*n/QN, p.col)}<div><h2>${esc(p.name)}${facChip(p.id)}</h2><span class="small muted">${n} réponses sur ${QN}</span></div>`;
   const w = $("barw-" + p.id);
   if (w) w.innerHTML = `${ring(100*n/QN, p.col, 34)}<span class="pbn">${esc(p.name)}</span><small>${n}/${QN}</small>`;
   const nt = $("note-" + p.id);
@@ -6272,7 +6316,7 @@ function framesHTML(o, A, detail, plan){
     const p = CP[i], rk = raceFor(b, A[i]), race = RACES[rk], fit = RACE_FIT[rk] && RACE_FIT[rk][b.cls];
     const pt = PAIRT.find(r=>r[0]===b.cls), soc = CLASS_SOCIAL[b.cls];
     return `<div class="frame">
-      <div class="fr-top"><span class="who">${pdot(p)}${esc(p.name)}</span>${roleChip(b.role)}</div>
+      <div class="fr-top"><span class="who">${pdot(p)}${esc(p.name)}${facChip(A[i])}</span>${roleChip(b.role)}</div>
       <div class="fr-cls">${spIcon(b)}${CLS[b.cls].name} ${esc(b.spec)} <span class="race">${race.name}${fit ? ` <span class="stars" title="${["", "Possible", "Bon choix", "Idéal"][fit[0]]} pour cette classe">${icn("crown").repeat(fit[0]) || "★".repeat(fit[0])}</span>` : ""}</span></div>
       <div class="hp" title="Affinité ${o.ind[i]}"><i style="width:${Math.max(3,o.ind[i])}%;background:var(${CLS[b.cls].c})"></i></div>
       <span class="meta">Affinité ${o.ind[i]} · Solo ${dots(b.k.solo)} · Prise en main ${dots(b.k.diff)} · JcJ ${dots(b.k.pvp)}${detail ? ` · Popularité ${dots(CPOP(b.cls))} · Hardcore ${dots(CSAFE(b.cls))}` : ""}</span>
@@ -6422,7 +6466,7 @@ function renderComposer(){
   el.innerHTML = `<div class="row" style="margin-top:12px"><button class="btn" data-compseed="top">Partir de la compo conseillée</button><button class="btn" data-compseed="wish">Partir des envies de chacun</button></div>
     <div class="cmpz">${CP.map((p,i)=>{
       const c = ui.comp[p.id], b = BI[c.b], j = B.indexOf(b), rankOf = affs[i].filter(v=>v > affs[i][j]).length + 1;
-      const races = CLASS_RACES[b.cls], auto = RACES[raceFor(b, A[i])].name;
+      const races = classRaces(b.cls, facOf(A[i])), auto = RACES[raceFor(b, A[i])].name;
       return `<div class="cz" style="border-top-color:var(${p.col})"><div class="cz-h">${pdot(p)}${esc(p.name)} ${roleChip(b.role)}</div>
         <label for="czb-${p.id}">Classe et spé</label><select id="czb-${p.id}" data-czb="${p.id}">${CLS_ORDER.map(cl=>`<optgroup label="${CLS[cl].name}">${B.map((x,k)=>x.cls === cl ? `<option value="${x.id}"${x.id === c.b ? " selected" : ""}>${esc(CLS[cl].name + " " + x.spec)} (affinité ${affs[i][k]})</option>` : "").join("")}</optgroup>`).join("")}</select>
         <label for="czr-${p.id}">Race</label><select id="czr-${p.id}" data-czr="${p.id}"><option value="auto"${c.r === "auto" || !races.includes(c.r) ? " selected" : ""}>Automatique (${esc(auto)})</option>${races.map(r=>`<option value="${r}"${c.r === r ? " selected" : ""}>${esc(RACES[r].name)}${RACE_FIT[r] && RACE_FIT[r][b.cls] ?  " (" + ["", "possible", "bon choix", "idéal"][RACE_FIT[r][b.cls][0]] + ")" : ""}</option>`).join("")}</select>
@@ -6435,7 +6479,7 @@ function renderComposerResult(){
   const el = $("cz-res"); if (!el) return;
   const A0 = CP.map(p=>state.answers[p.id] || {}), affs = CP.map(p=>playerAff(p, ui.set.strict)), ctx = groupCtx(A0), prio = state.prio;
   const idx = CP.map(p=>B.indexOf(BI[ui.comp[p.id].b]));
-  const A = CP.map((p,i)=>{ const r = ui.comp[p.id].r; return r && r !== "auto" && CLASS_RACES[B[idx[i]].cls].includes(r) ? Object.assign({}, A0[i], {race:{[r]:2}, pack:r === "sky" ? "oui" : A0[i].pack}) : A0[i]; });
+  const A = CP.map((p,i)=>{ const r = ui.comp[p.id].r; return r && r !== "auto" && classRaces(B[idx[i]].cls, facOf(A0[i])).includes(r) ? Object.assign({}, A0[i], {race:{[r]:2}, pack:isSky(r) ? "oui" : A0[i].pack}) : A0[i]; });
   const o = evalCompo(idx, affs, prio, ctx), an = analyzeCompo(o, affs, A, prio, ctx);
   const plan = profPlan(o.bs, A, ctx).map((x,i)=>{ const m = ui.comp[CP[i].id].m; return m >= 0 && PAIRS[m] ? {pair:PAIRS[m], camp:PROF[PAIRS[m][0]].camp, reasons:["choisis dans le compositeur"]} : x; });
   const top = rankCompos(affs, prio, ctx)[0], d = Math.round(o.total - top.total);
@@ -8939,7 +8983,7 @@ document.addEventListener("input", e=>{
 document.addEventListener("change", e=>{
   const r = e.target;
   if (r.dataset && r.dataset.gset){ const k = r.dataset.gset; state.group[k] = k === "goal" ? r.value : Number(r.value); state.gmeta = Date.now(); saveLocal(); pushPrio(); renderCompo(); dirty.composer = true; return; }
-  if (r.dataset && r.dataset.czb){ const c = ui.comp[r.dataset.czb]; c.b = r.value; if (!CLASS_RACES[BI[c.b].cls].includes(c.r)) c.r = "auto"; saveUI(); renderComposer(); return; }
+  if (r.dataset && r.dataset.czb){ const c = ui.comp[r.dataset.czb]; c.b = r.value; if (!classRaces(BI[c.b].cls, facOf(r.dataset.czb)).includes(c.r)) c.r = "auto"; saveUI(); renderComposer(); return; }
   if (r.dataset && r.dataset.czr){ ui.comp[r.dataset.czr].r = r.value; saveUI(); renderComposerResult(); return; }
   if (r.dataset && r.dataset.czm){ ui.comp[r.dataset.czm].m = Number(r.value); saveUI(); renderComposerResult(); return; }
   if (r.dataset && r.dataset.af){ af[r.dataset.af] = r.value; paintAnnuaireRows(); return; }
@@ -9086,7 +9130,7 @@ const COMPOS = [
    con:"Deux lanceurs de sorts en tissu : le paladin doit garder l'aggro."},
   {name:"Le trio de donjon classique", line:[["war","Guerrier Protection","tank"],["sha","Chaman Restauration (nain)","heal"],["mag","Mage Givre","dps"]],
    pro:"Le guerrier soigné devient très solide, les totems boostent tout le monde, le mage nettoie quand le tank regroupe.",
-   con:"Le guerrier souffre dès que le trio se sépare ; le chaman Alliance est forcément nain."},
+   con:"Le guerrier souffre dès que le trio se sépare ; le chaman est forcément nain côté Alliance (orc, troll, tauren ou Skyborne côté Horde)."},
   {name:"Les couteaux suisses", line:[["dru","Druide Farouche","tank"],["sha","Chaman Amélioration ou Restauration","heal"],["pal","Paladin Vindicte","dps"]],
    pro:"Les trois changent de rôle avec la double spé : idéal pour boucher les trous de la guilde en raid.",
    con:"Druide laborieux avant le niveau 20, leveling un cran plus lent."},
@@ -9108,15 +9152,18 @@ $("compocards").innerHTML = COMPOS.map(c=>`<div class="card"><h3>${esc(c.name)}<
   <p><span class="pro">Pour.</span> ${esc(c.pro)}</p><p><span class="con">Contre.</span> ${esc(c.con)}</p></div>`).join("");
 
 
-function critDetail(b){
+/* race conseillée d'un build dans une faction : premier choix du build côté Alliance, meilleure race calculée côté Horde */
+const recRace = (b, fac) => fac === "horde" ? raceFor(b, {faction:"horde"}) : b.race[0];
+function critDetail(b, fac){
+  fac = fac || "alliance";
   const crit = ["diff","solo","down","gear","dem","pvp","early"].map(k=>({k, lab:CRIT_LABEL[k], v:b.k[k], g:CRIT_EXPL[k][b.k[k]-1], n:(NOTES[b.id]||{})[k]}));
   crit.push({k:"lvl", lab:"Leveling", v:b.lvl, g:CRIT_EXPL.lvl[b.lvl-1], n:""});
-  const races = CLASS_RACES[b.cls].map(r=>({r, f:RACE_FIT[r] && RACE_FIT[r][b.cls]})).sort((x,y)=>(y.f?y.f[0]:0)-(x.f?x.f[0]:0));
+  const races = classRaces(b.cls, fac).map(r=>({r, f:RACE_FIT[r] && RACE_FIT[r][b.cls]})).sort((x,y)=>(y.f?y.f[0]:0)-(x.f?x.f[0]:0));
   const pt = PAIRT.find(r=>r[0]===b.cls);
   return `<div class="cd">
     <div class="cd-col"><h4>Gameplay</h4><p><b>En solo.</b> ${esc(b.solo)}</p><p><b>En groupe.</b> ${esc(b.group)}</p>
       <h4>Talents clés</h4><ul>${b.keys.map(k=>`<li>${esc(k)}</li>`).join("")}</ul><p class="small">${esc(b.plan)}.</p>${wfbHTML(b)}
-      <h4>Races</h4><ul>${races.map(x=>`<li>${esc(RACES[x.r].name)} ${x.f ? `<span class="stars">${icn("crown").repeat(x.f[0]) || "★".repeat(x.f[0])}</span> ${esc(x.f[1])}` : ""}${b.race[0] === x.r ? " <b>(conseillée)</b>" : ""}</li>`).join("")}</ul>
+      <h4>Races</h4><ul>${races.map(x=>`<li>${esc(RACES[x.r].name)} ${x.f ? `<span class="stars">${icn("crown").repeat(x.f[0]) || "★".repeat(x.f[0])}</span> ${esc(x.f[1])}` : ""}${recRace(b, fac) === x.r ? " <b>(conseillée)</b>" : ""}</li>`).join("")}</ul>
       ${pt ? `<h4>Métiers</h4><p class="small">${esc(pt[1])} pendant le leveling, ${esc(pt[2])} au 60.</p>` : ""}</div>
     <div class="cd-col"><h4>Les notes expliquées</h4>${crit.map(c=>`<div class="cx"><div class="cx-h"><b>${esc(c.lab)}</b> ${dots(c.v)}</div><p>${esc(c.g)}${c.n ? " " + esc(c.n) : ""}</p></div>`).join("")}</div>
   </div>`;
@@ -9165,7 +9212,7 @@ const CINFO = {
 $("classcards").innerHTML = CLS_ORDER.map(c=>{
   const i = CINFO[c];
   return `<div class="panel clsp"><div class="clsp-h"><h3><span style="color:var(${CLS[c].c})">${icn(c) || swatch(c)}</span>${CLS[c].name}</h3><span class="small muted">Leveling <span class="tier">${esc(i.tier)}</span></span></div>
-    <dl class="kv"><dt>Rôles</dt><dd>${esc(i.roles)}</dd><dt>Races</dt><dd>${esc(CLS[c].races)}</dd><dt>Race conseillée</dt><dd>${esc(i.race)}</dd><dt>Métiers</dt><dd>${esc(i.prof)}</dd></dl>
+    <dl class="kv"><dt>Rôles</dt><dd>${esc(i.roles)}</dd><dt>Races</dt><dd id="clsr-${c}">${esc(CLS[c].races)}</dd><dt>Race conseillée</dt><dd id="clsrc-${c}">${esc(i.race)}</dd><dt>Métiers</dt><dd>${esc(i.prof)}</dd></dl>
     <p>${esc(i.lvl)}</p><ul>${i.fv.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
     ${(()=>{ const so = CLASS_SOCIAL[c]; return so ? `<div class="soc"><h4>Popularité et vie sociale</h4><p>${dots(so.pop)} ${esc(so.popTxt)}</p><p><b>Demande en groupe.</b> ${esc(so.demand)}</p><ul>${so.social.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p><b>Ce que ça change.</b> ${esc(so.impact)}</p><p><b>En Hardcore.</b> ${dots(HC.safe[c] || 3)} ${esc(HC.why[c] || "")}</p></div>` : ""; })()}
     <p class="small lk2"><a href="${MOBA + CLINKS[c].hub}" target="_blank" rel="noopener">Tous les guides ${CLS[c].name.toLowerCase()} (Mobalytics)</a><a href="${MOBA + CLINKS[c].ov}" target="_blank" rel="noopener">Nouveautés de la classe</a><a href="${MOBA + CLINKS[c].lvl}" target="_blank" rel="noopener">Guide de leveling</a></p>
@@ -9185,9 +9232,9 @@ const MATRIX = [
   ["Gnome",           ["y","-","-","y","n","-","y","y","-"]],
   ["Skyborne (pack)", ["n","-","n","n","-","-","n","-","n"]]
 ];
-const RKEYS = ["human","dwarf","nelf","gnome","sky"];
-$("racetable").innerHTML = RKEYS.map(r=>`<tr><td>${esc(RACES[r].name)}${r === "sky" ? " (pack)" : ""}</td>${CLS_ORDER.map(c=>{
-  if (!CLASS_RACES[c].includes(r)) return '<td class="no">·</td>';
+const RKEYS = FAC_RACES.alliance;
+const raceRows = fac => FAC_RACES[fac].map(r=>`<tr><td>${esc(RACES[r].name)}${isSky(r) ? " (pack)" : ""}</td>${CLS_ORDER.map(c=>{
+  if (!classRaces(c, fac).includes(r)) return '<td class="no">·</td>';
   const f = RACE_FIT[r][c], nw = (RACE_NEW[r]||[]).includes(c);
   return `<td title="${esc(f ? f[1] : "")}"><span class="stars s${f?f[0]:1}">${icn("crown").repeat(f?f[0]:1) || "★".repeat(f?f[0]:1)}</span>${nw ? '<span class="new nw">nouveau</span>' : ""}</td>`;
 }).join("")}</tr>`).join("");
@@ -9198,14 +9245,34 @@ const RCARDS = [
   {n:"Gnome", a:"Maître de l'évasion : se libère des immobilisations. Eureka! : les trois sorts suivants coûtent moins cher et font 10 % de plus.", p:"Esprit vaste : réserve de ressource plus grande. Spécialisation en ingénierie.", pr:"Prêtre (nouveau) : Confounding Flash (contrôle de zone), Contingency Plan (sauvetage d'urgence).", best:"Mage, démoniste, prêtre."},
   {n:"Skyborne (Haut Ordre)", a:"Walk on Air : chute lente pendant 10 s, toutes les 90 s. Read Ley Line : +100 % de régénération de vie et de mana pendant 15 min près d'une ligne tellurique (30 s ailleurs).", p:"Wind Blessed : +3 % de vitesse d'attaque et d'incantation. Elemental Insight : +5 % de dégâts contre les élémentaires.", pr:"Côté Alliance : guerrier, chasseur, voleur, mage et druide. Zone de départ Zephras Isle (quêtes jusqu'au 13), dirigeable vers Dalaran à tout moment. Race réservée aux acheteurs d'un pack Skyborne.", best:"Druide, mage, toute classe à mana."}
 ];
-$("racecards").innerHTML = RCARDS.map((r,i)=>{
-  const rk = RKEYS[i], fit = Object.entries(RACE_FIT[rk]).sort((x,y)=>y[1][0]-x[1][0]);
-  const builds = B.filter(b=>b.race[0] === rk);
-  return `<div class="card"><h3>${esc(r.n)}</h3>
-  <dl class="kv"><dt>Actives</dt><dd>${esc(r.a)}</dd><dt>Passives</dt><dd>${esc(r.p)}</dd><dt>Spécifique</dt><dd>${esc(r.pr)}</dd><dt>Départ</dt><dd>${esc(ZONES[rk])}</dd></dl>
+const raceCards = fac => FAC_RACES[fac].map((rk,i)=>{
+  const r = fac === "alliance" ? RCARDS[i] : {n:RACES[rk].name}, fit = Object.entries(RACE_FIT[rk] || {}).sort((x,y)=>y[1][0]-x[1][0]);
+  const builds = B.filter(b=>recRace(b, fac) === rk), nw = (RACE_NEW[rk] || []).filter(c=>CLS[c]);
+  return `<div class="card" data-race="${rk}"><h3>${esc(r.n)}</h3>
+  <dl class="kv">${fac === "alliance" ? `<dt>Actives</dt><dd>${esc(r.a)}</dd><dt>Passives</dt><dd>${esc(r.p)}</dd><dt>Spécifique</dt><dd>${esc(r.pr)}</dd>` : `<dt>Raciaux</dt><dd>${esc(RACES[rk].why)}</dd>`}<dt>Départ</dt><dd>${esc(ZONES[rk])}</dd>${nw.length ? `<dt>Nouveau</dt><dd>${esc(nw.map(c=>CLS[c].name).join(", "))}</dd>` : ""}</dl>
   <h4 class="rc-h">Classes à privilégier</h4><ul class="rc-l">${fit.map(([c,f])=>`<li>${swatch(c)}<b>${CLS[c].name}</b> <span class="stars s${f[0]}">${icn("crown").repeat(f[0]) || "★".repeat(f[0])}</span> ${esc(f[1])}</li>`).join("")}</ul>
   ${builds.length ? `<h4 class="rc-h">Builds où cette race est le premier choix</h4><p class="small">${builds.map(b=>esc(bName(b))).join(", ")}</p>` : ""}</div>`;
 }).join("");
+/* bascule Alliance / Horde des vues Classes et Races : par défaut la faction de ma fiche, mémorisée dans ui.set.fac */
+const refFac = () => ui.set.fac === "horde" || ui.set.fac === "alliance" ? ui.set.fac : (me.pid ? facOf(me.pid) : "alliance");
+function renderRefFac(){
+  const fac = refFac();
+  document.querySelectorAll("[data-facsw] button").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.fac === fac)));
+  $("racetable").innerHTML = raceRows(fac);
+  $("racecards").innerHTML = raceCards(fac);
+  B.forEach(b=>{ const d = $("det-" + b.id); if (d && d.firstElementChild) d.firstElementChild.innerHTML = critDetail(b, fac); });
+  CLS_ORDER.forEach(c=>{
+    const L = classRaces(c, fac), nw = r => (RACE_NEW[r] || []).includes(c) ? " (nouveau)" : "";
+    const best = Math.max(0, ...L.map(r=>RACE_FIT[r] && RACE_FIT[r][c] ? RACE_FIT[r][c][0] : 0));
+    $("clsr-" + c).textContent = fac === "alliance" ? CLS[c].races : L.map(r=>RACES[r].name + nw(r)).join(", ");
+    $("clsrc-" + c).textContent = fac === "alliance" ? CINFO[c].race : L.filter(r=>(RACE_FIT[r] && RACE_FIT[r][c] ? RACE_FIT[r][c][0] : 0) === best).map(r=>RACES[r].name + (RACE_FIT[r] && RACE_FIT[r][c] ? ` (${RACE_FIT[r][c][1]})` : "")).join(", ");
+  });
+}
+{
+  const sw = `<div class="row facsw-row" style="margin-bottom:10px"><span class="small muted">Faction affichée</span><div class="seg" role="group" aria-label="Faction affichée" data-facsw>${["alliance","horde"].map(f=>`<button type="button" data-fac="${f}" aria-pressed="false">${FAC_NAME[f]}</button>`).join("")}</div></div>`;
+  ["v-classes","v-races"].forEach(id=>{ const v = $(id); if (v) v.insertAdjacentHTML("afterbegin", sw); });
+  document.addEventListener("click", e=>{ const b = e.target.closest("[data-facsw] [data-fac]"); if (!b) return; ui.set.fac = b.dataset.fac; saveUI(); renderRefFac(); });
+}
 
 const CAMP = [
   ["Alchimie","Mana Well","Régénération de mana, comme Bénédiction de sagesse","Fermenter (atelier)"],
@@ -9252,7 +9319,7 @@ $("gear-ic").innerHTML = icn("gear");
 const setBH = () => document.documentElement.style.setProperty("--banner-h", (($("banner") || {}).offsetHeight || 58) + "px");
 setBH(); window.addEventListener("resize", setBH);
 if (ui.set.compact) document.body.classList.add("compact");
-resolveMe(); refreshVis();
+resolveMe(); refreshVis(); renderRefFac();
 buildAllPlayers();
 applyMode();
 renderGroupCtx();
