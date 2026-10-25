@@ -4852,13 +4852,16 @@ function raceFor(b, ans){
 function analyzeRaces(bs, A){
   const races = bs.map((b,i)=>raceFor(b, A[i])), S = [], W = [];
   const zones = races.map(r=>ZONES[r]), uz = [...new Set(zones)];
+  const nHz = A.filter(a=>facOf(a) === "horde").length, hz = nHz > A.length - nHz;
   if (uz.length === 1 && bs.length > 1) S.push(`Même zone de départ pour tout le monde (${uz[0]}) : vous jouez ensemble dès le niveau 1.`);
-  else W.push({t:`Zones de départ différentes (${races.map((r,i)=>`${NM(i)} : ${ZONES[r]}`).join(", ")}).`, fx:["Vous vous retrouvez vers le niveau 10 à 13, ou ceux qui le peuvent traversent tôt pour rejoindre les autres.", races.includes("sky") ? "Le dirigeable de Zephras Isle mène à Dalaran à tout moment." : "Hurlevent sert de point de rendez-vous naturel."].filter(Boolean)});
-  const nSky = races.filter(r=>r==="sky").length;
+  else W.push({t:`Zones de départ différentes (${races.map((r,i)=>`${NM(i)} : ${ZONES[r]}`).join(", ")}).`, fx:["Vous vous retrouvez vers le niveau 10 à 13, ou ceux qui le peuvent traversent tôt pour rejoindre les autres.", hz ? (races.includes("skyh") ? "Le Skycutter de Valanaar mène de Zephras Isle aux Pitons-du-Tonnerre à la fin de l'île (12)." : "Orgrimmar sert de point de rendez-vous naturel.") : races.includes("sky") ? "Le dirigeable de Zephras Isle mène à Dalaran à tout moment." : "Hurlevent sert de point de rendez-vous naturel."].filter(Boolean)});
+  const nSky = races.filter(isSky).length;
   if (nSky === bs.length && nSky >= 2){
-    S.push("Tout le groupe en Skyborne : Read Ley Line pour tout le monde (régénération de vie et de mana doublée près des lignes telluriques), +3 % de hâte et +5 % de dégâts contre les élémentaires, idéal pour farmer leurs matériaux.");
-    W.push({t:"Tout le groupe en Skyborne : seules cinq classes possibles (guerrier, chasseur, voleur, mage, druide), donc aucun paladin, prêtre, chaman ni démoniste.", fx:["Le soin passe forcément par un druide Restauration, le tank par un guerrier ou un druide ours.", "Exemple de groupe Skyborne équilibré : Guerrier Protection, Druide Restauration ou Farouche, Mage Givre.", `Un pack à acheter par joueur (${bs.length}).`]});
-  } else if (nSky >= 2) S.push(`${cap(NUMW[nSky] || String(nSky))} Skyborne : Read Ley Line réduit fortement les pauses des classes à mana.`);
+    if (hz) S.push("Tout le groupe en Skyborne Horde : +3 % de hâte (Wind Blessed) et +5 % de dégâts contre les élémentaires (Elemental Insight) pour tout le monde, idéal pour farmer leurs matériaux.");
+    else S.push("Tout le groupe en Skyborne : Read Ley Line pour tout le monde (régénération de vie et de mana doublée près des lignes telluriques), +3 % de hâte et +5 % de dégâts contre les élémentaires, idéal pour farmer leurs matériaux.");
+    if (hz) W.push({t:"Tout le groupe en Skyborne Horde : seules cinq classes possibles (guerrier, chasseur, voleur, chaman, druide), donc aucun paladin, prêtre, mage ni démoniste.", fx:["Le soin passe par un chaman ou un druide Restauration, le tank par un guerrier ou un druide ours.", "Exemple de groupe Skyborne Horde équilibré : Guerrier Protection, Chaman Restauration, Chasseur.", "Rendez-vous aux Pitons-du-Tonnerre à la sortie de Zephras Isle (12).", `Un pack à acheter par joueur (${bs.length}).`]});
+    else W.push({t:"Tout le groupe en Skyborne : seules cinq classes possibles (guerrier, chasseur, voleur, mage, druide), donc aucun paladin, prêtre, chaman ni démoniste.", fx:["Le soin passe forcément par un druide Restauration, le tank par un guerrier ou un druide ours.", "Exemple de groupe Skyborne équilibré : Guerrier Protection, Druide Restauration ou Farouche, Mage Givre.", `Un pack à acheter par joueur (${bs.length}).`]});
+  } else if (nSky >= 2) S.push(hz ? `${cap(NUMW[nSky] || String(nSky))} Skyborne : +3 % de hâte chacun (Wind Blessed) et Walk on Air pour les trajets.` : `${cap(NUMW[nSky] || String(nSky))} Skyborne : Read Ley Line réduit fortement les pauses des classes à mana.`);
   if (A.some((a,i)=>a.race && (a.race.sky || a.race.skyh) && a.pack === "non")) W.push({t:"Un joueur veut un Skyborne mais ne prend pas le pack : la race n'est pas jouable sans lui.", fx:[], minor:true});
   const fs = [...new Set(A.map(facOf))];
   if (fs.length > 1) W.push({t:`Alliance et Horde mélangées (${bs.map((b,i)=>`${NM(i)} : ${FAC_NAME[facOf(A[i])]}`).join(", ")}) : les deux factions ne se groupent jamais.`, fx:["Pour jouer ensemble, tout le monde doit choisir la même faction."]});
@@ -6168,7 +6171,8 @@ function readingLines(A, R){
     L.push(common.length ? {t:`Royaume possible pour tous : ${common.map(o=>o.t.toLowerCase()).join(" ou ")}.`} : {t:`Aucun type de royaume ne convient à tout le monde : le groupe et la guilde doivent choisir le même.`, w:true});
   }
   const races = A.map(a=>a.race ? Object.keys(a.race).filter(k=>a.race[k] === 2) : []);
-  if (n >= 2 && races.every(r=>r.includes("sky"))) L.push({t:"Tout le monde veut un Skyborne : seules cinq classes restent possibles (guerrier, chasseur, voleur, mage, druide). La compo conseillée en tient compte.", w:true});
+  if (n >= 2 && races.every(r=>r.some(isSky))){ const nHz = A.filter(a=>facOf(a) === "horde").length;
+    L.push(nHz > A.length - nHz ? {t:"Tout le monde veut un Skyborne Horde : seules cinq classes restent possibles (guerrier, chasseur, voleur, chaman, druide), rendez-vous aux Pitons-du-Tonnerre à la sortie de Zephras Isle. La compo conseillée en tient compte.", w:true} : {t:"Tout le monde veut un Skyborne : seules cinq classes restent possibles (guerrier, chasseur, voleur, mage, druide). La compo conseillée en tient compte.", w:true}); }
   const pairs = []; I.forEach(i=>I.forEach(j=>{ if (j > i) pairs.push([i,j]); }));
   const close = pairs.map(([i,j])=>({i,j,c:closeness(A[i],A[j])})).filter(x=>x.c!=null).sort((x,y)=>y.c-x.c);
   if (close.length >= 2) L.push({t:`Les plus proches : ${VIS[close[0].i].name} et ${VIS[close[0].j].name} (${close[0].c} %). Les plus différents : ${VIS[close[close.length-1].i].name} et ${VIS[close[close.length-1].j].name} (${close[close.length-1].c} %).`});
@@ -7558,8 +7562,8 @@ function lvBandOf(lv){
   const R = LVL_DATA.route.filter(r=>r.src !== "classic");
   return R.find(r=>lv >= r.lv[0] && lv < r.lv[1]) || R[R.length - 1];
 }
-function lvDungeonSVG(marks){
-  const D = LVL_DATA.dungeons, W = 860, L0 = 16, R0 = 16, lane = 24, X = l => L0 + (l - 1)/59*(W - L0 - R0);
+function lvDungeonSVG(marks, D0){
+  const D = D0 || LVL_DATA.dungeons, W = 860, L0 = 16, R0 = 16, lane = 24, X = l => L0 + (l - 1)/59*(W - L0 - R0);
   const lanes = [], pos = D.map(d=>{
     const x0 = X(d.lv[0]), x1 = Math.max(X(d.lv[1]), x0 + 8), tw = (d.name.length + 6)*6.1, after = x1 + 6 + tw <= W - 2;
     const a = after ? x0 : x0 - 6 - tw, z = after ? x1 + 6 + tw : x1;
@@ -7579,7 +7583,15 @@ function lvDungeonSVG(marks){
 function lvForMe(){
   const p = me.pid && PI[me.pid] != null ? PLAYERS[PI[me.pid]] : null; if (!p) return "";
   const b = mainBuild(p); if (!b) return `<div class="callout"><h3>${icn("map")}Pour toi</h3><p>Classe tes spés ou réponds au questionnaire : la page te montrera ta route, tes paliers et tes quêtes de classe.</p><button class="btn sm primary" data-chopen="${p.id}">Classer mes spés</button></div>`;
-  const lv = lvlOf(p) || 1, C = LVL_DATA.classes[b.cls], band = lvBandOf(lv);
+  const lv = lvlOf(p) || 1;
+  if (lvFac() === "horde"){
+    const St = LVR_STEPS_H, zs = [...new Set(St.filter(s=>s.k === "zone" && s.lv[0] <= lv && lv <= s.lv[1]).map(s=>s.t))].slice(0, 4);
+    const dh = St.filter(s=>s.k === "donjon" && s.lv[1] >= lv && s.lv[0] <= lv + 6).slice(0, 3), qh = (LVR_CQ_H[b.cls] || []).filter(q=>q.lv >= lv).slice(0, 2);
+    return `<div class="callout" id="lv-me"><h3>${icn(b.cls)}Pour toi : ${esc(bName(b))}, niveau ${lv}, côté Horde</h3>
+    <ul class="small">${zs.length ? `<li><b>Où aller :</b> ${esc(zs.join(", "))}.</li>` : ""}${dh.length ? `<li><b>Donjons à ta portée :</b> ${dh.map(d=>`${esc(d.t)} (${d.lv[0]}-${d.lv[1]})`).join(", ")}.</li>` : ""}${qh.length ? `<li><b>Quêtes de classe :</b> ${qh.map(q=>`niveau ${q.lv} : ${esc(q.t)}`).join(" ; ")}.</li>` : ""}</ul>
+    ${lvl0Hint(p)}</div>`;
+  }
+  const C = LVL_DATA.classes[b.cls], band = lvBandOf(lv);
   const sp = C.spikes.filter(x=>x.lv > lv).slice(0, 2), hd = C.hard.filter(h=>h.to > lv).slice(0, 1), qu = C.quests.filter(q=>q.lv >= lv).slice(0, 2);
   const dg = LVL_DATA.dungeons.filter(d=>d.lv[1] >= lv && d.lv[0] <= lv + 6).slice(0, 3);
   return `<div class="callout"><h3>${icn(b.cls)}Pour toi : ${esc(bName(b))}, niveau ${lv}</h3>
@@ -7589,7 +7601,7 @@ function lvForMe(){
 const lvl0Hint = p => lvlOf(p) ? "" : `<p class="small muted">Déclare ton niveau dans ta fiche personnage pour que ces conseils suivent ta progression.</p>`;
 function renderLeveling(){
   const el = $("leveling"); if (!el) return;
-  const rev = String(REV[me.pid] || 0) + "|" + (me.pid || "") + "|" + VIS.map(p=>p.id + lvlOf(p)).join(",") + "|" + CP.map(p=>p.id + ":" + lvlOf(p) + ":" + ((ui.comp[p.id] && ui.comp[p.id].b) || (mainBuild(p) || {}).id || "")).join(",") + "|" + (ui.set.lvb || "");
+  const rev = String(REV[me.pid] || 0) + "|" + (me.pid || "") + "|" + VIS.map(p=>p.id + lvlOf(p)).join(",") + "|" + CP.map(p=>p.id + ":" + lvlOf(p) + ":" + ((ui.comp[p.id] && ui.comp[p.id].b) || (mainBuild(p) || {}).id || "")).join(",") + "|" + (ui.set.lvb || "") + "|" + lvFac() + "|" + CP.map(p=>facOf(p.id)).join(",");
   if (el.dataset.rev === rev) return;
   el.dataset.rev = rev;
   const marks = VIS.filter(p=>lvlOf(p)).map(p=>({name:p.name, lv:lvlOf(p), col:p.col}));
@@ -7600,19 +7612,26 @@ function renderLeveling(){
   const T = LVL_DATA.tiers, lvT = T.filter(t=>!/générale/.test(t.src));
   const cons = c => { const v = lvT.map(t=>tierOf(t, c)).filter(Boolean).map(k=>TIER_V[k]); return v.length ? v.reduce((s,x)=>s+x,0)/v.length : 0; };
   const consL = v => v >= 3.5 ? "S" : v >= 2.5 ? "A" : v >= 1.5 ? "B" : v >= .5 ? "C" : "D";
-  el.innerHTML = `<div class="panel"><h2 class="h2">${icn("map")}Leveling 1-60 côté Alliance</h2>
-      <p class="small muted" style="max-width:84ch;margin:0">La route, les donjons, les paliers de chaque classe et ce que la bêta a appris. La bêta s'arrête au niveau 30 : au-delà, la page suit les annonces de Blizzard <span class="lv-src forever">Forever</span> et l'ordre de Classic <span class="lv-src classic">Classic</span>, qui peut différer.</p></div>
+  const fac = lvFac(), hz = fac === "horde";
+  const DG = hz ? LVR_DG_H.map(id=>LVR_STEPS_H.find(x=>x.id === id)).filter(Boolean).map(x=>({name:x.t, lv:x.lv, where:x.where, src:x.d})) : LVL_DATA.dungeons;
+  const fsw = `<div class="row facsw-row" style="margin:8px 0 0"><span class="small muted">Faction affichée</span><div class="seg" role="group" aria-label="Faction affichée" data-facsw>${["alliance","horde"].map(f=>`<button type="button" data-fac="${f}" aria-pressed="${f === fac}">${FAC_NAME[f]}</button>`).join("")}</div></div>`;
+  const routeH = () => LVR_BANDS_H.map(([a,b2],i)=>{ const inB = St => St.filter(x=>x.lv[0] >= a && (x.lv[0] < b2 || (i === LVR_BANDS_H.length - 1 && x.lv[0] <= b2)));
+      const zs = [...new Set(inB(LVR_STEPS_H).filter(x=>x.k === "zone").map(x=>x.t))], ds = inB(LVR_STEPS_H).filter(x=>x.k === "donjon").map(x=>x.t), wh = inB(LVR_STEPS_H).filter(x=>x.k === "zone" && x.where).map(x=>x.where), src = a < 30 ? "beta" : "forever";
+      return `<div class="lv-band"><div class="lv-n">${a}-${b2}<small>${a < 30 ? "rapporté" : "extrapolé"}</small></div><div><h4>${esc(zs.join(", ") || "Fin de la zone en cours")} <span class="lv-src ${src}">${a < 30 ? "guides" : "Forever"}</span></h4>${ds.length ? `<p><b>Donjons :</b> ${esc(ds.join(", "))}</p>` : ""}${wh.length ? `<p class="small muted">${esc(wh.join(" ; "))}</p>` : ""}</div></div>`; }).join("");
+  el.innerHTML = `<div class="panel"><h2 class="h2">${icn("map")}Leveling 1-60 côté ${FAC_NAME[fac]}</h2>
+      <p class="small muted" style="max-width:84ch;margin:0">La route, les donjons, les paliers de chaque classe et ce que la bêta a appris. La bêta s'arrête au niveau 30 : au-delà, la page suit les annonces de Blizzard <span class="lv-src forever">Forever</span> et l'ordre de Classic <span class="lv-src classic">Classic</span>, qui peut différer.</p>${fsw}</div>
     <div class="spacer"></div>${lvForMe()}
     ${lvrPanelA()}<div class="spacer"></div>${lvrPanelB()}<div class="spacer"></div>
-    <div class="panel"><h3 class="chart-h">${icn("gate")}Les nouveaux donjons, niveau par niveau</h3><p class="chart-sub">En vert, ceux qu'on a pu tester en bêta ; en orange, ceux annoncés pour la suite. Les traits verticaux montrent le niveau déclaré des joueurs affichés.</p><div class="svg-x">${lvDungeonSVG(marks)}</div>
-      <div class="lv-dg" style="margin-top:10px">${LVL_DATA.dungeons.map(d=>`<div class="lv-d"><b>${esc(d.name)} <span class="lvr">${d.lv[0]}-${d.lv[1]}</span></b>${esc(d.where || "")}<br><span class="small muted">${esc(d.src || "")}</span></div>`).join("")}</div>
-      ${expl("Neuf donjons inédits jalonnent la route, des Halls of Thanes de Forgefer à la Shaper's Terrace d'Un'Goro.", "Niveaux relevés dans les guides et les notes de bêta (sources en bas de page). Quand deux sources divergent, la fiche donne les deux plages. Ruins of Lordaeron est un donjon de Fossoyeuse ouvert à l'Alliance, mais le trajet traverse le territoire de la Horde : prévoyez une soirée entière, pas un détour.")}</div>
+    <div class="panel"><h3 class="chart-h">${icn("gate")}Les nouveaux donjons, niveau par niveau</h3><p class="chart-sub">En vert, ceux qu'on a pu tester en bêta ; en orange, ceux annoncés pour la suite. Les traits verticaux montrent le niveau déclaré des joueurs affichés.</p><div class="svg-x">${lvDungeonSVG(marks, DG)}</div>
+      <div class="lv-dg" style="margin-top:10px">${DG.map(d=>`<div class="lv-d"><b>${esc(d.name)} <span class="lvr">${d.lv[0]}-${d.lv[1]}</span></b>${esc(d.where || "")}<br><span class="small muted">${esc(d.src || "")}</span></div>`).join("")}</div>
+      ${hz ? expl("Neuf donjons inédits jalonnent la route Horde, de Ruins of Lordaeron devant Fossoyeuse à la Shaper's Terrace d'Un'Goro.", "Niveaux relevés dans les guides et les notes de bêta côté Horde (sources en bas de page). Salle des Thanes, Excavation Site et Alcaz Prison sont en terre Alliance : groupe complet et trajet à prévoir.") : expl("Neuf donjons inédits jalonnent la route, des Halls of Thanes de Forgefer à la Shaper's Terrace d'Un'Goro.", "Niveaux relevés dans les guides et les notes de bêta (sources en bas de page). Quand deux sources divergent, la fiche donne les deux plages. Ruins of Lordaeron est un donjon de Fossoyeuse ouvert à l'Alliance, mais le trajet traverse le territoire de la Horde : prévoyez une soirée entière, pas un détour.")}</div>
     <div class="spacer"></div>
     <div class="panel"><h3 class="chart-h">${icn("compass")}La route par tranche de niveaux</h3>
-      <div class="lv-route">${Object.keys(bands).map(k=>{ const m = bands[k].main, c = bands[k].classic; if (!m) return ""; const src = m.src === "beta" ? "beta" : m.src;
+      <div class="lv-route">${hz ? routeH() : Object.keys(bands).map(k=>{ const m = bands[k].main, c = bands[k].classic; if (!m) return ""; const src = m.src === "beta" ? "beta" : m.src;
         return `<div class="lv-band"><div class="lv-n">${k}<small>${src === "beta" ? "testé en bêta" : "annoncé"}</small></div><div><h4>${esc(m.zones.join(", "))} <span class="lv-src ${src}">${src === "beta" ? "bêta" : "Forever"}</span></h4>${m.dungeons.length ? `<p><b>Donjons :</b> ${esc(m.dungeons.join(", "))}</p>` : ""}${m.notes ? `<p class="small muted">${esc(m.notes)}</p>` : ""}${c ? `<details><summary class="small">Ordre de Classic <span class="lv-src classic">Classic</span></summary><p class="small">${esc(c.zones.join(", "))}${c.dungeons.length ? `. Donjons : ${esc(c.dungeons.join(", "))}` : ""}.</p></details>` : ""}</div></div>`; }).join("")}</div>
-      ${expl("Une tranche de dix niveaux par ligne : où quêter et quels donjons viser.", "De 1 à 30, la route vient des guides écrits pendant la bêta. De 30 à 60, elle reprend les zones annoncées pour Forever, avec l'ordre de Classic en complément ; Riverglades et Shen'dralas sont des zones nouvelles, dont la place exacte reste à confirmer.")}</div>
+      ${hz ? expl("Une tranche de dix niveaux par ligne : où quêter et quels donjons viser côté Horde.", "Tirée de la route Horde de la page (zones et donjons qui commencent dans la tranche). La bêta s'est arrêtée au 30 : au-delà, l'ordre suit Classic et les annonces de Forever.") : expl("Une tranche de dix niveaux par ligne : où quêter et quels donjons viser.", "De 1 à 30, la route vient des guides écrits pendant la bêta. De 30 à 60, elle reprend les zones annoncées pour Forever, avec l'ordre de Classic en complément ; Riverglades et Shen'dralas sont des zones nouvelles, dont la place exacte reste à confirmer.")}</div>
     <div class="spacer"></div>
+    ${hz ? `<div class="panel" id="lv-hdoubt"><h3 class="chart-h">${icn("warning")}À vérifier côté Horde</h3><ul class="small">${HORDE_DOUBTS.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${expl("Les points de la route Horde que les sources ne tranchent pas encore.", "Relevés pendant la recherche du 25 octobre : à confirmer en jeu à la sortie.")}</div><div class="spacer"></div>` : ""}
     <div class="cmp-grid">
       <div class="panel"><h3 class="chart-h">${icn("campfire")}Monter en groupe</h3><ul class="small">${LV_GROUP.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${expl("Les règles d'expérience de Forever qui comptent quand on joue à plusieurs.", "Tirées des notes de développement de Blizzard (1er et 8 octobre) et des guides d'expérience ; la règle des objets de collecte vient de Classic.")}</div>
       <div class="panel"><h3 class="chart-h">${icn("hourglass")}Ce que la bêta a appris</h3><ul class="small">${LV_BETA.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${expl("Les constats des testeurs et de Blizzard entre le 17 septembre et le 21 octobre.", "Synthèse des notes de bêta, des guides et des retours de la communauté. Monter au 60, c'est la philosophie du péon : « travail, travail ».")}</div>
@@ -7630,16 +7649,29 @@ function renderLeveling(){
       <div class="tablewrap"><table class="heat tier-t"><thead><tr><th class="left">Classe</th>${T.map(t=>`<th title="${esc(t.src)}">${esc(t.src.replace(/ \(.*\)$/, ""))}<br><span class="small muted">${esc((t.src.match(/\((.*)\)/) || [0, ""])[1])}</span></th>`).join("")}<th>Tendance</th></tr></thead>
       <tbody>${CLS_ORDER.slice().sort((a,b)=>cons(b) - cons(a)).map(c=>`<tr><td class="left"><span class="tl">${icn(c)}${CLS[c].name}</span></td>${T.map(t=>{ const k = tierOf(t, c); return `<td class="${k || ""}">${k || "·"}</td>`; }).join("")}<td class="${consL(cons(c))}"><b>${consL(cons(c))}</b></td></tr>`).join("")}</tbody></table></div>
       ${expl("Chasseur et mage en tête partout, guerrier en bas partout ; le paladin divise le plus.", "La tendance fait la moyenne des cinq classements de leveling (S = 4 points, A = 3, B = 2, C = 1, D = 0). Le classement Rankedboost note les classes en général, pas la vitesse de montée : il est affiché mais pas compté. Un guerrier lent en solo devient précieux en groupe : avec un soigneur derrière lui, c'est lui qui dit « Vous ne passerez pas ! ».")}</div>`;
-  const ul = $("srclist"); if (ul && !ul.dataset.lv){ ul.dataset.lv = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", LV_SOURCES.concat(LVR_SOURCES).filter(x=>{ const k = x.u.replace(/\/$/, ""); if (have.has(k)) return false; have.add(k); return true; }).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
+  const ul = $("srclist"); if (ul && hz && !ul.dataset.lvh){ ul.dataset.lvh = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", HORDE_SOURCES.filter(x=>{ const k = x.u.replace(/\/$/, ""); if (have.has(k)) return false; have.add(k); return true; }).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
+  if (ul && !ul.dataset.lv){ ul.dataset.lv = 1; const have = new Set([...ul.querySelectorAll("a")].map(a=>a.href.replace(/\/$/, ""))); ul.insertAdjacentHTML("beforeend", LV_SOURCES.concat(LVR_SOURCES).filter(x=>{ const k = x.u.replace(/\/$/, ""); if (have.has(k)) return false; have.add(k); return true; }).map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join("")); }
   applyPanels("leveling");
 }
 
 /* ================= Routes par spé (panneau A) et route du groupe (panneau B) ================= */
 const LVR_BANDS = [[1,20],[20,30],[30,40],[40,50],[50,60]];
+const LVR_BANDS_H = [[1,10],[10,20],[20,30],[30,40],[40,50],[50,60]];
+/* les neuf donjons Forever de la route Horde */
+const LVR_DG_H = ["h_lordaeron","h_thanes","h_excav","dalaran","drowned","river2","h_alcaz","blackmaw","shaper"];
+/* faction de la page : la bascule partagée (ui.set.fac), sinon celle de ma fiche */
+const lvFac = () => ui.set.fac === "horde" || ui.set.fac === "alliance" ? ui.set.fac : (me.pid ? facOf(me.pid) : "alliance");
+/* les données de route d'une faction */
+function lvrSet(fac){
+  return fac === "horde"
+    ? {fac:"horde", zones:LVR_ZONES_H, raceZone:LVR_RACE_ZONE_H, travel:LVR_TRAVEL_H, steps:LVR_STEPS_H, cq:LVR_CQ_H, rules:LVR_RULES.concat(LVR_RULES_H), startId:"h_start"}
+    : {fac:"alliance", zones:LVR_ZONES, raceZone:LVR_RACE_ZONE, travel:LVR_TRAVEL, steps:LVR_STEPS, cq:LVR_CQ, rules:LVR_RULES, startId:"start"};
+}
+document.addEventListener("click", e=>{ const b = e.target.closest("#leveling [data-facsw] [data-fac]"); if (!b) return; ui.set.fac = b.dataset.fac; saveUI(); renderLeveling(); });
 const LVR_KIND_IC = {zone:"map", donjon:"gate", ville:"banner", bateau:"compass", prep:"scroll", achat:"coin", classe:"book", spe:"star"};
 const LVR_ST_CLS = {conf:"forever", rap:"beta", hyp:"classic"};
 const lvrBandIx = lv => Math.max(0, LVR_BANDS.findIndex(([a,b], i)=>lv >= a && (lv < b || i === LVR_BANDS.length - 1)));
-const lvrZone = r => LVR_ZONES[LVR_RACE_ZONE[r]] || LVR_ZONES.elwynn;
+const lvrZone = (r, S) => S.zones[S.raceZone[r]] || S.zones[Object.keys(S.zones)[0]];
 const lvrStChip = st => `<span class="lv-src ${LVR_ST_CLS[st] || "classic"}" title="Statut de l'information">${esc(LVR_ST[st] || st)}</span>`;
 function lvrQBand(R, lv){ return R.q.find(x=>lv >= x[0] && lv < x[1]) || (lv >= 60 ? R.q[R.q.length - 1] : R.q[0]); }
 function lvrMyPlayer(){ return me.pid && PI[me.pid] != null ? PLAYERS[PI[me.pid]] : null; }
@@ -7648,9 +7680,9 @@ function lvrPick(){
   return BI[ui.set.lvb] || mb || B[0];
 }
 /* Événements propres à un build : quêtes de classe, changements de spé, équipement. who = nom du joueur pour la route du groupe. */
-function lvrEvents(b, who){
+function lvrEvents(b, who, S){
   const R = LVR_B[b.id] || {q:[[1,60,b.spec,""]]}, pre = who ? esc(who) + " : " : "", ev = [], gear = {};
-  (LVR_CQ[b.cls] || []).forEach(q=>ev.push({lv:[q.lv,q.lv], k:"classe", t:pre + esc(q.t), where:q.where, st:q.st, cq:1}));
+  (S.cq[b.cls] || []).forEach(q=>ev.push({lv:[q.lv,q.lv], k:"classe", t:pre + esc(q.t), where:q.where, st:q.st, cq:1}));
   R.q.slice(1).forEach(x=>ev.push({lv:[x[0],x[0]], k:"spe", t:who ? `${pre}passe en ${esc(x[2])}` : `Passe en ${esc(x[2])}`, d:x[3], sw:1}));
   Object.entries(R.gear || {}).forEach(([id, it])=>{ (gear[id] = gear[id] || []).push((who ? pre : "Pour toi : ") + esc(it)); });
   return {ev, gear};
@@ -7662,14 +7694,14 @@ function lvrTag(s, pol){
   return "";
 }
 /* Frise par tranches : la route commune, plus les événements insérés à leur niveau. */
-function lvrTimeline(pol, startHTML, ev, gear, openLv){
-  const steps = LVR_STEPS.map((s,i)=>({s, i, o:0})).concat(ev.map((e,i)=>({s:e, i, o:1})));
+function lvrTimeline(pol, startHTML, ev, gear, openLv, S){
+  const steps = S.steps.map((s,i)=>({s, i, o:0})).concat(ev.map((e,i)=>({s:e, i, o:1})));
   steps.sort((x,y)=>(x.s.lv[0] - y.s.lv[0]) || (x.o - y.o) || (x.i - y.i));
   const open = lvrBandIx(openLv || 1), per = LVR_BANDS.map(()=>[]);
   steps.forEach(({s})=>{
     const lvl = s.lv[0] === s.lv[1] ? `${s.lv[0]}` : `${s.lv[0]}-${s.lv[1]}`;
     const g = (gear[s.id] || []).map(x=>`<span class="lvr-gear">${icn("chest")}${x}</span>`).join("");
-    const head = s.id === "start" ? startHTML : (s.cq || s.sw ? s.t : esc(s.t));
+    const head = s.id === S.startId ? startHTML : (s.cq || s.sw ? s.t : esc(s.t));
     per[lvrBandIx(s.lv[0])].push(`<li class="lvr-row k-${s.k}"><span class="lvr-lv">${lvl}</span><span class="lvr-ic">${icn(LVR_KIND_IC[s.k] || "map")}</span><div class="lvr-b"><div class="lvr-t"><b>${head}</b>${lvrTag(s, pol)}${s.st ? lvrStChip(s.st) : ""}</div>${s.where ? `<div class="small muted">${esc(s.where)}</div>` : ""}${s.d ? `<div class="small">${esc(s.d)}</div>` : ""}${g ? `<div class="lvr-gears">${g}</div>` : ""}</div></li>`);
   });
   return `<div class="lvr-tl">${LVR_BANDS.map(([a,b],i)=>`<details class="lvr-band"${i === open ? " open" : ""}><summary><span class="lvr-bn">${a}-${b}</span><span class="small muted">${per[i].length} étapes${a >= 30 ? ", extrapolé" : ""}</span></summary><ol class="lvr-list">${per[i].join("")}</ol></details>`).join("")}</div>`;
@@ -7678,47 +7710,53 @@ function lvrPhaseBar(R){
   return `<div class="lvr-bar" role="img" aria-label="Spé jouée pour quêter, du niveau 1 au 60">${R.q.map((x,i)=>`<div class="lvr-seg s${i}" style="flex:${Math.max(1, x[1] - x[0])} 1 0" title="${esc(x[2])}, niveaux ${x[0]} à ${x[1]}${x[3] ? " : " + esc(x[3]) : ""}"><b>${esc(x[2])}</b><span>${x[0]}-${x[1]}</span></div>`).join("")}</div>`;
 }
 function lvrPanelA(){
-  const b = lvrPick(), R = LVR_B[b.id], p = lvrMyPlayer();
+  const b = lvrPick(), R = LVR_B[b.id], p = lvrMyPlayer(), fac = lvFac(), S = lvrSet(fac);
   const mine = p && ((p.choix || []).includes(b.id) || mainBuild(p) === b);
-  const race = mine ? raceFor(b, state.answers[p.id]) : b.race[0], Z = lvrZone(race), P = LVR_POL[R.pol];
-  const {ev, gear} = lvrEvents(b, null);
+  const race = mine && facOf(p.id) === fac ? raceFor(b, state.answers[p.id]) : fac === "horde" ? raceFor(b, {faction:fac}) : b.race[0], Z = lvrZone(race, S), P = LVR_POL[R.pol];
+  const {ev, gear} = lvrEvents(b, null, S);
   const start = `Zone de départ : ${esc(Z.name)} <span class="muted">(${esc(RACES[race].name)}, ${esc(Z.hub)})</span>`;
-  return `<div class="panel" id="lvr-a"><h3 class="chart-h">${icn("compass")}Ta route, spé par spé</h3><p class="chart-sub">Choisis une classe et une spé : la route 1-60, la spé à jouer pour quêter, les quêtes de classe et l'équipement à viser.</p>
+  return `<div class="panel" id="lvr-a"><h3 class="chart-h">${icn("compass")}Ta route, spé par spé</h3><p class="chart-sub">Choisis une classe et une spé : la route 1-60${fac === "horde" ? " côté Horde" : ""}, la spé à jouer pour quêter, les quêtes de classe et l'équipement à viser.</p>
     <div class="lvr-pick"><label>Classe <select data-lvrcls>${CLS_ORDER.map(c=>`<option value="${c}"${c === b.cls ? " selected" : ""}>${esc(CLS[c].name)}</option>`).join("")}</select></label><label>Spé <select data-lvrb>${B.filter(x=>x.cls === b.cls).map(x=>`<option value="${x.id}"${x.id === b.id ? " selected" : ""}>${esc(x.spec)}</option>`).join("")}</select></label>${mine ? '<span class="chip gold">ta spé</span>' : ""}</div>
     <div class="lvr-sum"><p><b>${icn(b.cls)}${esc(bName(b))} : ${esc(P.t)}.</b> ${esc(P.d)}</p>
       <ul class="small"><li><b>Double spé au 40 :</b> ${esc(R.dual)}</li><li><b>En donjon :</b> ${esc(R.dg)}</li><li><b>Départ :</b> ${esc(Z.name)} (${esc(RACES[race].name)}), ${esc(Z.hub)}, puis ${esc(Z.next)}</li></ul></div>
     ${lvrPhaseBar(R)}
-    ${lvrTimeline(R.pol, start, ev, gear, p ? lvlOf(p) : 1)}
+    ${lvrTimeline(R.pol, start, ev, gear, p ? lvlOf(p) : 1, S)}
     ${R.tips && R.tips.length ? `<h4 class="lvr-h4">Conseils pour cette spé</h4><ul class="small">${R.tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>` : ""}
     <p class="small muted">Au-delà du niveau 30, tout est extrapolé : la bêta s'est arrêtée au 30.</p></div>`;
 }
 /* Peut-on démarrer dans la zone z avec cette classe ? Renvoie la race à prendre, ou null. */
-function lvrRaceIn(z, b, ans){
-  const ok = LVR_ZONES[z].races.filter(r=>CLASS_RACES[b.cls].includes(r) && (r !== "sky" || (ans && ans.pack === "oui")));
+function lvrRaceIn(z, b, ans, S){
+  const ok = S.zones[z].races.filter(r=>classRaces(b.cls, S.fac).includes(r) && (!isSky(r) || (ans && ans.pack === "oui")));
   const rk = r => b.race.includes(r) ? b.race.indexOf(r) : 99;
   return ok.sort((x,y)=>rk(x) - rk(y))[0] || null;
 }
 function lvrPanelB(){
-  const M = [], none = [];
-  CP.forEach(p=>{ const b = (ui.comp[p.id] && BI[ui.comp[p.id].b]) || mainBuild(p); if (b) M.push({p, b, ans:state.answers[p.id] || {}}); else none.push(p); });
-  const noneL = none.length ? `<p class="small muted">${none.map(p=>`${esc(p.name)} n'a pas encore classé ses spés`).join(". ")}.</p>` : "";
-  const H = `<h3 class="chart-h">${icn("users")}La route du groupe</h3>`;
+  const M0 = [], none = [];
+  CP.forEach(p=>{ const b = (ui.comp[p.id] && BI[ui.comp[p.id].b]) || mainBuild(p); if (b) M0.push({p, b, ans:state.answers[p.id] || {}}); else none.push(p); });
+  /* une seule faction par groupe : la majorité (Alliance en cas d'égalité), les autres sont écartés de la route */
+  M0.forEach(m=>{ m.fac = facOf(m.ans); });
+  const nH = M0.filter(m=>m.fac === "horde").length, gfac = nH > M0.length - nH ? "horde" : "alliance", F = lvrSet(gfac);
+  const M = M0.filter(m=>m.fac === gfac), out = M0.filter(m=>m.fac !== gfac);
+  const NJ = L => L.length > 1 ? L.slice(0, -1).join(", ") + " et " + L[L.length - 1] : L[0] || "";
+  const mixL = out.length ? `<p class="callout warn" data-lvrmix="${out.map(m=>m.p.id).join(",")}">${icn("warning")}<b>Alliance et Horde ne se groupent jamais : ${esc(NJ(out.map(m=>m.p.name)))} ${out.length > 1 ? "jouent" : "joue"} ${FAC_NAME[out[0].fac]}.</b> La route ci-dessous est celle de la ${FAC_NAME[gfac]}, la faction de la majorité ; ${esc(NJ(out.map(m=>m.p.name)))} n'y ${out.length > 1 ? "figurent" : "figure"} pas.</p>` : "";
+  const noneL = mixL + (none.length ? `<p class="small muted">${none.map(p=>`${esc(p.name)} n'a pas encore classé ses spés`).join(". ")}.</p>` : "");
+  const H = `<h3 class="chart-h">${icn("users")}La route du groupe${gfac === "horde" ? " côté Horde" : ""}</h3>`;
   if (M.length < 2) return `<div class="panel" id="lvr-b">${H}<p class="chart-sub">Choisis au moins deux joueurs avec une spé dans « Compo du groupe » : la route du groupe se calcule à partir d'eux.</p>${noneL}<button class="btn sm" data-v="compo">${icn("users")}Compo du groupe</button></div>`;
-  M.forEach(m=>{ m.race = raceFor(m.b, m.ans); m.z = LVR_RACE_ZONE[m.race]; m.lv = lvlOf(m.p); m.R = LVR_B[m.b.id]; });
+  M.forEach(m=>{ m.race = raceFor(m.b, m.ans); m.z = F.raceZone[m.race]; m.lv = lvlOf(m.p); m.R = LVR_B[m.b.id]; });
   /* zone de départ commune */
-  const zk = Object.keys(LVR_ZONES), score = z => ({z, can:M.filter(m=>lvrRaceIn(z, m.b, m.ans)).length, at:M.filter(m=>m.z === z).length});
+  const zk = Object.keys(F.zones), score = z => ({z, can:M.filter(m=>lvrRaceIn(z, m.b, m.ans, F)).length, at:M.filter(m=>m.z === z).length});
   /* d'abord la zone où le plus de joueurs peuvent démarrer, puis celle qui demande le moins de changements de race, puis l'ordre de LVR_ZONES (Elwynn d'abord) */
-  const best = zk.map(score).sort((x,y)=>(y.can - x.can) || (y.at - x.at) || (zk.indexOf(x.z) - zk.indexOf(y.z)))[0], T = best.z, TZ = LVR_ZONES[T];
+  const best = zk.map(score).sort((x,y)=>(y.can - x.can) || (y.at - x.at) || (zk.indexOf(x.z) - zk.indexOf(y.z)))[0], T = best.z, TZ = F.zones[T];
   const same = M.every(m=>m.z === M[0].z), S = [];
-  if (same) S.push(`<p data-lvrzone="${M[0].z}"><b>Tout le monde démarre en ${esc(LVR_ZONES[M[0].z].name)}</b> (${esc(LVR_ZONES[M[0].z].hub)}).</p>`);
+  if (same) S.push(`<p data-lvrzone="${M[0].z}"><b>Tout le monde démarre en ${esc(F.zones[M[0].z].name)}</b> (${esc(F.zones[M[0].z].hub)}).</p>`);
   else {
     S.push(`<p data-lvrzone="${T}"><b>${best.can === M.length ? "Vous pouvez tous démarrer en" : "Départ commun conseillé :"} ${esc(TZ.name)}</b> (${best.can} sur ${M.length}, ${esc(TZ.hub)}).</p>`);
     const L = [];
-    M.filter(m=>m.z !== T).forEach(m=>{ const r = lvrRaceIn(T, m.b, m.ans); L.push(r ? `${esc(m.p.name)} passe en ${esc(RACES[r].name)} (au lieu de ${esc(RACES[m.race].name)}).` : `${esc(m.p.name)} garde ${esc(RACES[m.race].name)} et démarre en ${esc(LVR_ZONES[m.z].name)} : ${esc((LVR_TRAVEL[T] || {})[m.z] || "")}`); });
+    M.filter(m=>m.z !== T).forEach(m=>{ const r = lvrRaceIn(T, m.b, m.ans, F); L.push(r ? `${esc(m.p.name)} passe en ${esc(RACES[r].name)} (au lieu de ${esc(RACES[m.race].name)}).` : `${esc(m.p.name)} garde ${esc(RACES[m.race].name)} et démarre en ${esc(F.zones[m.z].name)} : ${esc((F.travel[T] || {})[m.z] || "")}`); });
     if (L.length) S.push(`<ul class="small">${L.map(x=>`<li>${x}</li>`).join("")}</ul>`);
   }
   S.push(`<p class="small muted">Zephras Isle se joue seul jusqu'au 12 (pack Skyborne).</p>`);
-  const startZ = same ? LVR_ZONES[M[0].z] : TZ, start = `Zone de départ du groupe : ${esc(startZ.name)} <span class="muted">(${esc(startZ.hub)})</span>`;
+  const startZ = same ? F.zones[M[0].z] : TZ, start = `Zone de départ du groupe : ${esc(startZ.name)} <span class="muted">(${esc(startZ.hub)})</span>`;
   /* rôles */
   const capT = ["war","pal","dru"], capH = ["pal","pri","sha","dru"];
   const tM = M.find(m=>m.b.role === "tank"), hM = M.find(m=>m.b.role === "heal" && m !== tM);
@@ -7731,17 +7769,17 @@ function lvrPanelB(){
   const lvs = M.map(m=>m.lv).filter(Boolean), gap = lvs.length > 1 && Math.max(...lvs) - Math.min(...lvs) > 3;
   /* frise */
   const ev = [], gear = {};
-  M.forEach(m=>{ const e = lvrEvents(m.b, m.p.name); ev.push(...e.ev); Object.entries(e.gear).forEach(([k,v])=>{ (gear[k] = gear[k] || []).push(...v); }); });
+  M.forEach(m=>{ const e = lvrEvents(m.b, m.p.name, F); ev.push(...e.ev); Object.entries(e.gear).forEach(([k,v])=>{ (gear[k] = gear[k] || []).push(...v); }); });
   const meIn = M.find(m=>m.p.id === me.pid), openLv = (meIn && meIn.lv) || (lvs.length ? Math.min(...lvs) : 1);
   const RL = {tank:"tank", heal:"soin", dps:"DPS"};
   return `<div class="panel" id="lvr-b">${H}<p class="chart-sub">Calculée à partir des joueurs de la compo et des spés choisies dans « Compo du groupe ».</p>${noneL}
-    <div class="tablewrap"><table class="dir lvr-mt"><thead><tr><th class="left">Joueur</th><th class="left">Classe et spé</th><th class="left">Race</th><th class="left">Départ</th><th>Niveau</th><th class="left">Spé pour quêter</th><th>Donjon</th></tr></thead><tbody>${M.map(m=>{ const q = m.R ? lvrQBand(m.R, m.lv || 1) : null; return `<tr><td class="left">${pdot(m.p)}<b>${esc(m.p.name)}</b></td><td class="left"><span class="tl">${spIcon(m.b)}${esc(bName(m.b))}</span></td><td class="left">${esc(RACES[m.race].name)}</td><td class="left">${esc(LVR_ZONES[m.z].name)}</td><td>${m.lv || '<span class="muted">·</span>'}</td><td class="left">${q ? esc(q[2]) : esc(m.b.spec)}</td><td>${RL[m.b.role]}</td></tr>`; }).join("")}</tbody></table></div>
+    <div class="tablewrap"><table class="dir lvr-mt"><thead><tr><th class="left">Joueur</th><th class="left">Classe et spé</th><th class="left">Race</th><th class="left">Départ</th><th>Niveau</th><th class="left">Spé pour quêter</th><th>Donjon</th></tr></thead><tbody>${M.map(m=>{ const q = m.R ? lvrQBand(m.R, m.lv || 1) : null; return `<tr><td class="left">${pdot(m.p)}<b>${esc(m.p.name)}</b></td><td class="left"><span class="tl">${spIcon(m.b)}${esc(bName(m.b))}</span></td><td class="left">${esc(RACES[m.race].name)}</td><td class="left">${esc(F.zones[m.z].name)}</td><td>${m.lv || '<span class="muted">·</span>'}</td><td class="left">${q ? esc(q[2]) : esc(m.b.spec)}</td><td>${RL[m.b.role]}</td></tr>`; }).join("")}</tbody></table></div>
     <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("map")}Le départ</h4>${S.join("")}</div>
       <div><h4 class="lvr-h4">${icn("tank")}Les rôles</h4><ul class="small">${rl(tk, "Tank", alt(capT, hl))}${rl(hl, "Soin", alt(capH, tk))}</ul>${CP.length < 5 ? `<p class="small">Pour les donjons, il vous manque ${5 - CP.length} joueur${5 - CP.length > 1 ? "s" : ""}.</p>` : ""}
         <p class="small"><b>Façon de monter : ${esc(P.t)}.</b> ${esc(P.d)}</p>${gap ? `<p class="small warn">${icn("warning")}Plus de trois niveaux d'écart entre vous (${Math.min(...lvs)} à ${Math.max(...lvs)}) : les plus avancés attendent ou montent un autre personnage.</p>` : ""}</div></div>
-    ${lvrTimeline(pol, start, ev, gear, openLv)}
+    ${lvrTimeline(pol, start, ev, gear, openLv, F)}
     <div class="cmp-grid lvr-grid"><div><h4 class="lvr-h4">${icn("campfire")}Ce que chacun apporte</h4><ul class="small">${[...new Set(M.map(m=>m.b.cls))].map(c=>`<li><b>${esc(CLS[c].name)} :</b> ${esc(LVR_SYN[c])}</li>`).join("")}</ul></div>
-      <div><h4 class="lvr-h4">${icn("scroll")}Les règles à plusieurs</h4><ul class="small">${LVR_RULES.map(r=>`<li>${esc(r.t)} ${lvrStChip(r.st)}</li>`).join("")}</ul></div></div>
+      <div><h4 class="lvr-h4">${icn("scroll")}Les règles à plusieurs</h4><ul class="small">${F.rules.map(r=>`<li>${esc(r.t)} ${lvrStChip(r.st)}</li>`).join("")}</ul></div></div>
     <p class="small muted">Au-delà du niveau 30, tout est extrapolé : la bêta s'est arrêtée au 30.</p></div>`;
 }
 
