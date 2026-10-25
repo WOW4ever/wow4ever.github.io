@@ -1069,6 +1069,15 @@ footer .src-d[open] summary{margin-bottom:6px}
 .cpk:disabled{opacity:.45;cursor:not-allowed}
 .cpk .ic.sp{margin:0}
 .cp-pick{margin-bottom:14px}
+.chfac{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:8px 0 6px}
+.chfac-t{color:var(--muted)}
+.spc-race{margin:4px 0 0}
+.cb2 .cbg{flex:1;display:flex;align-items:flex-end;gap:2px;height:100%;min-width:0}
+.cb2 .cbg .cb{flex:1;min-width:0}
+.cb2 .cb span{font-size:.58rem;top:-14px}
+.cbars .cb.cbh,.cb-k.cbh{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.6) 0 2px,transparent 2px 5px)!important;opacity:.8}
+.cb-leg{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 0;color:var(--muted)}
+.cb-k{display:inline-block;width:14px;height:10px;border-radius:2px;background:var(--muted);margin-right:5px;vertical-align:-1px}
 
 /* ===== Formats de question : dialogue de PNJ, champ de bataille, sac, récit à embranchements ===== */
 .dlg{position:relative;max-width:680px;border:1px solid var(--frame);border-radius:12px;background:linear-gradient(180deg,var(--parch),color-mix(in srgb,var(--parch) 70%,var(--surface)));box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--surface) 55%,transparent),0 1px 3px rgba(0,0,0,.08);padding:12px 14px 10px}
@@ -2729,6 +2738,10 @@ const LVR_CQ_H = {"war":[{"lv":10,"t":"Posture défensive","where":"Classic : Ve
 const LVR_RULES_H = [{"t":"Zeppelins : trois liaisons sans niveau requis (Orgrimmar et Fossoyeuse, Orgrimmar et Grom'gol, Fossoyeuse et Grom'gol). Fixer le rendez-vous à une tour, pas en ville.","st":"rap"},{"t":"Le Skyborne Horde quitte Zephras Isle au 12 par le Skycutter de Valanaar (58.2, 79.5) vers les Pitons-du-Tonnerre : rendez-vous là-bas.","st":"rap"},{"t":"Trois donjons Forever sont en terre Alliance (Salle des Thanes sous Forgefer, Excavation Site dans les Paluns, Alcaz Prison près de Theramore) : y aller en groupe complet, prévoir le trajet. La Prison de Hurlevent n'est pas faisable pour la Horde.","st":"hyp"},{"t":"Ruins of Lordaeron est devant Fossoyeuse : le donjon Forever le plus simple d'accès pour la Horde, à placer vers 15-20.","st":"rap"},{"t":"Paladin mort-vivant : hub de classe à Bandarion Keep (Tirisfal), prévoir les détours vers Fossoyeuse à chaque palier de quête.","st":"rap"},{"t":"Riverglades : à pied depuis les Terres ingrates vers Rog'mar, ou bateau neutre Steamwheedle Port vers Powderfuse Port depuis Tanaris.","st":"rap"}];
 const HORDE_SOURCES = [{"u":"https://www.icy-veins.com/wow-forever/news/all-new-race-and-class-combos-and-racial-abilities-in-wow-forever-official/","t":"Icy Veins, races, classes et raciaux officiels (22 septembre)"},{"u":"https://www.warcrafttavern.com/forever/news/racial-class-ability-changes-in-the-wow-forever-beta/","t":"Warcraft Tavern, raciaux revus le 15 octobre"},{"u":"https://kami-labs.fr/en/wow-forever/patch-notes-15-octobre-races-refaites/","t":"Kami Labs, patch du 15 octobre et races"},{"u":"https://www.warcrafttavern.com/forever/guides/undead/","t":"Warcraft Tavern, le mort-vivant"},{"u":"https://www.warcrafttavern.com/forever/guides/undead-paladin/","t":"Warcraft Tavern, le paladin mort-vivant"},{"u":"https://warcraft.wiki.gg/wiki/The_Tarnished","t":"Warcraft Wiki, quête The Tarnished"},{"u":"https://www.warcrafttavern.com/forever/guides/skyborne/","t":"Warcraft Tavern, Skyborne et Façonneurs de vent"},{"u":"https://www.warcrafttavern.com/forever/guides/the-ruins-of-lordaeron/","t":"Warcraft Tavern, Ruins of Lordaeron"},{"u":"https://conquestcapped.com/guides/wow-forever/wow-forever-dalaran-attunement/","t":"Conquestcapped, accès à Dalaran"},{"u":"https://warcraft.wiki.gg/wiki/Riverglades","t":"Warcraft Wiki, Riverglades"},{"u":"https://www.icy-veins.com/wow-forever/news/all-9-new-wow-forever-dungeons-previewed-how-to-access-level-ranges-locations-and-more/","t":"Icy Veins, les 9 nouveaux donjons"},{"u":"https://www.warcrafttavern.com/forever/news/how-to-find-the-hall-of-thanes-dungeon-quests/","t":"Warcraft Tavern, quêtes de la Salle des Thanes"}];
 const HORDE_DOUBTS = ["Notes Blizzard du 15 octobre non relues ici (accès refusé) : raciaux repris de Warcraft Tavern et Kami Labs.","Mort-vivant : les notes du 15 octobre parlent de Touch of the Dead (30 % pour les lanceurs de sorts, 20 % pour paladin, voleur et guerrier, 25 s de recharge interne), le guide Warcraft Tavern de Touch of the Grave (5 % de chance) : sans doute le même raciale avant et après réglage, à vérifier en jeu.","Troll : aucune source sur un changement de zone de départ, Vallée des épreuves supposée comme en Classic.","Salle des Thanes : les récompenses Alliance (Ironforge Greathammer, Calibrated Blunderbuss) viennent d'une quête Alliance ; les récompenses des deux quêtes Horde ne sont pas publiées.","Excavation Site et Alcaz Prison : aucun donneur ni accès Horde publié.","Riverglades : Rog'mar sans coordonnées ni nom du maître de vol ; niveau 35-45.","Paladin mort-vivant : seule The Tarnished (12) est documentée ; Rédemption et quêtes du 20 inconnues.","Chaman : Call of Air existe en Forever côté Alliance, donneur Horde inconnu ; quêtes de totem Horde reprises de Classic.","Noms français non vérifiés, gardés en anglais : Deathknell, Sun Rock Retreat, Splintertree Post, Freewind Post (Poste de Librevent ?), Shadowprey Village, Brackenwall Village, Revantusk Village, Bloodvenom Post, Flame Crest, The Bulwark, Marshal's Refuge, Bois des murmures (Whispering Wood).","Tout ce qui dépasse le niveau 30 n'a pas été testé en bêta : ordre des zones Horde repris de Classic."];
+
+/* Recensement de la bêta du 20 septembre 2026 côté Horde (2 928 personnages, analyse Venruki relayée par Wowhead, Reddit et Kami Labs) */
+const CLASS_SOCIAL_H = {"pal":{"pop":5,"share":25.7,"n":753,"rank":1},"sha":{"pop":5,"share":15.6,"n":457,"rank":2},"dru":{"pop":3,"share":11.7,"n":344,"rank":3},"hun":{"pop":3,"share":11.5,"n":337,"rank":4},"war":{"pop":3,"share":10.4,"n":305,"rank":5},"rog":{"pop":2,"share":6.9,"n":201,"rank":6},"loc":{"pop":2,"share":6.5,"n":191,"rank":7},"mag":{"pop":2,"share":6.0,"n":176,"rank":8},"pri":{"pop":1,"share":5.6,"n":164,"rank":9}};
+const CENSUS_H = {date:"2026-09-20", n:2928, src:"https://kami-labs.fr/wow-forever/wow-forever-census-beta-races-classes-populaires/"};
 
 /* ================= Faction : Alliance (guilde, par défaut) ou Horde ================= */
 Object.assign(RACES, RACES_H); Object.assign(RACE_FIT, RACE_FIT_H); Object.assign(RACE_NEW, RACE_NEW_H); Object.assign(ZONES, ZONES_H);
@@ -4542,10 +4555,12 @@ const CRIT_TXT = {
   pop:{pp:"une classe très jouée, où tu ne seras jamais seul", pn:"une classe plus rare, comme tu le souhaites", np:"une classe plutôt rare", nn:"une classe très jouée : concurrence pour les places et le butin"},
   safe:{pp:"très sûre en Hardcore", pn:"", np:"risquée en Hardcore", nn:""}
 };
-const CPOP = cls => (typeof CLASS_SOCIAL !== "undefined" && CLASS_SOCIAL[cls] && CLASS_SOCIAL[cls].pop) || 3;
+/* popularité de bêta : recensement Horde pour « horde », recensement Alliance sinon */
+const CPOP = (cls, fac) => { const S = fac === "horde" ? (typeof CLASS_SOCIAL_H !== "undefined" ? CLASS_SOCIAL_H : null) : (typeof CLASS_SOCIAL !== "undefined" ? CLASS_SOCIAL : null); return (S && S[cls] && S[cls].pop) || 3; };
 const CSAFE = cls => (typeof HC !== "undefined" && HC.safe && HC.safe[cls]) || 3;
-const critK = (b, t) => t === "pop" ? CPOP(b.cls) : t === "safe" ? CSAFE(b.cls) : (b.k[t] || 3);
-function profile(ans){
+const critK = (b, t, fac) => t === "pop" ? CPOP(b.cls, fac) : t === "safe" ? CSAFE(b.cls) : (b.k[t] || 3);
+/* fac (facultatif) remplace la faction répondue : races comptées et recensement de popularité */
+function profile(ans, fac){
   const p = {}, c = {}, dc = {}, db = {}, pf = {}, rc = {};
   const T = {p, c, cls:dc, b:db, pf, rc};
   const add = (g, k, v) => { T[g][k] = (T[g][k]||0) + v; };
@@ -4563,7 +4578,7 @@ function profile(ans){
   const req = [];
   if (ans.race && typeof ans.race === "object") for (const r in ans.race) if (ans.race[r] === 2) req.push(r);
   /* races de la faction choisie ; « peu importe » ou sans réponse : les deux factions comptent pour orienter les classes */
-  const fx = ans.faction === "alliance" || ans.faction === "horde" ? [ans.faction] : ["alliance","horde"];
+  const F = fac || ans.faction, fx = F === "alliance" || F === "horde" ? [F] : ["alliance","horde"];
   const allowed = r => !(isSky(r) && ans.pack === "non") && fx.some(f=>FAC_RACES[f].includes(r));
   const crOf = cl => fx.flatMap(f=>classRaces(cl, f));
   for (const cl of CLS_ORDER){
@@ -4573,16 +4588,16 @@ function profile(ans){
     if (reqOk.length && !reqOk.some(r=>crOf(cl).includes(r))) v -= 30;
     if (v) dc[cl] = (dc[cl]||0) + v;
   }
-  return {p, c, dc, db, pf, rc, req};
+  return {p, c, dc, db, pf, rc, req, fac:fac || facOf(ans)};
 }
 function rawScore(pr, b){
   let s = 0;
   for (const t in pr.p) s += pr.p[t] * (b.t[t] || 0);
-  for (const t in pr.c) s += pr.c[t] * (critK(b, t) - 3) * 3;
+  for (const t in pr.c) s += pr.c[t] * (critK(b, t, pr.fac) - 3) * 3;
   return s + (pr.dc[b.cls]||0) + (pr.db[b.id]||0);
 }
-function affinities(ans){
-  const pr = profile(ans);
+function affinities(ans, fac){
+  const pr = profile(ans, fac);
   const raw = B.map(b=>rawScore(pr, b));
   const mn = Math.min(...raw), mx = Math.max(...raw);
   return raw.map(v => mx > mn ? Math.round(100*(v-mn)/(mx-mn)) : 50);
@@ -4591,7 +4606,7 @@ function reasons(pr, b){
   const L = [];
   for (const t in pr.p){ const v = pr.p[t]*(b.t[t]||0); if (Math.abs(v) >= 1.5) L.push({v, t: v > 0 ? TAGP[t] : "Moins ton style : " + TAGN[t]}); }
   for (const t in pr.c){
-    const k = critK(b, t), cv = pr.c[t]; if (k === 3 || Math.abs(cv) < .4) continue;
+    const k = critK(b, t, pr.fac), cv = pr.c[t]; if (k === 3 || Math.abs(cv) < .4) continue;
     const v = cv*(k-3)*3, key = (v > 0 ? "p" : "n") + ((k > 3) === (v > 0) ? "p" : "n"), txt = CRIT_TXT[t] && CRIT_TXT[t][key];
     if (txt && Math.abs(v) >= 2.5) L.push({v, t:txt});
   }
@@ -5980,6 +5995,32 @@ const MOTIV_COLS = ["--dps","--p3","--accent","--gold","--disagree","--heal"];
 function classAff(affs){
   return CLS_ORDER.map(c=>({lab:CLS_SHORT[c], full:CLS[c].name, v:Math.max(...B.map((b,j)=>b.cls === c ? affs[j] : -1)), col:CLS[c].c}));
 }
+/* deux séries par classe (Alliance pleine, Horde hachurée), même ordre que cbars */
+function cbars2(A, H){
+  const bar = (r, f, cls) => `<div class="cb${cls}" title="${esc(r.full || r.lab)}, ${f} : ${r.v}" style="height:${Math.max(2, r.v)}%;background:var(${r.col})"><span>${r.v}</span></div>`;
+  return `<div class="cbars cb2">${A.map((r,i)=>`<div class="cbg">${bar(r, "Alliance", "")}${bar(H[i], "Horde", " cbh")}</div>`).join("")}</div><div class="cbl">${A.map(r=>`<span title="${esc(r.full || r.lab)}">${esc(r.lab)}</span>`).join("")}</div><p class="cb-leg small"><span><i class="cb-k"></i>Alliance</span><span><i class="cb-k cbh"></i>Horde</span></p>`;
+}
+/* faction des classements du profil : la réponse du joueur, sinon la bascule partagée (ui.set.fac).
+   L'aperçu de l'autre faction pour un joueur qui a répondu reste dans ui.chFac[pid], pour ne pas changer les autres pages. */
+function chartFac(p){
+  const f = (state.answers[p.id] || {}).faction, own = f === "alliance" || f === "horde" ? f : null;
+  const pv = own && ui.chFac ? ui.chFac[p.id] : null;
+  return {own, fac:own ? (pv === "alliance" || pv === "horde" ? pv : own) : (ui.set.fac === "horde" ? "horde" : "alliance")};
+}
+function chartFacHTML(p, cf){
+  const prev = cf.own && cf.fac !== cf.own;
+  return `<div class="row facsw-row chfac"><div class="seg" role="group" aria-label="Faction des classements" data-facsw data-chfac="${p.id}">${["alliance","horde"].map(f=>`<button type="button" data-fac="${f}" aria-pressed="${f === cf.fac}">${FAC_NAME[f]}</button>`).join("")}</div><span class="small chfac-t">Classement calculé côté ${FAC_NAME[cf.fac]}${cf.own ? (prev ? " (aperçu, ta réponse : " + FAC_NAME[cf.own] + ")" : " (ta réponse au questionnaire)") : ""}</span>${prev ? `<button type="button" class="btn sm" data-chfacreset="${p.id}">Revenir à ma faction</button>` : ""}</div>`;
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-chfac] [data-fac]"), r = e.target.closest("[data-chfacreset]");
+  if (!b && !r) return;
+  const pid = b ? b.closest("[data-chfac]").dataset.chfac : r.dataset.chfacreset, p = PLAYERS[PI[pid]]; if (!p) return;
+  const cf = chartFac(p); ui.chFac = ui.chFac || {};
+  if (r || (cf.own && b.dataset.fac === cf.own)) delete ui.chFac[pid];
+  else if (cf.own) ui.chFac[pid] = b.dataset.fac;
+  else { ui.set.fac = b.dataset.fac; if (typeof renderRefFac === "function") renderRefFac(); }
+  saveUI(); renderSide(p);
+});
 function refHTML(a, col){
   const m = refMatch(a);
   if (!m.length) return `<p class="small muted">Réponds aux sections Motivations et Entre deux envies pour te comparer aux profils types.</p>`;
@@ -6049,10 +6090,12 @@ function specCards(p, a, affs, pr, n){
   const card = b=>{
     const ad = adviceFor(p, b, pr, a, affs), k = ch.indexOf(b.id);
     const top = FINE_ROLES.map(r=>({r, v:r.f(b)})).sort((x,y)=>y.v-x.v).slice(0,2).map(x=>x.r.n.toLowerCase()).join(", ");
+    const fac = pr.fac === "horde" ? "horde" : "alliance", rk = raceFor(b, Object.assign({}, a, {faction:fac})), fit = RACE_FIT[rk] && RACE_FIT[rk][b.cls];
+    const rline = RACES[rk] ? `<p class="small spc-race">Race conseillée côté ${FAC_NAME[fac]} : <b>${esc(RACES[rk].name)}</b>${fit ? ` (${esc(fit[1])})` : ""}${(RACE_NEW[rk] || []).includes(b.cls) ? ' <span class="chip gold">nouveau</span>' : ""}</p>` : "";
     return `<details class="spc${k >= 0 ? " mychoix" : ""}"${b === (topB[0] || extra[0]) ? " open" : ""}><summary><span class="spc-h">${spIcon(b)}<b>${esc(bName(b))}</b> ${roleChip(b.role)}${k >= 0 ? `<span class="chip gold">${k+1}${k ? "e" : "er"} choix</span>` : ""}</span><span class="spc-a"><span class="mbar"><i style="width:${ad.aff}%;background:var(${CLS[b.cls].c})"></i></span><b>${ad.aff}</b></span></summary>
       ${k >= 0 && ad.aff < 60 && n >= 12 ? `<p class="small warn">${icn("warning")}Tes réponses collent peu à cette spé pour l'instant (${ad.aff}) : rien d'interdit, c'est ton choix qui compte dans les compos. Regarde surtout ce qui pourrait te gêner.</p>` : ""}
       <p class="spc-fun">${icn("scroll")}${esc(ad.fun)}</p>
-      <p class="small muted">Rôles fins : ${esc(top)}. ${esc(ad.lvl)}</p>
+      <p class="small muted">Rôles fins : ${esc(top)}. ${esc(ad.lvl)}</p>${rline}
       ${ad.L.length ? `<ul class="pros">${ad.L.map(x=>`<li>${icn("check")}${esc(x)}</li>`).join("")}</ul>` : ""}
       ${ad.W.length ? `<ul class="cons">${ad.W.map(x=>`<li>${icn("warning")}${esc(x)}</li>`).join("")}</ul>` : ""}
       <p class="small"><b>En solo.</b> ${esc(b.solo)}</p><p class="small"><b>En groupe.</b> ${esc(b.group)}</p>
@@ -6068,8 +6111,10 @@ function specCards(p, a, affs, pr, n){
 function renderSide(p){
   const el = $("side-" + p.id); if (!el) return;
   const a = state.answers[p.id] || {}, n = count(p.id);
-  const pr = profile(a), affs = baseAff(p.id);
+  /* classements selon la faction des graphiques ; sans faction répondue, l'affinité par classe montre les deux */
+  const cf = chartFac(p), pr = profile(a, cf.fac), affs = affinities(a, cf.fac);
   const ranked = B.map((b,j)=>({b, v:affs[j]})).sort((x,y)=>y.v-x.v);
+  const caff = cf.own ? cbars(classAff(affs)) : cbars2(classAff(cf.fac === "alliance" ? affs : affinities(a, "alliance")), classAff(cf.fac === "horde" ? affs : affinities(a, "horde")));
   const V = axes => axes.map(x=>axVal(a,x));
   const rows = (axes, cols) => axes.map((x,i)=>({lab:x.n, v:axVal(a,x), col:Array.isArray(cols) ? cols[i] : (x.col || cols)}));
   const fr = fineRoles(a, playerAff(p, false)).sort((x,y)=>y.v-x.v);
@@ -6083,7 +6128,7 @@ function renderSide(p){
     gc("Rôles fins", "Douze façons de servir un groupe, rangées sous tank, soin et dégâts.", vzSunburst(p, fr) + (fr.length && ROLE_AX.some(x=>axVal(a,x)) ? `<p class="small" style="margin:8px 0 0"><b>${esc(fr[0].n)}</b> : ${esc(fr[0].d)}</p>` : ""), false, ["L'anneau intérieur partage ton profil entre tank, soin et dégâts ; l'anneau extérieur découpe chaque part entre ses rôles fins, plus la case est foncée, plus le rôle te va. Ton rôle fin le plus fort est au centre.", "Anneau intérieur : les trois axes de rôle (tank, soin, dégâts) rapportés à leur total. Anneau extérieur : la part de chaque rôle fin dans son groupe est proportionnelle à son score (tank : tank principal, secondaire, couteau suisse ; soin : soin du tank, du groupe, soutien ; dégâts : contact, arc, sorts, contrôle, éclaireur, utilitaire). Score d'un rôle fin : 60 % pour la façon dont les spés que tu aimes savent le tenir (tes spés préférées et tes choix classés pèsent plus), 40 % pour ce que tes réponses disent de ton envie de le tenir (protection, soins, contrôle, services, discrétion, polyvalence ou distance de combat)."]),
     gc("Rôle et distance", "Parts déduites des réponses, jamais demandées directement.", `<div class="two"><div>${donut(rows(ROLE_AX, ROLE_COLS), "Rôle de " + p.name)}</div><div>${donut(rows(RANGE_AX, RANGE_COLS), "Distance de combat de " + p.name)}</div></div>`, false, ["L'anneau de gauche montre ta part de tank, de soin et de dégâts ; celui de droite, si tu préfères le contact, l'arc ou les sorts.", "Les parts sont les trois axes de rôle (ou de distance) rapportés à leur total. Elles viennent des mises en situation (réflexes, combats, ce que tu fais quand le tank tombe) plus que des goûts déclarés."]),
     gc("Jauges d'engagement", "Sur 100 : plus l'arc est rempli, plus l'engagement est fort.", `<div class="gauges">${GAUGES.map(g=>gauge(g.f(a), g.n, p.col)).join("")}</div>`, false, ["Technicité : ton goût pour les rotations exigeantes. JcJ : ton envie et ton aisance face aux joueurs. Social : ton besoin d'interactions. Autonomie : ta part de jeu en solo. Hardcore : ton attrait pour le mode à une vie.", "Le JcJ fait la moyenne de l'aisance, de l'investissement, de l'adaptation et de l'envie ; le social, la moyenne de cinq places sociales (animateur, mentor, compétiteur, indispensable, serviable)."]),
-    gc("Affinité par classe", "Le meilleur build de chaque classe, sur 100.", cbars(classAff(affs)), false, ["Une colonne haute veut dire qu'au moins une spé de la classe te correspond bien.", "Pour chaque classe, on garde l'affinité de sa meilleure spé (voir « Spés conseillées » pour le calcul)."]),
+    gc("Affinité par classe", "Le meilleur build de chaque classe, sur 100.", caff, false, [cf.own ? "Une colonne haute veut dire qu'au moins une spé de la classe te correspond bien." : "Sans faction choisie, chaque classe a deux colonnes : pleine pour l'Alliance, hachurée pour la Horde. Là où elles diffèrent, la faction change le classement.", "Pour chaque classe, on garde l'affinité de sa meilleure spé (voir « Spés conseillées » pour le calcul). Côté Horde, les races jouables et la popularité de bêta (recensement Horde du 20 septembre) changent le score."]),
     specCards(p, a, affs, pr, n),
     gc("Ce que tu apportes au groupe", "Dégâts, protection, soins, contrôle, services, ambiance et logistique.", hbars(rows(CONTRIB_AX, "--accent")), false, ["Ta façon d'être utile, au-delà de ta classe : celui qui protège, qui soigne, qui organise, qui met l'ambiance ou qui fait tourner l'intendance.", "Calculé sur les questions de rôle, de services rendus, de tâches de groupe, de vie de guilde et de métiers. " + SRC]),
     gc("Ce que tu veux incarner", "L'univers qui ressort de tes héros, de tes sons, de tes éléments et de tes armes.", polar(FANTASY_AX.map(x=>x.n), V(FANTASY_AX), FANT_COLS, "Univers de " + p.name), false, ["Plus un secteur est grand, plus cet univers t'attire. Utile pour trancher entre deux spés proches : on joue plus longtemps une classe qui nous fait rêver.", "Les héros choisis, les sons, les éléments, l'arme, l'armure et la monture préférés votent chacun pour un ou plusieurs univers."]),
@@ -6099,7 +6144,7 @@ function renderSide(p){
     gc("Face aux profils de joueurs types", "Ressemblance avec six segments de joueurs, sur les motivations et le profil de Bartle.", refHTML(a, p.col), true, ["Le profil le plus proche décrit les joueurs qui te ressemblent ; les écarts disent ce qui te rend unique.", "Ressemblance = 100 moins l'écart moyen entre tes motivations (et ton profil de Bartle) et celles du profil type. Les profils types sont des repères illustratifs construits à partir des segments publiés par Quantic Foundry."]),
     gc("Analyse détaillée", "Ce que disent tes réponses, recoupées entre elles et avec le reste du groupe.", analysisHTML(p, a, affs, pr), true, ["Une lecture en phrases de tout ce qui précède, avec ce qui te distingue du reste de la guilde.", "Chaque phrase s'appuie sur un graphique de cette page ; la comparaison au groupe calcule, axe par axe, ton écart avec la moyenne des autres joueurs (au moins 15 points pour être cité)."])
   ].filter(Boolean);
-  el.innerHTML = `<div class="side-h"><h3 class="chart-h" style="margin:0">Profil de ${esc(p.name)}</h3><button class="btn sm" data-mode="q">${ui.mode === "g" ? "Revenir aux questions" : "Masquer les graphiques"}</button></div><div class="side-grid">${cards.join("")}</div>`;
+  el.innerHTML = `<div class="side-h"><h3 class="chart-h" style="margin:0">Profil de ${esc(p.name)}</h3><button class="btn sm" data-mode="q">${ui.mode === "g" ? "Revenir aux questions" : "Masquer les graphiques"}</button></div>${chartFacHTML(p, cf)}<div class="side-grid">${cards.join("")}</div>`;
   applyPanels(state.view);
 }
 
@@ -6323,7 +6368,7 @@ function framesHTML(o, A, detail, plan){
       <div class="fr-top"><span class="who">${pdot(p)}${esc(p.name)}${facChip(A[i])}</span>${roleChip(b.role)}</div>
       <div class="fr-cls">${spIcon(b)}${CLS[b.cls].name} ${esc(b.spec)} <span class="race">${race.name}${fit ? ` <span class="stars" title="${["", "Possible", "Bon choix", "Idéal"][fit[0]]} pour cette classe">${icn("crown").repeat(fit[0]) || "★".repeat(fit[0])}</span>` : ""}</span></div>
       <div class="hp" title="Affinité ${o.ind[i]}"><i style="width:${Math.max(3,o.ind[i])}%;background:var(${CLS[b.cls].c})"></i></div>
-      <span class="meta">Affinité ${o.ind[i]} · Solo ${dots(b.k.solo)} · Prise en main ${dots(b.k.diff)} · JcJ ${dots(b.k.pvp)}${detail ? ` · Popularité ${dots(CPOP(b.cls))} · Hardcore ${dots(CSAFE(b.cls))}` : ""}</span>
+      <span class="meta">Affinité ${o.ind[i]} · Solo ${dots(b.k.solo)} · Prise en main ${dots(b.k.diff)} · JcJ ${dots(b.k.pvp)}${detail ? ` · Popularité ${dots(CPOP(b.cls, facOf(A[i])))} · Hardcore ${dots(CSAFE(b.cls))}` : ""}</span>
       ${detail ? `<div class="plan">${esc(b.plan)}.</div><div class="plan">Race : ${esc(race.why)}${fit ? ` (${esc(fit[1])})` : ""}.</div>${soc ? `<div class="plan">En guilde : ${esc(soc.demand)}</div>` : ""}` : ""}
       ${plan ? `<div class="plan"><b>Métiers :</b> ${esc(PROF[plan[i].pair[0]].n)} et ${esc(PROF[plan[i].pair[1]].n.toLowerCase())}${plan[i].reasons.length ? ` : ${esc(plan[i].reasons.join(", "))}` : ""}.</div>${pt ? `<div class="plan muted">Repère pour un ${CLS[b.cls].name.toLowerCase()} : ${esc(pt[1])} pendant le leveling, ${esc(pt[2])} au 60.</div>` : ""}` : ""}
     </div>`;
@@ -6529,7 +6574,7 @@ const SPEC_FUN = {
 };
 function adviceFor(p, b, pr, a, affs){
   const R = reasons(pr, b), L = [], W = [];
-  const j = BIX[b.id], soc = CLASS_SOCIAL[b.cls] || {};
+  const j = BIX[b.id], fac = pr.fac === "horde" ? "horde" : "alliance", soc = (fac === "horde" ? CLASS_SOCIAL_H : CLASS_SOCIAL)[b.cls] || {};
   if (R.pros.length) L.push(`Ce qui colle avec tes réponses : ${R.pros.join(", ")}.`);
   const g = a.g_skill;
   if (g && typeof g.x === "number"){
@@ -6540,8 +6585,9 @@ function adviceFor(p, b, pr, a, affs){
   if (typeof a.solo === "number" && a.solo >= 60) (b.k.solo >= 4 ? L : W).push(b.k.solo >= 4 ? "Très à l'aise seul : parfait pour tes soirées sans le groupe." : "Peu à l'aise seul : garde une spé de quête pour les soirs en solo.");
   const hc = axVal(a, HC_AX[0]);
   if (hc != null && hc >= 60) ((HC.safe[b.cls] || 3) >= 4 ? L : W).push((HC.safe[b.cls] || 3) >= 4 ? "Une des classes les plus sûres en Hardcore." : "Plus risquée en Hardcore : prévois toujours une sortie de secours.");
-  if (soc.pop >= 5) W.push(`Classe très jouée en bêta (${String(soc.share).replace(".", ",")} % côté Alliance) : plus de concurrence pour les places en raid.`);
-  else if (soc.pop <= 2) L.push(`Classe plus rare en bêta (${String(soc.share).replace(".", ",")} % côté Alliance) : tu seras recherché.`);
+  const shr = soc.share == null ? "" : fac === "horde" ? soc.share.toFixed(1).replace(".", ",") : String(soc.share).replace(".", ",");
+  if (soc.pop >= 5) W.push(`Classe très jouée en bêta (${shr} % côté ${FAC_NAME[fac]}) : plus de concurrence pour les places en raid.`);
+  else if (soc.pop <= 2) L.push(`Classe plus rare en bêta (${shr} % côté ${FAC_NAME[fac]}) : tu seras recherché.`);
   if (R.cons.length) W.push(`À savoir : ${R.cons.join(", ")}.`);
   const lvl = b.lvl >= 4 ? "Leveling rapide d'après les tests bêta." : b.lvl <= 2 ? "Leveling plus lent : le groupe compense." : "";
   return {L, W, lvl, fun:SPEC_FUN[b.id] || "", aff:affs[j]};
@@ -9206,7 +9252,7 @@ function critDetail(b, fac){
     <div class="cd-col"><h4>Les notes expliquées</h4>${crit.map(c=>`<div class="cx"><div class="cx-h"><b>${esc(c.lab)}</b> ${dots(c.v)}</div><p>${esc(c.g)}${c.n ? " " + esc(c.n) : ""}</p></div>`).join("")}</div>
   </div>`;
 }
-$("crittable").innerHTML = B.map(b=>`<tr><td><button class="bt" data-bt="${b.id}" aria-expanded="false" aria-controls="det-${b.id}"><span class="tl">${spIcon(b)}${CLS[b.cls].name} ${esc(b.spec)}</span></button></td><td>${roleChip(b.role)}</td><td>${dots(b.k.diff)}</td><td>${dots(b.k.solo)}</td><td>${dots(b.k.down)}</td><td>${dots(b.k.gear)}</td><td>${dots(b.k.dem)}</td><td>${dots(b.k.pvp)}</td><td>${dots(b.k.early)}</td><td>${dots(b.lvl)}</td><td title="${esc(CLASS_SOCIAL[b.cls].popTxt)}">${dots(CLASS_SOCIAL[b.cls].pop)}</td><td class="left lk2">${linksFor(b).map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${esc(l.t)}</a>`).join("")}</td></tr>
+$("crittable").innerHTML = B.map(b=>`<tr><td><button class="bt" data-bt="${b.id}" aria-expanded="false" aria-controls="det-${b.id}"><span class="tl">${spIcon(b)}${CLS[b.cls].name} ${esc(b.spec)}</span></button></td><td>${roleChip(b.role)}</td><td>${dots(b.k.diff)}</td><td>${dots(b.k.solo)}</td><td>${dots(b.k.down)}</td><td>${dots(b.k.gear)}</td><td>${dots(b.k.dem)}</td><td>${dots(b.k.pvp)}</td><td>${dots(b.k.early)}</td><td>${dots(b.lvl)}</td><td data-popc="${b.cls}" title="${esc(CLASS_SOCIAL[b.cls].popTxt)}">${dots(CLASS_SOCIAL[b.cls].pop)}</td><td class="left lk2">${linksFor(b).map(l=>`<a href="${l.u}" target="_blank" rel="noopener">${esc(l.t)}</a>`).join("")}</td></tr>
   <tr class="det" id="det-${b.id}" hidden><td colspan="12">${critDetail(b)}</td></tr>`).join("");
 
 const CINFO = {
@@ -9252,7 +9298,7 @@ $("classcards").innerHTML = CLS_ORDER.map(c=>{
   return `<div class="panel clsp"><div class="clsp-h"><h3><span style="color:var(${CLS[c].c})">${icn(c) || swatch(c)}</span>${CLS[c].name}</h3><span class="small muted">Leveling <span class="tier">${esc(i.tier)}</span></span></div>
     <dl class="kv"><dt>Rôles</dt><dd>${esc(i.roles)}</dd><dt>Races</dt><dd id="clsr-${c}">${esc(CLS[c].races)}</dd><dt>Race conseillée</dt><dd id="clsrc-${c}">${esc(i.race)}</dd><dt>Métiers</dt><dd>${esc(i.prof)}</dd></dl>
     <p>${esc(i.lvl)}</p><ul>${i.fv.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
-    ${(()=>{ const so = CLASS_SOCIAL[c]; return so ? `<div class="soc"><h4>Popularité et vie sociale</h4><p>${dots(so.pop)} ${esc(so.popTxt)}</p><p><b>Demande en groupe.</b> ${esc(so.demand)}</p><ul>${so.social.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p><b>Ce que ça change.</b> ${esc(so.impact)}</p><p><b>En Hardcore.</b> ${dots(HC.safe[c] || 3)} ${esc(HC.why[c] || "")}</p></div>` : ""; })()}
+    ${(()=>{ const so = CLASS_SOCIAL[c]; return so ? `<div class="soc"><h4>Popularité et vie sociale</h4><p id="clspop-${c}">${dots(so.pop)} ${esc(so.popTxt)}</p><p><b>Demande en groupe.</b> ${esc(so.demand)}</p><ul>${so.social.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p><b>Ce que ça change.</b> ${esc(so.impact)}</p><p><b>En Hardcore.</b> ${dots(HC.safe[c] || 3)} ${esc(HC.why[c] || "")}</p></div>` : ""; })()}
     <p class="small lk2"><a href="${MOBA + CLINKS[c].hub}" target="_blank" rel="noopener">Tous les guides ${CLS[c].name.toLowerCase()} (Mobalytics)</a><a href="${MOBA + CLINKS[c].ov}" target="_blank" rel="noopener">Nouveautés de la classe</a><a href="${MOBA + CLINKS[c].lvl}" target="_blank" rel="noopener">Guide de leveling</a></p>
     <div class="specs">${B.filter(b=>b.cls===c).map(b=>`<div class="spec">
       <div class="spec-h">${spIcon(b, "sp-l")}<b>${esc(b.spec)}</b>${roleChip(b.role)}</div>
@@ -9295,11 +9341,16 @@ const raceCards = fac => FAC_RACES[fac].map((rk,i)=>{
 const refFac = () => ui.set.fac === "horde" || ui.set.fac === "alliance" ? ui.set.fac : (me.pid ? facOf(me.pid) : "alliance");
 function renderRefFac(){
   const fac = refFac();
-  document.querySelectorAll("[data-facsw] button").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.fac === fac)));
+  document.querySelectorAll("[data-facsw]:not([data-chfac]) button").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.fac === fac)));
   $("racetable").innerHTML = raceRows(fac);
   $("racecards").innerHTML = raceCards(fac);
   B.forEach(b=>{ const d = $("det-" + b.id); if (d && d.firstElementChild) d.firstElementChild.innerHTML = critDetail(b, fac); });
+  /* popularité : recensement Horde du 20 septembre en mode Horde, texte Alliance sinon */
+  const popH = c => { const h = CLASS_SOCIAL_H[c]; return `Bêta Forever, recensement du 20 septembre (Horde, ${String(CENSUS_H.n).replace(/\B(?=(\d{3})+$)/g, " ")} personnages) : ${h.share.toFixed(1).replace(".", ",")} %, ${h.rank === 1 ? "1re" : h.rank + "e"} classe côté Horde.`; };
+  const popOf = c => fac === "horde" && CLASS_SOCIAL_H[c] ? {pop:CLASS_SOCIAL_H[c].pop, t:popH(c)} : {pop:CLASS_SOCIAL[c].pop, t:CLASS_SOCIAL[c].popTxt};
+  document.querySelectorAll("#crittable [data-popc]").forEach(td=>{ const o = popOf(td.dataset.popc); td.title = o.t; td.innerHTML = dots(o.pop); });
   CLS_ORDER.forEach(c=>{
+    const pe = $("clspop-" + c); if (pe && CLASS_SOCIAL[c]){ const o = popOf(c); pe.innerHTML = `${dots(o.pop)} ${esc(o.t)}`; }
     const L = classRaces(c, fac), nw = r => (RACE_NEW[r] || []).includes(c) ? " (nouveau)" : "";
     const best = Math.max(0, ...L.map(r=>RACE_FIT[r] && RACE_FIT[r][c] ? RACE_FIT[r][c][0] : 0));
     $("clsr-" + c).textContent = fac === "alliance" ? CLS[c].races : L.map(r=>RACES[r].name + nw(r)).join(", ");
@@ -9309,7 +9360,7 @@ function renderRefFac(){
 {
   const sw = `<div class="row facsw-row" style="margin-bottom:10px"><span class="small muted">Faction affichée</span><div class="seg" role="group" aria-label="Faction affichée" data-facsw>${["alliance","horde"].map(f=>`<button type="button" data-fac="${f}" aria-pressed="false">${FAC_NAME[f]}</button>`).join("")}</div></div>`;
   ["v-classes","v-races"].forEach(id=>{ const v = $(id); if (v) v.insertAdjacentHTML("afterbegin", sw); });
-  document.addEventListener("click", e=>{ const b = e.target.closest("[data-facsw] [data-fac]"); if (!b) return; ui.set.fac = b.dataset.fac; saveUI(); renderRefFac(); });
+  document.addEventListener("click", e=>{ const b = e.target.closest("[data-facsw] [data-fac]"); if (!b || b.closest("[data-chfac]")) return; ui.set.fac = b.dataset.fac; saveUI(); renderRefFac(); });
 }
 
 const CAMP = [
