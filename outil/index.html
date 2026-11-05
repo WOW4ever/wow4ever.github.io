@@ -5406,7 +5406,10 @@ const WEB = window.__guildeWeb || null;
 function resolveMe(){
   let pid = null;
   if (me.uid){ const p = PLAYERS.find(x=>x.uid === me.uid); if (p) pid = p.id; }
-  if (!pid && ui.me && PI[ui.me] != null){ const p = PLAYERS[PI[ui.me]]; if (!p.uid || p.uid === me.uid || !me.uid) pid = p.id; }
+  /* connecté avec Discord, une fiche choisie sur cet appareil mais pas encore reliée n'est pas prise d'office :
+     l'outil la propose en premier (« Oui, je suis… ») et le clic la relie au compte */
+  me.localGuess = null;
+  if (!pid && ui.me && PI[ui.me] != null){ const p = PLAYERS[PI[ui.me]]; if (p.uid === me.uid || !me.uid) pid = p.id; else if (!p.uid) me.localGuess = p.id; }
   me.pid = pid;
 }
 /* rôle d'une fiche : celui de Discord quand la fiche y est reliée, sinon celui choisi dans « Rôles et accès » */
@@ -5464,6 +5467,7 @@ async function guessMe(){
   let v = {}; try { v = (await userCap.me()) || {}; } catch(e){}
   const nm = v.name || "", em = v.email || "";
   me.acctName = nm;
+  if (me.localGuess && PI[me.localGuess] != null && !PLAYERS[PI[me.localGuess]].uid){ me.guess = me.localGuess; return; }
   /* 1. l'email d'invitation renseigné par le chef de guilde relie la fiche d'office */
   const M = (state.acces && state.acces.mails) || {};
   if (em && Object.keys(M).length){
