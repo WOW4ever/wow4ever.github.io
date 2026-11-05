@@ -6809,13 +6809,14 @@ function persosHTML(){
   PLAYERS.forEach(p=>{
     const P = p.perso || {}; if (!P.nom) return;
     const c = (p.choix || []).find(x=>BI[x]);
-    R.push({nom:P.nom, cls:c ? BI[c].cls : null, niveau:P.niveau || null, roy:P.royaume || "", p, alt:false});
-    (P.alts || []).forEach(a=>{ if (a && a.nom) R.push({nom:a.nom, cls:CLS[a.cls] ? a.cls : null, niveau:a.niveau || null, roy:"", p, alt:true}); });
+    const ri = raceInfo(P.race);
+    R.push({nom:P.nom, cls:CLS[P.cls] ? P.cls : c ? BI[c].cls : null, race:ri ? ri.name : "", role:ROLE_FR[P.role] || "", niveau:P.niveau || null, roy:P.royaume || "", p, alt:false});
+    (P.alts || []).forEach(a=>{ if (a && a.nom) R.push({nom:a.nom, cls:CLS[a.cls] ? a.cls : null, race:"", role:"", niveau:a.niveau || null, roy:"", p, alt:true}); });
   });
   if (!R.length) return `<p class="muted">Aucun personnage déclaré pour l'instant. Dans ta fiche, le bouton « Déclarer mon personnage » ajoute ton personnage principal et tes secondaires à cette liste.</p>`;
   R.sort((x,y)=>(y.niveau || 0) - (x.niveau || 0) || String(x.nom).localeCompare(String(y.nom)));
   const dash = '<span class="muted">·</span>';
-  return `<div class="tablewrap" style="margin:10px 0 0"><table class="dir"><thead><tr><th>Personnage</th><th class="left">Classe</th><th>Niveau</th><th class="left">Royaume</th><th class="left">Joueur</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${esc(r.nom)}</b>${r.alt ? ' <span class="small muted">secondaire</span>' : ""}</td><td class="left">${r.cls ? `<span style="color:var(${CLS[r.cls].c})">${esc(CLS[r.cls].name)}</span>` : dash}</td><td>${r.niveau ? `<span class="lv-b">${r.niveau}</span>` : dash}</td><td class="left">${r.roy ? esc(r.roy) : dash}</td><td class="left">${pdot(r.p)}${esc(r.p.name)}</td></tr>`).join("")}</tbody></table></div>`;
+  return `<div class="tablewrap" style="margin:10px 0 0"><table class="dir"><thead><tr><th>Personnage</th><th class="left">Classe</th><th class="left">Race</th><th class="left">Rôle</th><th>Niveau</th><th class="left">Royaume</th><th class="left">Joueur</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${esc(r.nom)}</b>${r.alt ? ' <span class="small muted">secondaire</span>' : ""}</td><td class="left">${r.cls ? `<span style="color:var(${CLS[r.cls].c})">${esc(CLS[r.cls].name)}</span>` : dash}</td><td class="left">${r.race ? esc(r.race) : dash}</td><td class="left">${r.role ? esc(r.role) : dash}</td><td>${r.niveau ? `<span class="lv-b">${r.niveau}</span>` : dash}</td><td class="left">${r.roy ? esc(r.roy) : dash}</td><td class="left">${pdot(r.p)}${esc(r.p.name)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 function renderAnnuaire(){
   const el = $("guild-annuaire"); if (!el) return;
