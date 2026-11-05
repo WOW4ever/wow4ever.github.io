@@ -6803,6 +6803,20 @@ function synthHTML(p){
     <div><h5>Ce qu'il apporte</h5>${co.length ? hbars(co.map(x=>({lab:x.n, v:x.v, col:(CONTRIB_AX.find(y=>y.n === x.n) || {}).col || "--accent"}))) : '<span class="muted small">·</span>'}</div>
     <div><h5>En bref</h5><p class="small">${t ? `<b>${esc(t.code)}</b> ${esc(t.name)}. ` : ""}${mo.length ? `Joue pour ${mo.map(x=>x.n.toLowerCase()).join(" et ")}. ` : ""}${arch.length ? `Profil ${arch.map(x=>x.n.toLowerCase()).join(", ")}.` : ""}</p></div></div>`;
 }
+/* personnages déclarés dans les fiches (principal et secondaires) : la liste de la guilde en jeu */
+function persosHTML(){
+  const R = [];
+  PLAYERS.forEach(p=>{
+    const P = p.perso || {}; if (!P.nom) return;
+    const c = (p.choix || []).find(x=>BI[x]);
+    R.push({nom:P.nom, cls:c ? BI[c].cls : null, niveau:P.niveau || null, roy:P.royaume || "", p, alt:false});
+    (P.alts || []).forEach(a=>{ if (a && a.nom) R.push({nom:a.nom, cls:CLS[a.cls] ? a.cls : null, niveau:a.niveau || null, roy:"", p, alt:true}); });
+  });
+  if (!R.length) return `<p class="muted">Aucun personnage déclaré pour l'instant. Dans ta fiche, le bouton « Déclarer mon personnage » ajoute ton personnage principal et tes secondaires à cette liste.</p>`;
+  R.sort((x,y)=>(y.niveau || 0) - (x.niveau || 0) || String(x.nom).localeCompare(String(y.nom)));
+  const dash = '<span class="muted">·</span>';
+  return `<div class="tablewrap" style="margin:10px 0 0"><table class="dir"><thead><tr><th>Personnage</th><th class="left">Classe</th><th>Niveau</th><th class="left">Royaume</th><th class="left">Joueur</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${esc(r.nom)}</b>${r.alt ? ' <span class="small muted">secondaire</span>' : ""}</td><td class="left">${r.cls ? `<span style="color:var(${CLS[r.cls].c})">${esc(CLS[r.cls].name)}</span>` : dash}</td><td>${r.niveau ? `<span class="lv-b">${r.niveau}</span>` : dash}</td><td class="left">${r.roy ? esc(r.roy) : dash}</td><td class="left">${pdot(r.p)}${esc(r.p.name)}</td></tr>`).join("")}</tbody></table></div>`;
+}
 function renderAnnuaire(){
   const el = $("guild-annuaire"); if (!el) return;
   if (el.contains(document.activeElement) && document.activeElement.matches("input[data-af]")) { paintAnnuaireRows(); return; }
@@ -6818,6 +6832,8 @@ function renderAnnuaire(){
       <div class="tablewrap" style="margin:10px 0 0"><table class="dir"><thead><tr><th>Joueur</th><th class="left">Spés choisies</th><th class="left">Rôle fin</th><th class="left">Métiers</th><th class="left">Créneaux</th><th>Profil</th><th></th></tr></thead><tbody id="dir-rows"></tbody></table></div>
       <div class="expl"><p>Chaque ligne résume un joueur : ses spés classées (ou, à défaut, ce que ses réponses suggèrent), son rôle fin dominant, ses métiers et ses créneaux.</p><details><summary>Comment c\'est calculé</summary><p>Le rôle fin croise les affinités du joueur avec les 29 builds (60 %) et ce qu'il dit apporter au groupe (40 %). Le profil se remplit avec les réponses ; à partir de 8 réponses, ou dès qu'il a classé ses spés, le détail s'ouvre au clic sur son nom.</p></details></div>
     </div>
+    <div class="spacer"></div>
+    <div class="panel"><h3 class="chart-h">${icn("users")}Les personnages de la guilde</h3><p class="chart-sub">Principaux et secondaires déclarés dans les fiches, pour savoir qui inviter en jeu.</p>${persosHTML()}</div>
     <div class="spacer"></div>
     <div class="panel"><h3 class="chart-h">${icn("hourglass")}Progression vers le 60</h3><p class="chart-sub">Projection semaine par semaine pour les joueurs qui ont indiqué leur temps de jeu, à partir du lancement ou d'aujourd'hui.</p>${PLAYERS.some(p=>progEta(p)) ? `<div class="svg-x">${progChart(PLAYERS.length > 8 ? VIS : PLAYERS)}</div>` : '<p class="muted">Pas encore de temps de jeu renseigné.</p>'}${(()=>{ const G = progGaps(PLAYERS.length > 8 ? VIS : PLAYERS); return G.length ? `<p class="small">${icn("warning")}Vers la semaine ${G[0].w}, ${esc(G[0].mx.p.name)} (niveau ${G[0].mx.l}) aura ${G[0].d} niveaux d'avance sur ${esc(G[0].mn.p.name)} (niveau ${G[0].mn.l}) : prévoyez des sorties de rattrapage ou un personnage secondaire pour jouer ensemble.</p>` : ""; })()}${expl("Où chacun en sera, semaine après semaine, et quand les écarts deviendront gênants pour jouer ensemble.", `Base d'environ ${HOURS_60} h de jeu pour aller du niveau 1 au 60 (Classic), corrigée par la vitesse de la classe d'après les tests bêta. La courbe suit l'effort réel : chaque niveau demande plus d'expérience que le précédent, d'où une montée rapide au début. Point de départ : le niveau déclaré dans la fiche personnage. Au-delà de 5 niveaux d'écart, les quêtes et les donjons communs deviennent difficiles. Avec plus de 8 joueurs, la courbe montre ceux choisis dans les réglages de la page.`)}</div>
     <div class="spacer"></div>
