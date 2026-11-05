@@ -1,6 +1,6 @@
 -- Base de l'outil de guilde WoW Forever (projet Supabase izflnnbkxolndzmuhnui)
 -- Une table de documents : col = collection (joueurs, reponses, guilde...), id = document, data = contenu.
--- Lecture ouverte à tous ; écriture réservée aux joueurs connectés avec Discord.
+-- Lecture ouverte à tous ; écriture réservée aux joueurs connectés avec Discord (les sessions anonymes sont refusées).
 -- Une fiche reliée (joueurs.data.uid) et ses réponses ne sont modifiables que par son propriétaire ou un admin.
 -- La collection guilde (rôles, accès, réglages Discord) est réservée aux admins ; discord_in à la fonction serveur.
 
@@ -84,3 +84,13 @@ create policy docs_delete on public.docs for delete to authenticated using (
 );
 
 alter publication supabase_realtime add table public.docs;
+
+-- 5 novembre 2026 : retour de la connexion Discord. Une session anonyme (ouverte entre le 22 octobre et le 5 novembre)
+-- ne peut plus rien écrire : ces règles restrictives s'ajoutent aux précédentes.
+create policy docs_no_anon_insert on public.docs as restrictive for insert to authenticated
+  with check ((select (auth.jwt()->>'is_anonymous')::boolean) is not true);
+create policy docs_no_anon_update on public.docs as restrictive for update to authenticated
+  using ((select (auth.jwt()->>'is_anonymous')::boolean) is not true)
+  with check ((select (auth.jwt()->>'is_anonymous')::boolean) is not true);
+create policy docs_no_anon_delete on public.docs as restrictive for delete to authenticated
+  using ((select (auth.jwt()->>'is_anonymous')::boolean) is not true);
