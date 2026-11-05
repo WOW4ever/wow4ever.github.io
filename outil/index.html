@@ -1977,7 +1977,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       <div id="claim-box" style="max-width:760px"></div>
       <div class="panel" style="max-width:760px">
         <h2 class="h2">Créer une fiche</h2>
-        <p class="small muted">Chaque joueur a sa fiche : son personnage, ses spés préférées et son questionnaire. Si tu crées la tienne, elle est reliée à ton compte ; le comparatif, les compos et les raids s'adaptent au nombre de joueurs.</p>
+        <p class="small muted">Chaque joueur a sa fiche : son personnage, ses spés préférées et son questionnaire. Si tu crées la tienne, elle est reliée à ton compte ; le récap, les compos et les raids s'adaptent au nombre de joueurs.</p>
         <div class="addp"><label for="newname">Prénom ou pseudo</label><input id="newname" type="text" maxlength="24" autocomplete="off" placeholder="Par exemple Léa"><div class="row"><button class="btn primary" data-act="addplayer">Ajouter</button><span class="small muted" id="addmsg"></span></div></div>
       </div>
     </section>
@@ -2031,7 +2031,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
       </div>
       <div class="spacer"></div>
       <div class="cmp-grid">
-        <div class="panel"><h3 class="chart-h">Lecture du comparatif</h3><p class="chart-sub">Points d'accord et de tension repérés dans les réponses.</p><ul class="reading" id="cmp-reading"></ul></div>
+        <div class="panel"><h3 class="chart-h">Lecture du récap</h3><p class="chart-sub">Points d'accord et de tension repérés dans les réponses.</p><ul class="reading" id="cmp-reading"></ul></div>
         <div class="panel"><h3 class="chart-h">Quand la guilde est là</h3><p class="chart-sub">La semaine en roue : jour par jour, la journée, le soir et la nuit.</p><div id="cmp-week"></div><details class="vz-d"><summary>Le tableau des créneaux, joueur par joueur</summary><div class="tablewrap" style="margin:8px 0 0"><table class="slot" id="cmp-slots"></table></div></details></div>
       </div>
       <div class="spacer"></div>
@@ -5397,7 +5397,7 @@ const ROLE_NAMES = {gm:"Admin de l'outil", chef:"Chef de guilde", officier:"Offi
 const ROLE_ICON = {gm:"key", chef:"gm", officier:"officer", membre:"member", invite:"guest", visiteur:"visitor"};
 const ROLE_KEYS = ["chef","officier","membre","invite"];
 /* pages réglables par rôle ; « fiches » = les questionnaires détaillés des autres joueurs */
-const TABS_CFG = [["annuaire","Guilde et profils synthétiques"],["comparatif","Récap de nos membres"],["suggeres","Groupes suggérés"],["compo","Compo du groupe"],["compositeur","Compositeur"],["sorties","Sorties"],["raid","Raids"],["groupes","Groupes de leveling"],["leveling","Leveling"],["histoire","Histoire"],["compos","Compos types"],["classes","Classes et spés"],["races","Races"],["metiers","Métiers"],["addons","Addons"],["regles","Règles Forever"]];
+const TABS_CFG = [["annuaire","Guilde et profils synthétiques"],["comparatif","Récap de nos membres"],["compo","Compo du groupe"],["compositeur","Compositeur"],["sorties","Sorties"],["raid","Raids"],["groupes","Groupes de leveling"],["leveling","Leveling"],["histoire","Histoire"],["compos","Compos types"],["classes","Classes et spés"],["races","Races"],["metiers","Métiers"],["addons","Addons"],["regles","Règles Forever"]];
 const ALL_TABS = TABS_CFG.map(t=>t[0]);
 const PERM_DEFAULT = {
   chef:{tabs:ALL_TABS.slice(), fiches:true, gerer:true},
@@ -5975,13 +5975,14 @@ function persoHTML(p){
     <span>${icn("crown")}${ch.length ? ch.map((id,k)=>`${k+1}. ${esc(bName(BI[id]))}`).join(" · ") : '<span class="muted">aucune spé classée</span>'}</span>
     ${edit ? `<span class="row"><button class="btn sm" data-act="editperso" data-p="${p.id}">${P.nom ? "Modifier mon personnage" : "Déclarer mon personnage"}</button><button class="btn sm" data-chopen="${p.id}">Classer mes spés</button></span>` : ""}</div>`;
   const profOpts = sel => `<option value="">Aucun</option>` + Object.keys(PROF).map(k=>`<option value="${k}"${sel === k ? " selected" : ""}>${esc(PROF[k].n)}</option>`).join("");
-  const b0 = mainBuild(p), fCls = P.cls || (b0 ? b0.cls : ""), fRace = P.race || (b0 && b0.cls === fCls ? raceFor(b0, state.answers[p.id] || {}) : ""), fRole = P.role || (b0 && b0.cls === fCls ? b0.role : "");
+  const b0 = mainBuild(p), fCls = P.cls || "", fRace = P.race || "", fRole = P.role || "";
+  const hCls = b0 ? CLS[b0.cls].name : "", hRace = b0 && (!fCls || fCls === b0.cls) ? raceInfo(raceFor(b0, state.answers[p.id] || {})) : null;
   const form = edit ? `<div class="perso-f" id="pf-form-${p.id}" hidden><div class="sf">
     <label>Nom du personnage<input id="pf-nom-${p.id}" type="text" maxlength="24" value="${esc(P.nom || "")}"></label>
     <label>Royaume<input id="pf-roy-${p.id}" type="text" maxlength="30" value="${esc(P.royaume || "")}"></label>
     <label>Niveau<input id="pf-lvl-${p.id}" type="number" min="1" max="60" value="${esc(P.niveau || 1)}"></label>
-    <label>Classe<select id="pf-cls-${p.id}" data-pfcls="${p.id}"><option value="">Choisis ta classe</option>${CLS_ORDER.map(c=>`<option value="${c}"${fCls === c ? " selected" : ""}>${CLS[c].name}</option>`).join("")}</select></label>
-    <label>Race<select id="pf-race-${p.id}" data-pfrace="${p.id}">${raceOpts(fCls, fRace)}</select></label>
+    <label>Classe<select id="pf-cls-${p.id}" data-pfcls="${p.id}"><option value="">Choisis ta classe${hCls ? ` (conseil : ${hCls})` : ""}</option>${CLS_ORDER.map(c=>`<option value="${c}"${fCls === c ? " selected" : ""}>${CLS[c].name}</option>`).join("")}</select></label>
+    <label>Race<select id="pf-race-${p.id}" data-pfrace="${p.id}">${raceOpts(fCls, fRace, hRace ? hRace.name : "")}</select></label>
     <label>Rôle<select id="pf-role-${p.id}">${roleOpts(fCls, fRole)}</select></label>
     <label>Pseudo Discord<input id="pf-dis-${p.id}" type="text" maxlength="40" placeholder="pour relier tes messages Discord" value="${esc(P.discord || "")}"></label>
     ${[0,1].map(i=>`<label>Métier ${i+1}<select id="pf-m${i}-${p.id}">${profOpts(M[i] ? M[i].k : "")}</select></label><label>Palier<input id="pf-ml${i}-${p.id}" type="number" min="0" max="300" value="${M[i] ? M[i].lvl || 0 : 0}"></label>`).join("")}</div>
@@ -5998,10 +5999,10 @@ function altRow(pid, x, i){ return `<div class="alt-r" data-alt="${i}"><input ty
 function clsRoles(c){ return ["tank","heal","dps"].filter(k=>k === "dps" || B.some(b=>b.cls === c && (b.role === k || (k === "tank" ? b.tc : b.hc) >= .6))); }
 function startOf(race){ const ri = raceInfo(race); if (!ri) return null; const F = lvrSet(ri.fac), z = F.raceZone[race]; return z && F.zones[z] ? {fac:ri.fac, z, Z:F.zones[z], F} : null; }
 function persoTxt(P){ const ri = raceInfo(P.race), s = startOf(P.race); return [ri ? ri.name : "", CLS[P.cls] ? CLS[P.cls].name : "", ROLE_FR[P.role] || ""].filter(Boolean).join(" · ") + (s ? ", départ " + s.Z.name : ""); }
-function raceOpts(cls, sel){
+function raceOpts(cls, sel, hint){
   const grp = (fac, L) => L.length ? `<optgroup label="${FAC_NAME[fac]}">${L.map(r=>`<option value="${r}"${r === sel ? " selected" : ""}>${esc(raceInfo(r).name)}</option>`).join("")}</optgroup>` : "";
   const A = cls ? CLASS_RACES[cls] || [] : FAC_RACES.alliance, H = cls ? CLASS_RACES_H[cls] || [] : FAC_RACES.horde;
-  return `<option value="">Choisis ta race</option>` + grp("alliance", A) + grp("horde", H);
+  return `<option value="">Choisis ta race${hint ? ` (conseil : ${esc(hint)})` : ""}</option>` + grp("alliance", A) + grp("horde", H);
 }
 function roleOpts(cls, sel){
   const L = cls ? clsRoles(cls) : ["tank","heal","dps"]; if (L.length === 1) sel = L[0];
@@ -6022,7 +6023,7 @@ function sgSplit(M){
   if (g <= 1) return [byLv(M).sort((a,b)=>RO[persoRole(a)] - RO[persoRole(b)])];
   const G = Array.from({length:g}, ()=>[]), pool = [];
   ["tank","heal"].forEach(r=>byLv(M.filter(p=>persoRole(p) === r)).forEach((p,i)=>{ if (i < g) G[i].push(p); else pool.push(p); }));
-  const avg = L => L.reduce((s,p)=>s + lvlOf(p), 0) / L.length, gap = (L, p) => L.length ? Math.abs(avg(L) - lvlOf(p)) : 0;
+  const avg = L => L.reduce((s,p)=>s + lvlOf(p), 0) / L.length, gap = (L, p) => L.length ? Math.abs(avg(L) - lvlOf(p)) : Infinity;
   byLv(M.filter(p=>persoRole(p) === "dps").concat(pool)).forEach(p=>{ G.filter(L=>L.length < 5).sort((x,y)=>(gap(x, p) - gap(y, p)) || (x.length - y.length))[0].push(p); });
   return G.map(L=>L.sort((a,b)=>(RO[persoRole(a)] - RO[persoRole(b)]) || (lvlOf(b) - lvlOf(a)) || a.name.localeCompare(b.name)));
 }
@@ -6051,7 +6052,7 @@ function renderSuggested(){
     const st = (N.length ? `Il manque ${NJ(N)}` : "Tank et soin en place") + (free ? `, ${free} place${free > 1 ? "s" : ""} libre${free > 1 ? "s" : ""}` : ", groupe complet");
     return `<div class="sg-g"><div class="sg-gh"><b>${n > 1 ? "Groupe " + (i + 1) : G.length > 1 ? "Le groupe" : "Seul pour l'instant"}</b><span class="small muted">${lo === hi ? "niveau " + lo : `niveaux ${lo} à ${hi}`}</span></div>
       <ul class="sg-m">${G.map(member).join("")}</ul><p class="small${N.length ? " sg-warn" : ""}" style="margin:0 0 8px">${st}.</p>
-      ${G.length > 1 ? `<button class="btn sm" data-sgcompo="${G.map(p=>p.id).join(",")}">${icn("users")}Ouvrir dans Compo du groupe</button>` : ""}</div>`; };
+      ${G.length > 1 && canSee("compo") ? `<button class="btn sm" data-sgcompo="${G.map(p=>p.id).join(",")}">${icn("users")}Ouvrir dans Compo du groupe</button>` : ""}</div>`; };
   const zoneCard = x => { const {s} = x, big = Zs.filter(y=>y.s.fac === s.fac && y.k !== x.k && y.M.length > 1).sort((a,b)=>b.M.length - a.M.length)[0];
     let alone = "";
     if (x.M.length === 1 && big){ const p = x.M[0], how = (s.F.travel[big.s.z] || {})[s.z] || "", alt = big.s.Z.races.filter(r=>classRaces(p.perso.cls, s.fac).includes(r) && !isSky(r));
@@ -8065,7 +8066,7 @@ function vzCrestCard(p){
     <li>${icn("gate")}<span><b>La couronne murale</b> : les tours du château disent ton engagement, ${cr.towers} sur 3${cr.eng != null ? ` (moyenne des jauges : ${cr.eng}/100)` : ""}.</span></li>
     <li>${icn("scroll")}<span><b>La devise</b> : ton archétype dominant.</span></li></ul>`;
   return gc("Ton blason", "Tes armoiries, tirées de tes réponses.", `<div class="vz-row"><div class="vz-shw">${vzShield(p, cr, "s" + p.id)}</div>${leg}</div>`, false,
-    ["Chaque pièce du blason dit une partie de ton profil, avec le vocabulaire des hérauts : on le compare à ceux du groupe dans le comparatif.", "Émaux : chacun des 16 archétypes a sa couleur héraldique (gueules, azur, sinople, sable, pourpre, tanné) ; on prend ton archétype le plus fort, puis le suivant d'une autre couleur. Partition : le rôle de ton premier choix de spé, sinon celui déduit des réponses. Emblème : l'icône de ton premier choix de spé, sinon de la spé la plus proche de tes réponses. Couronne murale : moyenne des cinq jauges d'engagement (technicité, JcJ, social, autonomie, Hardcore), une tour dès 35, deux dès 55, trois dès 75."]);
+    ["Chaque pièce du blason dit une partie de ton profil, avec le vocabulaire des hérauts : on le compare à ceux du groupe dans le Récap de nos membres.", "Émaux : chacun des 16 archétypes a sa couleur héraldique (gueules, azur, sinople, sable, pourpre, tanné) ; on prend ton archétype le plus fort, puis le suivant d'une autre couleur. Partition : le rôle de ton premier choix de spé, sinon celui déduit des réponses. Emblème : l'icône de ton premier choix de spé, sinon de la spé la plus proche de tes réponses. Couronne murale : moyenne des cinq jauges d'engagement (technicité, JcJ, social, autonomie, Hardcore), une tour dès 35, deux dès 55, trois dès 75."]);
 }
 /* ---- feuille de personnage ---- */
 const vzAx = (L, n) => L.find(x=>x.n === n);
